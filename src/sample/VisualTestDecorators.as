@@ -1,4 +1,4 @@
-package test.com.wezside.components.decorators 
+package sample 
 {
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
@@ -7,7 +7,9 @@ package test.com.wezside.components.decorators
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.decorators.scroll.ScrollVertical;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
+	import com.wezside.components.text.Label;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
