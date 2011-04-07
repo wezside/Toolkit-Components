@@ -12,19 +12,19 @@ Latest release
 Control
 -------
 
-o Accordion
-o Button
-o Combo
-o Label
+* Accordion
+* Button
+* Combo
+* Label
 
 Media
 -----
 
-o Audio Player
-o Survey Engine
+* Audio Player
+* Survey Engine
 
 Other 
 -----
 
-o Gallery
-o Video Player
+* Gallery
+* Video Player
