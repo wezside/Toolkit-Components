@@ -1,13 +1,16 @@
-package test.com.wezside.components.decorators 
+package sample 
 {
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
+	import com.wezside.components.text.Label;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import test.com.wezside.sample.style.LatinStyle;
+	import sample.style.LatinStyle;
+
+
 
 
 

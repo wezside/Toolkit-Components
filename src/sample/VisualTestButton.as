@@ -1,7 +1,5 @@
-package test.com.wezside.components.control 
+package sample 
 {
-	import test.com.wezside.sample.style.LatinStyle;
-
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
@@ -12,8 +10,12 @@ package test.com.wezside.components.control
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.text.Label;
-
 	import flash.events.Event;
+	import sample.style.LatinStyle;
+
+
+
+
 
 	/**
 	 * @author Wesley.Swanepoel

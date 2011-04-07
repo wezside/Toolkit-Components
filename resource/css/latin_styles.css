@@ -1,0 +1,152 @@
+.title {
+	fontFamily: ArialEmbed;
+	fontWeight: normal;
+	antiAliasType: advanced;
+	embedFonts: true;
+	fontSize: 12;
+	color: #666666;
+	autoSize: left;
+	upSkin: InputFieldUpSkin;
+	overSkin: InputFieldOverSkin;
+	downSkin: InputFieldDownSkin;
+	selectedSkin: InputFieldSelectedSkin;
+	border: false;
+	borderColor: #000000;
+}
+
+MockUIElement {
+	size: 36;
+	antiAliasType: normal;
+}
+
+.alignButton
+{
+	upSkin: ButtonUp;	
+	overSkin: ButtonOver;	
+	downSkin: ButtonDown;
+	selectedSkin: ButtonSelected;
+	font: ArialEmbed;
+	antiAliasType: advanced;
+	size: 12;
+	textColourUp: #111111;
+	textColourOver: #333333;
+	textColourDown: #111111;
+	textColourSelected: #ff0000;
+	align: left;
+	autoSize: left;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingTop: 0;
+	wordWrap: true;
+	multiline: true;
+	border: true;
+	borderColor: #ff0000;
+}
+
+.combo
+{
+	upSkin: ButtonUp;	
+	overSkin: ButtonOver;	
+	downSkin: ButtonDown;
+	selectedSkin: ButtonSelected;
+	font: ArialEmbed;
+	antiAliasType: advanced;
+	size: 13;
+	textColourUp: #111111;
+	textColourOver: #333333;
+	textColourDown: #111111;
+	textColourSelected: #ff0000;
+	align: left;
+	autoSize: left;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingTop: 0;
+	wordWrap: true;
+	multiline: true;
+	border: true;
+	borderColor: #ff0000;
+}
+
+/* VisualTestButton.as */
+.button
+{
+	upSkin: ButtonUp;	
+	overSkin: ButtonOver;	
+	downSkin: ButtonDown;
+	selectedSkin: ButtonSelected;
+	font: ArialEmbed;
+	antiAliasType: advanced;
+	size: 12;
+	textColourUp: #111111;
+	textColourOver: #333333;
+	textColourDown: #111111;
+	textColourSelected: #ff0000;
+	align: left;
+	autoSize: left;
+	paddingLeft: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingTop: 0;
+	wordWrap: true;
+	multiline: true;
+	border: true;
+	borderColor: #cccccc;	
+}
+
+.iconStylename
+{
+	upSkin: IconUp;	
+	overSkin: IconOver;	
+	downSkin: IconUp;	
+	selectedSkin: IconSelected;
+	paddingTop: 0;
+	paddingBottom: 0;
+	paddingLeft: 0;
+	paddingRight: 0;
+}
+
+.labelButton {
+	font: ArialEmbed;
+	antiAliasType: advanced;
+	size: 30;
+	textColourUp: #ababab;
+	textColourOver: #333333;
+	textColourDown: #cccccc;
+	textColourSelected: #ff0000;
+	align: left;
+	autoSize: left;
+	border: false;
+	borderColor: #000000;	
+}
+
+.packageLabelButton {
+	font: ArialEmbed;
+	antiAliasType: advanced;
+	size: 12;
+	textColourUp: #ababab;
+	textColourOver: #333333;
+	textColourDown: #cccccc;
+	textColourSelected: #ff0000;
+	align: left;
+	autoSize: left;
+	multiline: true;
+	wordWrap: true;		
+	border: true;
+	borderColor: #000000;		
+}
+
+.inputField
+{
+	upSkin: InputFieldUpSkin;
+	fontFamily: ArialEmbed;
+	fontWeight: normal;
+	antiAliasType: advanced;
+	embedFonts: true;
+	fontSize: 18;
+	color: #EFEFEF;
+	autoSize: left;
+	wordWrap: true;	
+
+}

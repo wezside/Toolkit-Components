@@ -1,4 +1,4 @@
-package test.com.wezside.components.decorators
+package sample
 {
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.RelativeLayout;

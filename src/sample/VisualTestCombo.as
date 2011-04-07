@@ -1,18 +1,19 @@
-package test.com.wezside.components.combo 
+package sample 
 {
-	import flash.display.StageScaleMode;
-	import flash.display.StageAlign;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import test.com.wezside.sample.style.LatinStyle;
-
 	import com.wezside.components.combo.Combo;
 	import com.wezside.components.combo.ComboEvent;
 	import com.wezside.components.combo.ComboItem;
+	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.utilities.manager.style.IStyleManager;
-
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import sample.style.LatinStyle;
+
+
+
+
 
 	/**
 	 * @author Wesley.Swanepoel
