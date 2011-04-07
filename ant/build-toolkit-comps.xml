@@ -14,13 +14,11 @@
 	<target name="linux" if="isLinux">
 	    <echo message="OS is Linux" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_LINUX}"/>
-		<property name="swc.base" value="${swc.base.linux}"/>
 	</target>
 	
 	<target name="win" if="isWin">
 	    <echo message="OS is Windows" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_PC}"/>
-		<property name="swc.base" value="${swc.base.pc}"/>
 	</target>	
 	
 	<!-- Clean project dirs -->
