@@ -6,7 +6,7 @@ of building re-usable components in Flash. These components are easy to layout a
 
 Latest release 
 =======
-* Build 0.1.0247
+* Build 0.1.0248
 * Compiled with Flex 4 SDK build 14159 
 
 Control
