@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Toolkit Component Build" default="build-swc" basedir="..">
+<project name="Toolkit Component Build" default="release" basedir="..">
 
-	<property file="ant/.properties" />
+	<property file="${basedir}/ant/.properties" />
 	
 	<condition property="isLinux">
 	  <os family="unix" />
@@ -23,24 +23,12 @@
 		<property name="swc.base" value="${swc.base.pc}"/>
 	</target>	
 	
-	
 	<!-- Clean project dirs -->
 	<target name="clean" depends="win,linux">
 		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 		<delete>
-			<fileset dir="${swc.base}">
+			<fileset dir="${basedir}/swc">
 			    <include name="wezside.toolkit.*"/>
-			</fileset>
-			<fileset dir="${swc.path}">
-			    <include name="wezside.toolkit.*"/>
-			</fileset>
-			<fileset dir="${basedir}/../Modulo/lib">
-			    <exclude name="ActionSource.swc"/>
-			    <exclude name="SWFAddress.swc"/>
-			    <exclude name="greensock.swc"/>
-			    <exclude name="flexunit-4.0.0.swc"/>
-			    <exclude name="flexunit-aircilistener-4.0.0.swc"/>
-			    <exclude name="flexunit-uilistener-4.0.0.swc"/>
 			</fileset>
 		</delete>
 	</target>
@@ -69,7 +57,7 @@
 			</sort>
 		</pathconvert>
 		<echo message="${sorted}" file="${prop.file}" />
-		<property file="${prop.file}" />
+		<property file="${basedir}/ant/.properties" />
 		<echo message="${readme.contents}" file="${basedir}/README.md" />
 	</target>	
 
@@ -99,8 +87,17 @@
 			   maxmemory="512m">
 			<source-path path-element="${basedir}/src"/>
 			<include-sources dir="${basedir}/src" includes="${project_classes_property}"/>
-			<external-library-path file="${basedir}/lib/wezside.toolkit.0.1.0247.swc" append="true"/>
+			<external-library-path file="${basedir}/lib/wezside.toolkit.${version}${build.int}.swc" append="true"/>
 			<external-library-path file="${basedir}/lib/greensock.swc" append="true"/>
 		</compc>
-	</target>		
+	</target>	
+	
+	<!-- Copy swc -->
+	<target name="release" depends="build-swc">
+		<copy todir="${basedir}/../Modulo/lib/" verbose="false">
+			<fileset dir="${swc.path}" defaultexcludes="true">
+				<include name="wezside.toolkit.*" />
+			</fileset>
+		</copy>		
+	</target>	
 </project>
