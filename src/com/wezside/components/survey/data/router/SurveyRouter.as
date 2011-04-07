@@ -25,7 +25,7 @@ package com.wezside.components.survey.data.router
 			_mapper.debug = debug;
 			_mapper.deserialize( xml );
 		}
-
+		
 		public function build():void
 		{
 			reset();
@@ -35,6 +35,19 @@ package com.wezside.components.survey.data.router
 			_endRoute.nextpath = "[End]";
 		}
 		
+		public function purge():void
+		{
+			if ( _mapper ) Routing( _mapper.data ).purge();
+			if ( _targetRoute ) _targetRoute.purge();
+			if ( _endRoute ) _endRoute.purge();
+			if ( _iterator ) _iterator.purge();
+			
+			_mapper = null;
+			_targetRoute = null;
+			_endRoute = null;
+			_iterator = null;
+		}
+		
 		public function addRoute( route : Route ) : void
 		{
 			Collection( Routing( _mapper.data ).routes ).addElement( route );
@@ -42,14 +55,15 @@ package com.wezside.components.survey.data.router
 		
 		public function getRoute( id : String ) : Route
 		{
-			return Routing( _mapper.data ).routes.find( id ) as Route;
+			return Routing( _mapper.data ).routes.find( "id", id ) as Route;
 		}
 
 		public function next( value:String = "" ) : Route
 		{				
+
 			if ( value != "" && _targetRoute && _targetRoute.routes )
 			{
-				var child:Route = _targetRoute.routes.find( value ) as Route;
+				var child:Route = _targetRoute.routes.find( "id", value ) as Route;
 				if ( child )
 				{					
 					_targetRoute = child;
@@ -61,33 +75,33 @@ package com.wezside.components.survey.data.router
 			{
 				if ( value )
 				{
-					if ( !Routing( _mapper.data ).routes.find( value ) )
+					if ( !Routing( _mapper.data ).routes.find( "id", value ) )
 					{
-						_targetRoute = Routing( _mapper.data ).routes.find( _targetRoute.nextpath ) as Route;
+						_targetRoute = Routing( _mapper.data ).routes.find( "id", _targetRoute.nextpath ) as Route;
 					}
 					else
 					{
-						_targetRoute = Routing( _mapper.data ).routes.find( value ) as Route;						
+						_targetRoute = Routing( _mapper.data ).routes.find( "id", value ) as Route;						
 					}
 				}
 				else
 				{
-					_targetRoute = Routing( _mapper.data ).routes.find( _targetRoute.nextpath ) as Route;
+					_targetRoute = Routing( _mapper.data ).routes.find( "id", _targetRoute.nextpath ) as Route;
 				}
 			}
 			else
 			{
-				_targetRoute = Routing( _mapper.data ).routes.find( _startID ) as Route;
+				_targetRoute = Routing( _mapper.data ).routes.find( "id", _startID ) as Route;
 			}				
-			return _targetRoute.nextpath ? _targetRoute : _endRoute;
+			return ( _targetRoute && _targetRoute.nextpath ) ? _targetRoute : _endRoute;
 		}
 		
 		public function hasChild( id:String ):Boolean
-		{
-			var nextRoute:Route = Routing( _mapper.data ).routes.find( _targetRoute.id ) as Route;	
+		{			
+			var nextRoute:Route = Routing( _mapper.data ).routes.find( "id", _targetRoute.id ) as Route;	
 			if ( nextRoute && nextRoute.routes )
 			{
-				var child:Route = nextRoute.routes.find( id ) as Route;
+				var child:Route = nextRoute.routes.find( "id", id ) as Route;
 				if ( child ) return true;		
 			}
 			return false;
@@ -107,6 +121,7 @@ package com.wezside.components.survey.data.router
 		{
 			_startID = value;
 		}
+
 		
 	}
 }

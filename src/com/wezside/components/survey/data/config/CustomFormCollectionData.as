@@ -13,7 +13,7 @@ package com.wezside.components.survey.data.config
 		
 		public function customFormItem( id:String ):CustomFormData
 		{
-			return customForm ? customForm.find( id ) as CustomFormData : null;
+			return customForm ? customForm.find( "id", id ) as CustomFormData : null;
 		}		
 	}
 }

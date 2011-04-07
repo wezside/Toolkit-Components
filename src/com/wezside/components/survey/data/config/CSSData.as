@@ -14,7 +14,7 @@ package com.wezside.components.survey.data.config
 		
 		public function cssItem( id:String ):CSSDataItem
 		{
-			return css ? css.find( id ) as CSSDataItem : null;
+			return css ? css.find( "id", id ) as CSSDataItem : null;
 		}
 	}
 }

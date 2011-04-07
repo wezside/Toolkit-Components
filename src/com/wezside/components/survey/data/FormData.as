@@ -1,6 +1,8 @@
 package com.wezside.components.survey.data 
 {
-
+	import com.wezside.components.survey.data.config.ItemData;
+	import com.wezside.components.survey.data.config.grouping.ResponseData;
+	import com.wezside.components.survey.data.config.grouping.ResponseGroupData;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
@@ -10,6 +12,7 @@ package com.wezside.components.survey.data
 	public class FormData extends Object implements IFormData 
 	{
 		private var _id:String;
+		private var _type:String;
 		private var _body:String;
 		private var _cta:String;
 		private var _heading:String;
@@ -21,6 +24,8 @@ package com.wezside.components.survey.data
 		private var _styleManager:IStyleManager;
 		private var _styleNameCollection:ICollection;
 		private var _layoutDecorators:ICollection;
+		private var _ignoreList:ICollection;
+		private var _responseGroupings:ICollection;
 
 		public function addMetaData( meta:IFormMetaData ):void
 		{
@@ -29,7 +34,7 @@ package com.wezside.components.survey.data
 
 		public function getMetaData( id:String ):IFormMetaData
 		{
-			return _metaData.find( id ) as IFormMetaData;
+			return _metaData.find( "id", id ) as IFormMetaData;
 		}
 
 		public function getMetaDataByIndex( index:uint ):IFormMetaData
@@ -41,10 +46,13 @@ package com.wezside.components.survey.data
 		{
 			_groupsData.addElement( group );
 		}
-
+		public function removeFormGroupData( group:IFormGroupData ):void
+		{
+			_groupsData.removeElement( "id",group.id );
+		}
 		public function getFormGroupData( id:String ):IFormGroupData
 		{
-			return _groupsData.find( id ) as IFormGroupData;
+			return _groupsData.find( "id", id ) as IFormGroupData;
 		}
 
 		/**
@@ -55,24 +63,191 @@ package com.wezside.components.survey.data
 		 * the form ID in order to page to this new form.
 		 */
 		public function get lastGroupID():String 
+		{			
+			var groupData:IFormGroupData = getLastItem( _groupsData.length - 1 );
+			return groupData ? groupData.id : null;
+		}		
+		
+		private function getLastItem( indx:int ):IFormGroupData
 		{
-			var groupIterator:IIterator = iterator;
-			while ( groupIterator.hasNext() )
+			var groupData:IFormGroupData = _groupsData.getElementAt( indx );
+			if ( !groupData.hasOnlyMetaData())
+			{				
+				return groupData;
+			}
+			else
 			{
-				var data:IFormGroupData = groupIterator.next() as IFormGroupData;
-				if ( groupIterator.index( ) == groupIterator.length() && data.isInteractive )
+				if ( indx > 0 )
+					getLastItem( --indx );
+			}			
+			return _groupsData.getElementAt( indx );
+		}
+
+		public function hasResponseGrouping( id:String ):Boolean
+		{
+			var group:ResponseGroupData = responseGroupings.find( "id", id );
+			return group ? true : false;
+		}
+		
+		public function isResponseGrouping( id:String ):Boolean
+		{
+			var hasGrouping:Boolean = false;
+			var it:IIterator = responseGroupings.iterator();
+			var group:ResponseGroupData;
+			while ( it.hasNext() )
+			{
+				group = it.next() as ResponseGroupData;
+				var responseIt:IIterator = group.responses.iterator();
+				var response:ResponseData;
+				while ( responseIt.hasNext() )
 				{
-					groupIterator.purge();	
-					return data.id;
+					response = responseIt.next() as ResponseData;
+					var item:ItemData = response.items.find( "id", id ) as ItemData;
+					if ( item )
+					{
+						hasGrouping = true;
+						break;
+					}
+					item = null;
+				}
+				responseIt.purge();
+				responseIt = null;
+				response = null;
+				
+				if ( hasGrouping ) break;
+			}
+			it.purge();
+			it = null;
+			group = null;
+			return hasGrouping;
+		}
+		public function getResponseParentId(id:String):String{
+			var it:IIterator = responseGroupings.iterator();
+			var group:ResponseGroupData;
+			while ( it.hasNext() )
+			{
+				group = it.next() as ResponseGroupData;
+				var responseIt:IIterator = group.responses.iterator();
+				var response:ResponseData;
+				while ( responseIt.hasNext() )
+				{
+					response = responseIt.next() as ResponseData;
+					var item:ItemData = response.items.find( "id", id ) as ItemData;
+					if ( item)
+					{
+						it.purge();
+						it = null;
+						return group.id;
+					}
 				}
 			}
 			return null;
-		}		
+		}
+		public function getResponseItemIds(groupId:String,responseId:String,otherItems:Boolean=false):ICollection{
+			var it:IIterator = responseGroupings.iterator();
+			var group:ResponseGroupData;
+			var itemIdArray:ICollection=new Collection();
+			while ( it.hasNext() )
+			{
+				group = it.next() as ResponseGroupData;
+				if(group.id ==groupId)
+				{
+				
+					var responseIt:IIterator = group.responses.iterator();
+					var response:ResponseData;
+					while ( responseIt.hasNext() )
+					{
+						response = responseIt.next() as ResponseData;
+						if(response.id == responseId && otherItems==false||response.id != responseId && otherItems==true)
+						{
+							var itemIt:IIterator = response.items.iterator();
+							var item:ItemData;
+							while ( itemIt.hasNext() )
+							{
+								item = itemIt.next() as ItemData;
+								itemIdArray.addElement(item.id);
+//								if(otherItems==true)getNestedGroupItems(item.id,itemIdArray);
+							}
+						}
+					}
+				}
+			}
+			return itemIdArray;
+		}
+		public function getNestedGroupItems(groupid:String,itemCollection:ICollection):ICollection{
+			getItemsByGroupId(groupid,itemCollection);
+			return null;
+		}
+
+		public function getItemsByGroupId(groupid : String, itemCollection : ICollection) : void {
+
+			var group:ResponseGroupData = responseGroupings.find("id",groupid);
+				if(group && group.id ==groupid)
+				{
+					var responseIt:IIterator = group.responses.iterator();
+					var response:ResponseData;
+					while ( responseIt.hasNext() )
+					{
+						response = responseIt.next() as ResponseData;
+						
+						var itemIt:IIterator = response.items.iterator();
+						var item:ItemData;
+						while ( itemIt.hasNext() )
+						{
+							item = itemIt.next() as ItemData;
+							itemCollection.addElement(item.id);
+							getItemsByGroupId(item.id,itemCollection);
+						}
+					}
+				}
+		}
+		public function hasAssociatedGrouping( id:String, formItemID:String ):Boolean
+		{
+			var hasGrouping:Boolean = false;
+			var it:IIterator = responseGroupings.iterator();
+			var group:ResponseGroupData;
+			while ( it.hasNext() )
+			{
+				group = it.next() as ResponseGroupData;
+				var responseIt:IIterator = group.responses.iterator();
+				var response:ResponseData;
+				while ( responseIt.hasNext() )
+				{
+					response = responseIt.next() as ResponseData;
+					var item:ItemData = response.items.find( "id", id ) as ItemData;
+					if ( item && response.id == formItemID  )
+					{
+						hasGrouping = true;
+						break;
+					}
+					item = null;
+				}
+				responseIt.purge();
+				responseIt = null;
+				response = null;				
+				if ( hasGrouping ) break;
+			}
+			it.purge();
+			it = null;
+			group = null;
+			return hasGrouping;			
+		}
 
 		public function purge():void
 		{
-			_groupsData.purge();
+			if ( _metaData ) _metaData.purge();
+			if ( _groupsData ) _groupsData.purge();
+			if ( _styleNameCollection ) _styleNameCollection.purge();
+			if ( _layoutDecorators ) _layoutDecorators.purge();
+			if ( _ignoreList ) _ignoreList.purge();
+			
+			_metaData = null;
 			_groupsData = null;
+			_styleNameCollection = null;
+			_layoutDecorators = null;
+			_ignoreList = null;
+			
+			_styleManager = null;
 		}
 
 		public function get id():String
@@ -107,6 +282,7 @@ package com.wezside.components.survey.data
 
 		public function get numMeta():uint
 		{
+			if ( _metaData && _metaData.iterator() ) return _metaData.iterator().length();
 			return 0;
 		}
 
@@ -143,7 +319,7 @@ package com.wezside.components.survey.data
 		public function debug():void
 		{
 			trace("\r");
-			Tracer.output( true, "\tFORM ID : " + _id + " | Group #" + _groupsData.length + " | Styles [" + styleNameCollection + "]", "");
+			Tracer.output( true, "\tFORM ID : " + _id + " | Group #" + _groupsData.length + " | Styles [" + styleNameCollection + "]" + " | Ignore [" + ignoreList + "]", "");
 			var formData:IFormGroupData;
 			var iterator:IIterator = _groupsData.iterator();
 			while ( iterator.hasNext())
@@ -202,5 +378,35 @@ package com.wezside.components.survey.data
 		{
 			_layoutDecorators = value;
 		}
+		
+		public function get type() : String {
+			
+			return _type;
+		}
+		
+		public function set type(value : String) : void {
+			_type = value;
+		}
+
+		public function get ignoreList():ICollection
+		{
+			return _ignoreList;
+		}
+
+		public function set ignoreList( value:ICollection ):void
+		{
+			_ignoreList = value;
+		}
+
+		public function get responseGroupings():ICollection
+		{
+			return _responseGroupings;
+		}
+
+		public function set responseGroupings( value:ICollection ):void
+		{
+			_responseGroupings = value;
+		}
+
 	}
 }
