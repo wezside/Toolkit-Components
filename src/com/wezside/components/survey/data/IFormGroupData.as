@@ -30,8 +30,13 @@ package com.wezside.components.survey.data
 		function get layoutDecorators():ICollection;
 		function set layoutDecorators( value:ICollection ):void;
 		
-		function get formItemNS():Namespace;
-		function set formItemNS( value:Namespace ):void;
+		function get ignoreList():ICollection;
+		function set ignoreList( value:ICollection ):void;
+		
+		function get state():String;
+		function set state( value:String ):void;
+				
+		
 		
 		function get iterator():IIterator;
 				
@@ -40,7 +45,11 @@ package com.wezside.components.survey.data
 		function removeItemData( id:String ):IFormItemData;
 		function getItemData( id:String ):IFormItemData;
 		function getItemDataByIndex( index:uint ):IFormItemData;
-		function purge():void;		
+		function getItemAnswerData():ICollection;
+		function hasOnlyMetaData():Boolean;
+
+		function purge():void;
+
 
 	}
 }

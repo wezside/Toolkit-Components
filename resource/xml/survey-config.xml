@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app-descriptor 
+	xmlns:ui="com.sample.ui"
+	xmlns:style="com.sample.style"
+	xmlns:form="com.sample.form"
+	xmlns:command="com.sample.command">
+	
+	<!-- COMMAND CLASS SETUP -->
+	<command:commandmap>
+		<item id="LoadDataCommand"   event="LOAD_DATA" 	 group="initialize"  />
+		<item id="CustomDataCommand" event="CUSTOM_DATA" group="initialize" />
+		<item id="LoadStyleCommand"  event="LOAD_STYLE"  group="initialize" />
+	</command:commandmap>
+	
+	
+	<!-- CUSTOM FORM CLASSES -->
+	<form:customForm id="custom">
+		<item id="Start" className="StartForm" />
+		<item id="Form" className="SampleForm" />
+		<item id="InfoCapture" className="InfoCaptureForm" />
+	</form:customForm>
+	
+	
+	<!-- FIXED ELEMENT COMPONENTS -->
+	<ui:component>
+		<item id="SampleNavigation" />
+		<item id="FixedUIElement" hiddenID="Start" />
+	</ui:component>
+	
+	
+	<!-- PROGRESS -->
+	<progress>
+		<item id="FirstPart" formID="Start,Question1,Question2" />
+		<item id="SecondPart" formID="Question3,InfoCapture" />
+	</progress>
+	
+	
+	<!--  FORMS GROUPS & ITEM LAYOUT -->
+	<layout id="Start">
+		<decorator id="FillLayout" width="99.5%" horizontalFill="true" />
+	</layout>
+	<layout id="Question1">
+		<decorator id="PaddedLayout" top="50" left="10" />
+		<decorator id="VerticalLayout" verticalGap="20" />
+		<decorator id="FillLayout" width="90%" horizontalFill="true" />
+	</layout>
+	<layout id="Question2">
+		<decorator id="PaddedLayout" top="20" left="100" />
+		<decorator id="VerticalLayout" verticalGap="20" />
+		<decorator id="FillLayout" width="90%" horizontalFill="true" />
+	</layout>
+	<layout id="Question3">
+		<decorator id="PaddedLayout" top="50" left="10" />
+		<decorator id="VerticalLayout" verticalGap="20" />
+		<decorator id="FillLayout" width="90%" horizontalFill="true" />
+	</layout>
+	<layout id="InfoCapture">
+		<decorator id="PaddedLayout" top="20" left="100" />
+		<decorator id="VerticalLayout" verticalGap="20" />
+		<decorator id="FillLayout" width="90%" horizontalFill="true" />
+	</layout>
+	
+	
+	<!-- STYLE MANAGER -->
+	<style:style id="SampleStyle" />
+	
+	
+	<!-- CUSTOM CSS MAPPINGS TO EACH FORM, GROUP OR ITEM -->
+	<customCSS id="Start">
+		<css id="heading" cssID="introHeading" />
+		<css id="subheading" cssID="introSubheading" />
+		<css id="body" cssID="introBody" />
+	</customCSS>
+	<customCSS id="InfoCapture">
+		<css id="heading" cssID="infoCaptureHeading" />
+		<css id="subheading" cssID="infoCaptureSubheading" />
+		<css id="body" cssID="infoCaptureBody" />
+	</customCSS>
+	
+</app-descriptor>

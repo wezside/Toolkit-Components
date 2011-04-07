@@ -1,5 +1,6 @@
 package com.wezside.components.survey.data 
 {
+	import com.wezside.components.survey.form.FormItem;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
@@ -19,8 +20,10 @@ package com.wezside.components.survey.data
 		private var _isInteractive:Boolean;
 		private var _styleManager:IStyleManager;
 		private var _styleNameCollection:ICollection;
-		private var _formItemsNS:Namespace = new Namespace( "", "com.wezside.components.survey.form.item" );
+		
 		private var _layoutDecorators:ICollection;
+		private var _ignoreList:ICollection;
+		private var _state:String;
 
 		public function addItemData( item:IFormItemData ):void
 		{
@@ -29,18 +32,55 @@ package com.wezside.components.survey.data
 		
 		public function removeItemData( id:String ):IFormItemData
 		{
-			return null;
+			var arr:Array = _items.removeElement( "id", id );
+			return arr.length == 0 ? null : arr[0];
 		}
 		
 		public function getItemData( id:String ):IFormItemData
 		{
-			return _items.find( id ) as IFormItemData;
+			return _items.find( "id", id ) as IFormItemData;
 		}
 		
 		public function getItemDataByIndex( index:uint ):IFormItemData
 		{
-			return null;
+			return _items.getElementAt( index );
 		}
+		
+		public function getItemAnswerData():ICollection
+		{
+			var answers:ICollection = new Collection();
+			var it:IIterator = _items.iterator();
+			while ( it.hasNext() )
+			{
+				var itemData:IFormItemData = it.next() as IFormItemData;
+				if ( itemData.valid && itemData.type != FormItem.ITEM_TYPE_STATIC_TEXT
+									&& itemData.type != FormItem.ITEM_CALL_TO_ACTION )
+				{
+					Collection( answers ).addElement( itemData );
+				}
+			}
+			it.purge();
+			return answers;
+		}
+		
+		public function hasOnlyMetaData():Boolean 
+		{
+			var hasOnlyMeta:Boolean = true;
+			var it:IIterator = _items.iterator();
+			while ( it.hasNext() )
+			{
+				var itemData:IFormItemData = it.next() as IFormItemData;
+
+				if ( itemData.type != FormItem.ITEM_CALL_TO_ACTION   )
+				{
+					
+					hasOnlyMeta = false;
+				}
+			}
+			it.purge();				
+			it = null;		
+			return hasOnlyMeta;
+		}		
 		
 		public function get id():String
 		{
@@ -84,7 +124,7 @@ package com.wezside.components.survey.data
 		
 		public function debug():void
 		{
-			Tracer.output( true, "\t\tGROUP : " + _id + " | Styles [" + styleNameCollection + "]", "" );
+			Tracer.output( true, "\t\tGROUP : " + _id + " | Styles [" + styleNameCollection + "]" + " | Ignore [" + ignoreList + "]", "" );
 			var iterator:IIterator = _items.iterator();
 			while ( iterator.hasNext())
 			{
@@ -123,15 +163,7 @@ package com.wezside.components.survey.data
 			_styleNameCollection = value;
 		}
 		
-		public function get formItemNS():Namespace
-		{
-			return _formItemsNS;
-		}
-		
-		public function set formItemNS( value:Namespace ):void
-		{
-			_formItemsNS = value;
-		}
+
 		
 		public function get layoutDecorators():ICollection
 		{
@@ -142,5 +174,26 @@ package com.wezside.components.survey.data
 		{
 			_layoutDecorators = value;
 		}
+
+		public function get ignoreList():ICollection
+		{
+			return _ignoreList;
+		}
+
+		public function set ignoreList( value:ICollection ):void
+		{
+			_ignoreList = value;
+		}
+
+		public function get state():String
+		{
+			return _state;
+		}
+
+		public function set state( value:String ):void
+		{
+			_state = value
+		}
+
 	}
 }

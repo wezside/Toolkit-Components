@@ -1,0 +1,508 @@
+
+/* Form layout */
+
+/*
+StartForm {
+	//
+}*/
+
+SampleForm {
+	paddingTop: 20;
+	paddingLeft: 20;
+	paddingRight: 120;
+}
+
+InfoCaptureForm {
+	paddingTop: 20;
+	paddingLeft: 20;
+}
+
+
+/* TextField styles */
+
+.heading {
+	size: 30;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #000000;
+}
+.subheading {
+	size: 26;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+}
+.body {
+	size: 20;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+}
+
+
+.introHeading {
+	size: 30;
+	font: Arial;
+	align: center;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #000000;
+	border: true;
+}
+.introSubheading {
+	size: 26;
+	font: Arial;
+	align: center;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+	border: true;
+}
+.introBody {
+	size: 20;
+	font: Arial;
+	align: center;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+	border: true;
+}
+
+
+.infoCaptureHeading {
+	size: 30;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: false;
+	wordWrap: false;
+	textColor: #000000;
+}
+.infoCaptureSubheading {
+	size: 26;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+}
+.infoCaptureBody {
+	size: 20;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	textColor: #333333;
+	
+	/* used as a stylesheet, so need to use correct styleNames */
+	color: #333333;
+	textDecoration: none;
+	fontFamily: Arial;
+	fontWeight: normal;
+	fontStyle: regular;
+	fontSize: 20;
+	advancedAntiAliasing: true;
+}
+
+
+/* Class level styles */
+
+CustomInputField {
+	
+	paddingLeft: 4;
+	
+	upSkin: InputFieldUp;
+	invalidSkin: InputFieldInvalid;	
+	disabledSkin: InputFieldUp;
+	
+	size: 16;
+	font: Arial;
+	align: left;
+	/*autoSize: left;*/
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: false;
+	multiline: false;
+	wordWrap: false;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	width: 240;
+	height: 20;
+}
+
+Label {
+	size: 12;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: false;
+	wordWrap: false;
+	textColor: #333333;
+}
+
+FormLabel {
+	size: 20;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	
+	textColor: #000000;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	border: true;
+}
+
+FormSubLabel {
+	size: 12;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: true;
+	multiline: true;
+	wordWrap: true;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	border: true;
+}
+
+RadioButton {
+	
+	paddingLeft: 10;
+	autoSkinSize: false;
+	iconPlacement: placementCenterLeft;
+	
+	size: 16;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: false;
+	multiline: false;
+	wordWrap: false;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+}
+RadioButtonIcon {
+	upSkin: RadioButtonUp;	
+	overSkin: RadioButtonOver;	
+	downSkin: RadioButtonUp;
+	selectedSkin: RadioButtonSelected;
+	invalidSkin: RadioButtonUp;	
+	disabledSkin: RadioButtonUp;
+	paddingTop: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingLeft: 0;
+}
+
+CheckBox {
+	
+	autoSkinSize: false;
+	iconPlacement: placementCenterRight;
+	
+	size: 16;
+	font: Arial;
+	align: left;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: false;
+	multiline: false;
+	wordWrap: false;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+}
+
+CheckBoxIcon {
+	upSkin: CheckBoxUp;	
+	overSkin: CheckBoxOver;	
+	downSkin: CheckBoxUp;
+	selectedSkin: CheckBoxSelected;
+	invalidSkin: CheckBoxUp;	
+	disabledSkin: CheckBoxUp;
+	paddingTop: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingLeft: 10;
+}
+
+Slider {
+	
+	size: 16;
+	font: Arial;
+	align: center;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	selectable: false;
+	multiline: true;
+	wordWrap: true;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+}
+
+Button {
+	
+	autoSkinSize: true;
+	
+	size: 14;
+	font: Arial;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	paddingTop: 2;
+	paddingBottom: 3;
+	paddingLeft: 6;
+	paddingRight: 6;
+	
+	upSkin: ButtonUp;
+	overSkin: ButtonOver;
+	downSkin: ButtonOver;
+	disabledSkin: ButtonDisabled;
+	selectedSkin: ButtonUp;
+	selectable: false;
+}
+
+StartButton {
+	
+	autoSkinSize: true;
+	
+	size: 14;
+	font: Arial;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	paddingTop: 2;
+	paddingBottom: 3;
+	paddingLeft: 6;
+	paddingRight: 6;
+	
+	upSkin: ButtonUp;
+	overSkin: ButtonOver;
+	downSkin: ButtonOver;
+	disabledSkin: ButtonDisabled;
+	selectedSkin: ButtonUp;
+	selectable: false;
+}
+
+NextButton {
+	
+	autoSkinSize: true;
+	iconPlacement: placementCenterRight;
+	
+	size: 14;
+	font: Arial;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	paddingTop: 2;
+	paddingBottom: 3;
+	paddingLeft: 6;
+	paddingRight: 6;
+	
+	upSkin: ButtonUp;
+	overSkin: ButtonOver;
+	downSkin: ButtonOver;
+	disabledSkin: ButtonDisabled;
+	selectedSkin: ButtonUp;
+	selectable: false;
+}
+NextButtonIcon {
+	upSkin: NavArrowRightUp;
+	overSkin: NavArrowRightOver;
+	downSkin: NavArrowRightOver;
+	disabledSkin: NavArrowRightDisabled;
+	paddingTop: 0;
+	paddingRight: 6;
+	paddingBottom: 0;
+	paddingLeft: 0;
+}
+
+BackButton {
+	
+	autoSkinSize: true;
+	iconPlacement: placementCenterLeft;
+	
+	size: 14;
+	font: Arial;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	paddingTop: 2;
+	paddingBottom: 3;
+	paddingLeft: 6;
+	paddingRight: 6;
+	
+	upSkin: ButtonUp;
+	overSkin: ButtonOver;
+	downSkin: ButtonOver;
+	disabledSkin: ButtonDisabled;
+	selectedSkin: ButtonUp;
+	selectable: false;
+}
+BackButtonIcon {
+	upSkin: NavArrowLeftUp;
+	overSkin: NavArrowLeftOver;
+	downSkin: NavArrowLeftOver;
+	disabledSkin: NavArrowLeftDisabled;
+	paddingTop: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingLeft: 6;
+}
+
+TryAgainButton {
+	
+	autoSkinSize: true;
+	iconPlacement: placementCenterLeft;
+	
+	size: 14;
+	font: Arial;
+	autoSize: left;
+	embedFonts: true;
+	antiAliasType: advanced;
+	
+	textColor: #333333;
+	textColorDisabled: #666666;
+	textColorOver: #006699;
+	textColorDown: #006699;
+	textColorSelected: #FFFFFF;
+	textColorInvalid: #FF0000;
+	
+	paddingTop: 2;
+	paddingBottom: 3;
+	paddingLeft: 6;
+	paddingRight: 6;
+	
+	upSkin: ButtonUp;
+	overSkin: ButtonOver;
+	downSkin: ButtonOver;
+	disabledSkin: ButtonDisabled;
+	selectedSkin: ButtonUp;
+	selectable: false;
+}
+
+TryAgainButtonIcon {
+	upSkin: NavArrowLeftUp;
+	overSkin: NavArrowLeftOver;
+	downSkin: NavArrowLeftOver;
+	disabledSkin: NavArrowLeftDisabled;
+	paddingTop: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingLeft: 6;
+}
