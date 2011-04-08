@@ -149,7 +149,6 @@ package com.wezside.components.media
 			return _enablePopoutButton;
 		}
 		
-		[Bindable]
 		public function set enablePopoutButton( value:Boolean ):void
 		{
 			_enablePopoutButton = value;
@@ -291,7 +290,6 @@ package com.wezside.components.media
 			return _videoWidth;
 		}
 		
-		[Bindable]
 		public function set videoWidth( value:Number ):void
 		{
 			_videoWidth = value;
@@ -303,7 +301,6 @@ package com.wezside.components.media
 			return _videoHeight;
 		}
 		
-		[Bindable]
 		public function set videoHeight( value:Number ):void
 		{
 			_videoHeight = value;
