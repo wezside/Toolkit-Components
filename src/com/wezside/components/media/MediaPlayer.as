@@ -147,7 +147,6 @@ package com.wezside.components.media
 			return _selectedIndex;
 		}
 		
-		[Bindable]
 		public function set selectedIndex( value:int ):void
 		{
 			_selectedIndex = value;

@@ -28,8 +28,6 @@ package com.wezside.components.accordion
 	public interface IAccordionItem
 	{
 		
-
-	
 		function get name():String;
 		function set name( value:String ):void;
 		function get selected():Boolean;
