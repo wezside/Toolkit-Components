@@ -1,5 +1,7 @@
 package sample
 {
+	import flash.display.StageScaleMode;
+	import flash.display.StageAlign;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
@@ -31,15 +33,20 @@ package sample
 		private function stageInit( event:Event ):void
 		{		
 			
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
 			control = new PlayerControl();
 			control.build();
 			control.setStyle();
 			control.arrange();			 
 			
 			display = new PlayerDisplay();
+			display.mediaWidth = 550;
+			display.mediaHeight= 400;
 			display.build();
 			display.setStyle();
-			display.arrange();			
+			display.arrange();	
 			
 			playlist = new PlayerPlayList();
 			playlist.build();
@@ -73,7 +80,7 @@ package sample
 			player.arrange();
 			addChild( player );
 			
-			player.play( "3238824" );
+			player.play( "water.flv" );
 			player.pause();
 			player.pause();
 		}
