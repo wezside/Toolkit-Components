@@ -20,6 +20,11 @@ package com.wezside.components.media.player
 
 	
 	/**
+	 * <p>A media player that will play almost all media types. Easy expand this 
+	 * component to suit your own needs.</p> 
+	 * 
+	 * <p><b>Runtime Versions:</b> Flash Player 10.1, AIR 2</p>
+	 *  
 	 * @author Wesley.Swanepoel
 	 */
 	public class Player extends UIElement
