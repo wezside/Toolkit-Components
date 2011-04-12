@@ -51,7 +51,7 @@ package sample
 			display.addMediaType( Player.FLV );
 			display.build();
 			display.setStyle();
-			display.arrange();	
+			display.arrange();
 			
 			playlist = new PlayerPlayList();
 			playlist.build();

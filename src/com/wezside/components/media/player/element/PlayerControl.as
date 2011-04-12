@@ -4,10 +4,11 @@ package com.wezside.components.media.player.element
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.element.decorator.ControlElement;
 	import com.wezside.components.media.player.element.decorator.IControlElement;
+	
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlayerControl extends UIElement implements IPlayerElement 
+	public class PlayerControl extends UIElement implements IPlayerControl 
 	{
 				
 		private var _element:IControlElement;
@@ -30,6 +31,12 @@ package com.wezside.components.media.player.element
 			super.arrange();
 		}
 				
+		override public function set state( value:String ):void
+		{
+			super.state = value;
+			_element.state = value;
+		}
+		
 		public function get element():IControlElement
 		{
 			return _element;

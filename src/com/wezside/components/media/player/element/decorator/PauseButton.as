@@ -3,14 +3,14 @@ package com.wezside.components.media.player.element.decorator
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.control.Button;
 
-	import flash.display.Sprite;
-
 	/**
 	 * @author Wesley.Swanepoel
 	 */
 	public class PauseButton extends ControlElement
 	{
+		
 		private var button:Button;
+
 		
 		public function PauseButton( decorated:IUIDecorator )
 		{
@@ -33,6 +33,11 @@ package com.wezside.components.media.player.element.decorator
 		override public function arrange():void
 		{
 			super.arrange();
+		}
+			
+		override public function set state( value:String ):void
+		{
+			super.state = value;
 		}
 	}
 }
