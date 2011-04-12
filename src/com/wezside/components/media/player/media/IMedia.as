@@ -18,6 +18,9 @@ package com.wezside.components.media.player.media
 		function get autoPlay():Boolean;
 		function set autoPlay( value:Boolean ):void;
 		
+		function get playing():Boolean;
+		function set playing( value:Boolean ):void;
+		
 		function get error():IDictionaryCollection;
 		function set error( value:IDictionaryCollection ):void;
 		

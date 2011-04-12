@@ -32,6 +32,7 @@ package com.wezside.components.media.player.media
 
 		override public function load( resource:IMediaResource ):void
 		{
+			resource.key = "flv";
 			netConnection = new NetConnection();
 			netConnection.addEventListener( NetStatusEvent.NET_STATUS, netConnectionStatusHandler );
 			netConnection.connect( null );
@@ -57,10 +58,14 @@ package com.wezside.components.media.player.media
 		private function completeHandler( event:Event ):void
 		{
 			trace( "completeHandler: " + event );
+			dispatchEvent( event );
 			downStream.readBytes( bytes, start, downStream.bytesAvailable );
-			netStream.play( null );
-			netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
-			netStream.appendBytes( bytes );	
+			if ( resource.autoPlay )
+			{
+				netStream.play( null );
+				netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
+				netStream.appendBytes( bytes );
+			}	
 		}
 
 		private function openHandler( event:Event ):void
@@ -91,10 +96,15 @@ package com.wezside.components.media.player.media
 		override public function play():Boolean
 		{
 			if ( !resource.key )
+			{
 				error.addElement( ERROR_PLAY, "ERROR: Play for resource " + resource.id + " failed. " + "You need an API key to play VIMEO videos. Make sure the " + "resource has the 'key' property set." );
-
-			isPlaying = true;
-			return false;
+				isPlaying = false;
+			}
+			else isPlaying = true;
+			netStream.play( null );
+			netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
+			netStream.appendBytes( bytes );			
+			return isPlaying;
 		}
 
 		/**
@@ -127,7 +137,7 @@ package com.wezside.components.media.player.media
 
 		private function netConnectionStatusHandler( event:NetStatusEvent ):void
 		{
-			trace( event.info.code );
+			trace( "event.info.code", event.info.code );
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":

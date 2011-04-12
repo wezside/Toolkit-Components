@@ -1,9 +1,10 @@
 package com.wezside.components.media.player.element
 {
-	import flash.display.DisplayObject;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.element.decorator.ControlElement;
 	import com.wezside.components.media.player.element.decorator.IControlElement;
+
+	import flash.display.DisplayObject;
 	
 	/**
 	 * @author Wesley.Swanepoel
@@ -53,6 +54,5 @@ package com.wezside.components.media.player.element
 			_element.styleName = styleName;
 			addChild( _element as DisplayObject );
 		}
-		
 	}
 }

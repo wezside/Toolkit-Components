@@ -114,7 +114,7 @@ package com.wezside.components.media.player
 			
 		override public function set state( value:String ):void
 		{
-			trace( " control.state",  control.state );
+			trace( " ---- control.state",  control.state );
 			super.state = value;
 			if ( control.state != value )
 				control.state = value;
@@ -158,13 +158,14 @@ package com.wezside.components.media.player
 			if ( media ) media.pause();
 			else
 			{
+				// Pause all playing media
 				var it:IIterator = display.iterator( UIElement.ITERATOR_CHILDREN );
 				var object:IMedia;
 				while ( it.hasNext() )
 				{
 					object = it.next() as IMedia;
 					if ( !object ) continue;
-					object.pause();
+					if ( object.isPlaying ) object.pause();
 					state = STATE_PAUSE;
 				}
 				it.purge();
