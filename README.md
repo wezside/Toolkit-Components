@@ -20,11 +20,5 @@ Control
 Media
 -----
 
-* Audio Player
-* Survey Engine
-
-Other 
------
-
+* Media Player
 * Gallery
-* Video Player
