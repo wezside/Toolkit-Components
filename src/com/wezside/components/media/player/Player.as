@@ -1,9 +1,10 @@
 package com.wezside.components.media.player
 {
-	import com.wezside.components.media.player.media.Media;
+	import flash.display.DisplayObject;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.media.IMedia;
+	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
 	import com.wezside.components.media.player.media.MediaImage;
 	import com.wezside.components.media.player.media.MediaSWF;
@@ -16,6 +17,7 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.events.Event;
 
 	
@@ -27,29 +29,40 @@ package com.wezside.components.media.player
 	 *  
 	 * @author Wesley.Swanepoel
 	 */
-	public class Player extends UIElement
+	public class Player extends UIElement implements IPlayerDisplay
 	{
 		
 		private var media:IMedia;
-		private var display:IPlayerDisplay;
 		private var _resources:ICollection;
 		private var _typeClasses:IDictionaryCollection;
+		
+		public static const SWF:String = "SWF";
+		public static const BMP:String = "BMP";
+		public static const JPG:String = "JPG";
+		public static const JPEG:String = "JPEG";
+		public static const GIF:String = "GIF";
+		public static const PNG:String = "PNG";
+		public static const MP3:String = "MP3";
+		public static const FLV:String = "FLV";
+		public static const F4V:String = "F4V";
+		public static const VIMEO:String = "VIMEO";
+		public static const YOUTUBE:String = "YOUTUBE";
 		
 		public function Player() 
 		{
 			_resources = new Collection();
 			_typeClasses = new DictionaryCollection();
-			_typeClasses.addElement( "swf", MediaSWF );
-			_typeClasses.addElement( "bmp", MediaImage );
-			_typeClasses.addElement( "jpg", MediaImage );
-			_typeClasses.addElement( "jpeg", MediaImage );
-			_typeClasses.addElement( "gif", MediaImage );
-			_typeClasses.addElement( "png", MediaImage );
-			_typeClasses.addElement( "mp3", MediaAudio );
-			_typeClasses.addElement( "flv", MediaVideo );
-			_typeClasses.addElement( "f4v", MediaVideo );
-			_typeClasses.addElement( "vimeo", MediaVimeo );
-			_typeClasses.addElement( "youtube", MediaYoutube );			
+			_typeClasses.addElement( SWF, MediaSWF );
+			_typeClasses.addElement( BMP, MediaImage );
+			_typeClasses.addElement( JPG, MediaImage );
+			_typeClasses.addElement( JPEG, MediaImage );
+			_typeClasses.addElement( GIF, MediaImage );
+			_typeClasses.addElement( PNG, MediaImage );
+			_typeClasses.addElement( MP3, MediaAudio );
+			_typeClasses.addElement( FLV, MediaVideo );
+			_typeClasses.addElement( F4V, MediaVideo );
+			_typeClasses.addElement( VIMEO, MediaVimeo );
+			_typeClasses.addElement( YOUTUBE, MediaYoutube );			
 		}
 			
 		override public function build():void
@@ -69,6 +82,22 @@ package com.wezside.components.media.player
 			it = null;
 			resource = null;
 		}
+	
+		override public function purge():void
+		{
+			super.purge();					
+			var it:IIterator = display.iterator( UIElement.ITERATOR_CHILDREN );
+			var object:IMedia;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IMedia;
+				object.purge();
+				object = null;
+			}
+			it.purge();
+			it = null;
+			display.purge();
+		}
 
 		/**
 		 * <p>Play will automatically play the resource with the ID specified.
@@ -85,7 +114,6 @@ package com.wezside.components.media.player
 				var MediaClazz:Class = typeClasses.getElement( resource.type ) as Class;
 				if ( MediaClazz )
 				{
-					display = getIDisplay();
 					media = new MediaClazz();
 					media.data = resource.data;
 					media.resource = resource;
@@ -93,7 +121,7 @@ package com.wezside.components.media.player
 					media.build();
 					media.setStyle();
 					media.arrange();
-					display ? UIElement( display ).addChild( media as UIElement ) : addChild( media as UIElement );
+					display.addChild( media as UIElement );
 					media.load( resource );
 				}
 				else
@@ -103,9 +131,75 @@ package com.wezside.components.media.player
 				trace( "Couldn't play the resource", id, "because it couldn't be found." );
 		}
 	
-		public function pause():void
+		public function pause( id:String = "" ):void
 		{
+			var media:IMedia = getChildByName( id ) as IMedia;
 			if ( media ) media.pause();
+			else
+			{
+				var it:IIterator = display.iterator( UIElement.ITERATOR_CHILDREN );
+				var object:IMedia;
+				while ( it.hasNext() )
+				{
+					object = it.next() as IMedia;
+					if ( !object ) continue;
+					object.pause();
+				}
+				it.purge();
+				it = null;
+				object = null;
+			}
+		}
+		
+		/**
+		 * <p>Return the current display object associated with the current media type. So if an IPlayerDisplay
+		 * was created with a "vimeo" media type, and the current media item to be played is video on Vimeo,
+		 * this IPlayerDisplay will be returned.</p>
+		 * 
+		 * @return The IPlayerDisplay object associated with the current IMedia instance being played.
+		 */
+		public function get display():UIElement
+		{			
+			if ( !media ) return this;			
+			var mediaType:String;
+			var it:IIterator = allDisplays.iterator();
+			var playerDisplay:IPlayerDisplay;
+			var selectedDisplay:IPlayerDisplay;
+			while ( it.hasNext() )
+			{
+				playerDisplay = it.next() as IPlayerDisplay;
+				if ( !playerDisplay ) continue;
+				mediaType = playerDisplay.find( media.resource.type );
+				if ( mediaType ) 
+				{
+					selectedDisplay = playerDisplay;
+					break;				
+				}
+			}
+			it.purge();
+			it = null;
+			playerDisplay = null;
+			return selectedDisplay ? selectedDisplay as UIElement : this;
+		}
+
+		/**
+		 * Return all displays added to this Player instance.
+		 */
+		public function get allDisplays():ICollection
+		{
+			var collection:ICollection = new Collection();
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var object:IPlayerDisplay;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IPlayerDisplay;
+				if ( !object ) continue;
+				collection.addElement( object );
+			}
+			it.purge();
+			it = null;
+			object = null;
+			return collection;
 		}
 
 		public function get resources():ICollection
@@ -131,8 +225,30 @@ package com.wezside.components.media.player
 		public function set typeClasses( value:IDictionaryCollection ):void
 		{
 			_typeClasses = value;
-		}
+		}		
 
+		/**
+		 * This method is not applicable to this class.
+		 * @return Empty string
+		 */
+		public function find( mediaType:String ):String
+		{
+			return "";
+		}
+		
+		/**
+		 * This method is not applicable to this class.
+		 */
+		public function addMediaType( id:String ):void
+		{
+			throw new Error( "The Player class is the default IPlayerDisplay and doesn't allow specific media type associations. To add a specific media type, you have to create " +
+							 "a new IPlayerDisplay class and add it as a child of the Player instance. " );
+		}		
+
+		/**
+		 * Parse the media type of the uri. Will always return the last match in the regex expression. 
+		 * This is to include filenames. 
+		 */
 		private function parseType( uri:String ):String
 		{
 			var pattern:RegExp = /[^\.][a-zA-Z0-9]+/gi;
@@ -143,6 +259,10 @@ package com.wezside.components.media.player
 			return fileString.toLowerCase();
 		}
 		
+		/**
+		 * Math the ID of the supplied URI using regex. Match Youtube first, then Vimeo or 
+		 * a filename has the same match pattern.  
+		 */
 		private function parseID( uri:String ):String
 		{
 			var id:String = "";
@@ -166,20 +286,6 @@ package com.wezside.components.media.player
 			}
 			return id;
 		}			
-				private function getIDisplay():IPlayerDisplay
-		{
-			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-			var object:IPlayerDisplay;
-			while ( it.hasNext() )
-			{
-				object = it.next() as IPlayerDisplay;
-				if ( !object ) continue;
-				else break;
-			}
-			it.purge();
-			it = null;
-			return object;
-		}
 
 		private function mediaComplete( event:Event ):void
 		{
@@ -191,7 +297,8 @@ package com.wezside.components.media.player
 			}
 			else
 				trace( "Media is ready to be played" );
-		}		
+		}
+
 	}
 }
 

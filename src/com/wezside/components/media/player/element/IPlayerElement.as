@@ -6,5 +6,6 @@ package com.wezside.components.media.player.element
 	 */
 	public interface IPlayerElement extends IUIElement
 	{
+		
 	}
 }

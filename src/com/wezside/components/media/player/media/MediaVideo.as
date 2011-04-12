@@ -14,9 +14,7 @@ package com.wezside.components.media.player.media
 	import flash.net.NetStreamAppendBytesAction;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
-	import flash.net.URLRequestMethod;
 	import flash.net.URLStream;
-	import flash.net.URLVariables;
 	import flash.utils.ByteArray;
 
 	/**
@@ -46,18 +44,6 @@ package com.wezside.components.media.player.media
 			video.attachNetStream( netStream );			
 
 			var request:URLRequest = new URLRequest( resource.uri );
-//			request.requestHeaders = [ createURLRequest( resource.uri, 196608, 262144 )];
-			// var ul:URLLoader = new URLLoader();
-			// ul.dataFormat = URLLoaderDataFormat.BINARY;
-			// ul.addEventListener( Event.COMPLETE, function( event:Event ):void
-			// {
-			// bytes = ul.data;
-			// netConnection.connect( null );
-			// });
-			// ul.load( request );
-
-
-
 			downStream = new URLStream();
 			downStream.addEventListener( Event.COMPLETE, completeHandler );
 			downStream.addEventListener( HTTPStatusEvent.HTTP_STATUS, httpStatusHandler );

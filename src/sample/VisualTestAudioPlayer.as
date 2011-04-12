@@ -1,17 +1,20 @@
 package sample
 {
-	import flash.display.StageScaleMode;
-	import flash.display.StageAlign;
+	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
-	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.display.PlayerDisplay;
 	import com.wezside.components.media.player.element.PlayerControl;
 	import com.wezside.components.media.player.element.PlayerPlayList;
+	import com.wezside.components.media.player.element.decorator.PauseButton;
+	import com.wezside.components.media.player.element.decorator.PlayButton;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
+
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
 
@@ -37,13 +40,15 @@ package sample
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
 			control = new PlayerControl();
+			control.layout = new HorizontalLayout( control );
+			control.decorate( PlayButton );
+			control.decorate( PauseButton );
 			control.build();
 			control.setStyle();
-			control.arrange();			 
+			control.arrange();
 			
 			display = new PlayerDisplay();
-			display.mediaWidth = 550;
-			display.mediaHeight= 400;
+			display.addMediaType( Player.FLV );
 			display.build();
 			display.setStyle();
 			display.arrange();	
@@ -81,8 +86,8 @@ package sample
 			addChild( player );
 			
 			player.play( "water.flv" );
-			player.pause();
-			player.pause();
+//			player.pause();
+//			player.pause();
 		}
 		
 	}

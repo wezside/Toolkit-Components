@@ -1,34 +1,41 @@
 package com.wezside.components.media.player.display
 {
 	import com.wezside.components.UIElement;
+	import com.wezside.data.collection.DictionaryCollection;
+	import com.wezside.data.collection.IDictionaryCollection;
+	
 	/**
 	 * @author Wesley.Swanepoel
 	 */
 	public class PlayerDisplay extends UIElement implements IPlayerDisplay 
 	{
 		
-		private var _mediaWidth:int;
-		private var _mediaHeight:int;
+		private var types:IDictionaryCollection;
+				
 		
-		public function get mediaWidth():int
+		public function PlayerDisplay() 
 		{
-			return _mediaWidth;
+			types = new DictionaryCollection();	
 		}
 
-		public function set mediaWidth( value:int ):void
+		public function find( mediaType:String ):String
 		{
-			_mediaWidth = value;
+			return types.getElement( mediaType );
 		}
-
-		public function get mediaHeight():int
+				
+		public function addMediaType( id:String ):void
 		{
-			return _mediaHeight;
-		}
-
-		public function set mediaHeight( value:int ):void
-		{
-			_mediaHeight = value;
+			types.addElement( id, types.length ); 
 		}
 			
+		override public function get width():Number
+		{
+			return super.width;
+		}
+			
+		override public function get height():Number
+		{
+			return 250;
+		}
 	}
 }
