@@ -1,8 +1,8 @@
 package com.wezside.components.media.player
 {
-	import flash.display.DisplayObject;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
+	import com.wezside.components.media.player.element.IPlayerControl;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -35,6 +35,19 @@ package com.wezside.components.media.player
 		private var media:IMedia;
 		private var _resources:ICollection;
 		private var _typeClasses:IDictionaryCollection;
+		
+		// Media is loaded and ready for playback
+		public static const STATE_READY:String = "STATE_READY";
+		// Play method was invoked
+		public static const STATE_PLAY:String = "STATE_PLAY";
+		// Pause method was invoked
+		public static const STATE_PAUSE:String = "STATE_PAUSE";
+		// Seek method was invoked		
+		public static const STATE_SEEK:String = "STATE_SEEK";
+		// Media progress state 		
+		public static const STATE_PROGRESS:String = "STATE_PROGRESS";
+		// Volume change occcured		
+		public static const STATE_VOLUME:String = "STATE_VOLUME";	
 		
 		public static const SWF:String = "SWF";
 		public static const BMP:String = "BMP";
@@ -98,6 +111,14 @@ package com.wezside.components.media.player
 			it = null;
 			display.purge();
 		}
+			
+		override public function set state( value:String ):void
+		{
+			trace( " control.state",  control.state );
+			super.state = value;
+			if ( control.state != value )
+				control.state = value;
+		}
 
 		/**
 		 * <p>Play will automatically play the resource with the ID specified.
@@ -144,6 +165,7 @@ package com.wezside.components.media.player
 					object = it.next() as IMedia;
 					if ( !object ) continue;
 					object.pause();
+					state = STATE_PAUSE;
 				}
 				it.purge();
 				it = null;
@@ -200,6 +222,21 @@ package com.wezside.components.media.player
 			it = null;
 			object = null;
 			return collection;
+		}
+
+		public function get control():IPlayerControl
+		{
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var object:IPlayerControl;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IPlayerControl;
+				if ( !object ) continue;
+				if ( object ) break;
+			}
+			it.purge();
+			it = null;		
+			return object;
 		}
 
 		public function get resources():ICollection
@@ -294,6 +331,7 @@ package com.wezside.components.media.player
 			{
 				var success:Boolean = media.play();
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
+				else state = STATE_PLAY;
 			}
 			else
 				trace( "Media is ready to be played" );
