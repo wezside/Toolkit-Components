@@ -1,6 +1,6 @@
 package sample
 {
-	import com.wezside.components.media.player.element.decorator.RewindButton;
+	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -8,16 +8,17 @@ package sample
 	import com.wezside.components.media.player.element.PlayerControl;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import com.wezside.components.media.player.element.PlayerPlayList;
-	import com.wezside.components.media.player.element.decorator.PauseButton;
-	import com.wezside.components.media.player.element.decorator.PlayButton;
+	import com.wezside.components.media.player.element.decorator.control.PauseButton;
+	import com.wezside.components.media.player.element.decorator.control.PlayButton;
+	import com.wezside.components.media.player.element.decorator.control.SkipToStartButton;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
-
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+
 
 
 	/**
@@ -44,8 +45,9 @@ package sample
 			control = new PlayerControl();
 			control.layout = new HorizontalLayout( control );
 			control.decorate( PlayButton );
-			control.decorate( RewindButton );
 			control.decorate( PauseButton );
+			control.decorate( SkipToStartButton );
+			control.decorate( SkipToEndButton );
 			control.addEventListener( PlayerControlEvent.CLICK, controlClick );
 			control.build();
 			control.setStyle();
@@ -103,10 +105,11 @@ package sample
 				player.play();
 				
 			if ( event.target.id == "rewind" )
-			{
 				player.seek( 0 );
-				player.play();
-			}
+				
+			if ( event.target.id == "ff" )
+				player.seek( player.totalTime );
+
 		}		
 	}
 }

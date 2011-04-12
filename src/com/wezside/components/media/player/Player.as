@@ -1,5 +1,6 @@
 package com.wezside.components.media.player
 {
+	import com.wezside.components.media.player.media.MediaEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IPlayerControl;
@@ -31,6 +32,9 @@ package com.wezside.components.media.player
 	 */
 	public class Player extends UIElement implements IPlayerDisplay
 	{
+
+		public static const STATE_SKIP_TO_START:String = "STATE_SKIP_TO_START";
+		public static const STATE_SKIP_TO_END:String = "STATE_SKIP_TO_END";
 		
 		private var media:IMedia;
 		private var _resources:ICollection;
@@ -144,6 +148,7 @@ package com.wezside.components.media.player
 					media.build();
 					media.setStyle();
 					media.arrange();
+					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					display.addChild( media as UIElement );
 					media.load( resource );
 				}
@@ -160,6 +165,7 @@ package com.wezside.components.media.player
 				else trace( "Couldn't play the resource", id, "because it couldn't be found." );
 			}
 		}
+
 	
 		public function pause( id:String = "" ):void
 		{
@@ -190,15 +196,16 @@ package com.wezside.components.media.player
 		{
 			if ( media )
 			{
-				// TODO: Determine if the seek is forward or backward
-				// 		 so we can set the state to either STATE_REWIND or STATE_FORWARD
-				switch ( seconds )
-				{
-					case 0: state = STATE_RESET;						
-						break;
-					default:
-				}
+				if ( seconds == 0 )
+					state = STATE_SKIP_TO_START;
+					
+				if ( seconds == media.totalTime )
+					state = STATE_SKIP_TO_END;
+										
 				media.seekTo( seconds );
+				
+				if ( media.playing ) state = STATE_PLAY;
+				else  state = STATE_PAUSE;
 			}
 			else
 				trace( "No current Media playing." );
@@ -322,7 +329,16 @@ package com.wezside.components.media.player
 		{
 			_typeClasses = value;
 		}		
-
+		
+		/**
+		 * Returns the current media element's total duration. Will return -1 
+		 * if no media item exist. 
+		 */
+		public function get totalTime():Number
+		{
+			return media ? media.totalTime : -1;
+		}
+		
 		/**
 		 * Parse the media type of the uri. Will always return the last match in the regex expression. 
 		 * This is to include filenames. 
@@ -379,6 +395,14 @@ package com.wezside.components.media.player
 		}
 
 
+		private function mediaPlayBackComplete( event:MediaEvent ):void
+		{
+			trace( "Media payback complete ");
+			// Reset visual state. There is a usecase where the seek method will
+			// update the playing state
+//			if ( media && media.currentTime == 0 && media.playing )
+//				state = STATE_PLAY;
+		}
 
 	}
 }

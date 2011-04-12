@@ -1,4 +1,4 @@
-package com.wezside.components.media.player.element.decorator
+package com.wezside.components.media.player.element.decorator.control
 {
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElementEvent;
@@ -6,26 +6,29 @@ package com.wezside.components.media.player.element.decorator
 	import com.wezside.components.control.Button;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import com.wezside.components.media.player.element.decorator.ControlElement;
 
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class RewindButton extends ControlElement
+	public class PlayButton extends ControlElement
 	{
+		
 		private var button:Button;
 		
-		public function RewindButton( decorated:IUIDecorator )
+				
+		public function PlayButton( decorated:IUIDecorator )
 		{
 			super( decorated );
 		}
-		
+
 		override public function build():void
 		{			
 			button = new Button();
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
-			button.text = "REWIND";
-			button.id = "rewind";
+			button.text = "PLAY";
+			button.id = "play";
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			button.build();
 			button.setStyle();
@@ -45,11 +48,12 @@ package com.wezside.components.media.player.element.decorator
 			super.state = value;
 			switch ( value )
 			{
-				case Player.STATE_RESET:
+				case Player.STATE_PLAY:
 					button.deactivate();
 					button.state = UIElementState.STATE_VISUAL_SELECTED;
 					break;
-				case Player.STATE_PLAY:
+				case Player.STATE_SKIP_TO_END:
+				case Player.STATE_SKIP_TO_START:					
 				case Player.STATE_PAUSE:
 				default:
 					button.activate();
@@ -65,6 +69,6 @@ package com.wezside.components.media.player.element.decorator
 			{
 				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));
 			}
-		}		
+		}
 	}
 }
