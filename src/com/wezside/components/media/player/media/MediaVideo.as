@@ -91,7 +91,6 @@ package com.wezside.components.media.player.media
 			}
 			else playing = true;
 			netStream.play( resource.uri );
-			netStream.inBufferSeek = true;
 			return playing;
 		}
 
