@@ -28,6 +28,8 @@ package com.wezside.components.media.player.element.decorator
 			button = new Button();
 			button.id = "pause";
 			button.text = "PAUSE";
+			button.autoSize = "left";
+			button.textColorSelected = 0xff0000;
 			button.build();
 			button.setStyle();
 			button.arrange();

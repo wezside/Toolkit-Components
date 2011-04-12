@@ -16,7 +16,15 @@ package com.wezside.components.media.player.display
 		public function PlayerDisplay() 
 		{
 			types = new DictionaryCollection();	
+		}		
+
+		public function show():void
+		{
 		}
+
+		public function hide():void
+		{
+		}		
 
 		public function find( mediaType:String ):String
 		{
@@ -37,5 +45,6 @@ package com.wezside.components.media.player.display
 		{
 			return 250;
 		}
+
 	}
 }

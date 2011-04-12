@@ -7,6 +7,8 @@ package com.wezside.components.media.player.display
 	 */
 	public interface IPlayerDisplay extends IPlayerElement
 	{
+		function show():void;
+		function hide():void;
 		function find( mediaType:String ):String;
 		function addMediaType( id:String ):void;
 	}
