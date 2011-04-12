@@ -135,7 +135,6 @@ package com.wezside.components.media.player.media
 			netStream.seek( seconds );	
 			if ( seconds == totalTime )
 			{
-				playing = false;
 				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 			}
 		}
