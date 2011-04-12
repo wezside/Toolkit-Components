@@ -19,6 +19,12 @@ package com.wezside.components.media.player.resource
 		private var _bytesLoaded:Number;
 		private var _context:LoaderContext;
 		private var _autoPlay:Boolean;
+		private var _quality:int;
+
+		public static const QUALITY_DEFAULT:int = 0;
+		public static const QUALITY_LOW:int = 1;
+		public static const QUALITY_MEDIUM:int = 2;
+		public static const QUALITY_HIGH:int = 3;
 
 		public function MediaResource() 
 		{
@@ -27,7 +33,7 @@ package com.wezside.components.media.player.resource
 		
 		public function get type():String
 		{
-			return _type;
+			return _type.toUpperCase();
 		}
 
 		public function get uri():String
@@ -123,6 +129,16 @@ package com.wezside.components.media.player.resource
 		public function set autoPlay( value:Boolean ):void
 		{
 			_autoPlay = value;
+		}
+
+		public function get quality():int
+		{
+			return _quality;
+		}
+
+		public function set quality( value:int ):void
+		{
+			_quality = value;
 		}
 	}
 }
