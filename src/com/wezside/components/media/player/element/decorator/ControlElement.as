@@ -12,8 +12,8 @@ package com.wezside.components.media.player.element.decorator
 	{
 		
 		protected var decorated:IUIDecorator;
-		private var _state:String;
 		
+		private var _state:String;		
 		
 		public function ControlElement( decorated:IUIDecorator ) 
 		{

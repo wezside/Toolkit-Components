@@ -1,10 +1,12 @@
 package sample
 {
+	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.display.PlayerDisplay;
 	import com.wezside.components.media.player.element.PlayerControl;
+	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import com.wezside.components.media.player.element.PlayerPlayList;
 	import com.wezside.components.media.player.element.decorator.PauseButton;
 	import com.wezside.components.media.player.element.decorator.PlayButton;
@@ -43,6 +45,7 @@ package sample
 			control.layout = new HorizontalLayout( control );
 			control.decorate( PlayButton );
 			control.decorate( PauseButton );
+			control.addEventListener( PlayerControlEvent.CLICK, controlClick );
 			control.build();
 			control.setStyle();
 			control.arrange();
@@ -70,6 +73,7 @@ package sample
 			
 			var video:IMediaResource = new MediaResource();
 			video.uri = "http://helpexamples.com/flash/video/water.flv";
+			video.autoPlay = true;
 			
 			var image:IMediaResource = new MediaResource();
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
@@ -89,6 +93,11 @@ package sample
 //			player.pause();
 //			player.pause();
 		}
-		
+
+		private function controlClick( event:PlayerControlEvent  ):void
+		{
+			if ( event.target.id == "pause" )
+				player.pause();
+		}		
 	}
 }
