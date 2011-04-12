@@ -47,7 +47,9 @@ package com.wezside.components.media.player
 		// Media progress state 		
 		public static const STATE_PROGRESS:String = "STATE_PROGRESS";
 		// Volume change occcured		
-		public static const STATE_VOLUME:String = "STATE_VOLUME";	
+		public static const STATE_VOLUME:String = "STATE_VOLUME";
+		// Used for rewind to start	
+		public static const STATE_RESET:String = "STATE_RESET";
 		
 		public static const SWF:String = "SWF";
 		public static const BMP:String = "BMP";
@@ -114,7 +116,7 @@ package com.wezside.components.media.player
 			
 		override public function set state( value:String ):void
 		{
-			trace( " ---- control.state",  control.state );
+			trace( " ---- control.state",  value );
 			super.state = value;
 			if ( control.state != value )
 				control.state = value;
@@ -127,7 +129,7 @@ package com.wezside.components.media.player
 		 * <p>This method will effectively do the same thing as if a user has 
 		 * selected an item from the playlist should it exist.</p> 
 		 */
-		public function play( id:String ):void
+		public function play( id:String = "" ):void
 		{
 			var resource:IMediaResource = resources.find( "id", id );
 			if ( resource )
@@ -149,7 +151,14 @@ package com.wezside.components.media.player
 					trace( "No class was found for the resource type", resource.type );
 			}
 			else
-				trace( "Couldn't play the resource", id, "because it couldn't be found." );
+			{
+				if ( media )
+				{
+					state = STATE_PLAY;
+					media.pause();
+				}
+				else trace( "Couldn't play the resource", id, "because it couldn't be found." );
+			}
 		}
 	
 		public function pause( id:String = "" ):void
@@ -165,14 +174,35 @@ package com.wezside.components.media.player
 				{
 					object = it.next() as IMedia;
 					if ( !object ) continue;
-					if ( object.isPlaying ) object.pause();
-					state = STATE_PAUSE;
+					if ( object.playing )
+					{
+						object.pause();
+						state = STATE_PAUSE;
+					}
 				}
 				it.purge();
 				it = null;
 				object = null;
 			}
 		}
+		
+		public function seek( seconds:Number ):void
+		{
+			if ( media )
+			{
+				// TODO: Determine if the seek is forward or backward
+				// 		 so we can set the state to either STATE_REWIND or STATE_FORWARD
+				switch ( seconds )
+				{
+					case 0: state = STATE_RESET;						
+						break;
+					default:
+				}
+				media.seekTo( seconds );
+			}
+			else
+				trace( "No current Media playing." );
+		}		
 		
 		/**
 		 * <p>Return the current display object associated with the current media type. So if an IPlayerDisplay
@@ -240,6 +270,34 @@ package com.wezside.components.media.player
 			return object;
 		}
 
+		public function show():void
+		{
+			visible = true;
+		}
+
+		public function hide():void
+		{
+			visible = false;
+		}		
+
+		/**
+		 * This method is not applicable to this class.
+		 * @return Empty string
+		 */
+		public function find( mediaType:String ):String
+		{
+			return "";
+		}
+		
+		/**
+		 * This method is not applicable to this class.
+		 */
+		public function addMediaType( id:String ):void
+		{
+			throw new Error( "The Player class is the default IPlayerDisplay and doesn't allow specific media type associations. To add a specific media type, you have to create " +
+							 "a new IPlayerDisplay class and add it as a child of the Player instance. " );
+		}		
+
 		public function get resources():ICollection
 		{
 			return _resources;
@@ -263,24 +321,6 @@ package com.wezside.components.media.player
 		public function set typeClasses( value:IDictionaryCollection ):void
 		{
 			_typeClasses = value;
-		}		
-
-		/**
-		 * This method is not applicable to this class.
-		 * @return Empty string
-		 */
-		public function find( mediaType:String ):String
-		{
-			return "";
-		}
-		
-		/**
-		 * This method is not applicable to this class.
-		 */
-		public function addMediaType( id:String ):void
-		{
-			throw new Error( "The Player class is the default IPlayerDisplay and doesn't allow specific media type associations. To add a specific media type, you have to create " +
-							 "a new IPlayerDisplay class and add it as a child of the Player instance. " );
 		}		
 
 		/**
@@ -337,6 +377,8 @@ package com.wezside.components.media.player
 			else
 				trace( "Media is ready to be played" );
 		}
+
+
 
 	}
 }

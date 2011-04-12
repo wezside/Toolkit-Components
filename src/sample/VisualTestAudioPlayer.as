@@ -1,6 +1,6 @@
 package sample
 {
-	import com.wezside.components.UIElementEvent;
+	import com.wezside.components.media.player.element.decorator.RewindButton;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -44,6 +44,7 @@ package sample
 			control = new PlayerControl();
 			control.layout = new HorizontalLayout( control );
 			control.decorate( PlayButton );
+			control.decorate( RewindButton );
 			control.decorate( PauseButton );
 			control.addEventListener( PlayerControlEvent.CLICK, controlClick );
 			control.build();
@@ -90,14 +91,22 @@ package sample
 			addChild( player );
 			
 			player.play( "water.flv" );
-//			player.pause();
-//			player.pause();
 		}
 
 		private function controlClick( event:PlayerControlEvent  ):void
 		{
+			trace( "PlayerControl", event.target.id, "clicked." );
 			if ( event.target.id == "pause" )
 				player.pause();
+				
+			if ( event.target.id == "play" )
+				player.play();
+				
+			if ( event.target.id == "rewind" )
+			{
+				player.seek( 0 );
+				player.play();
+			}
 		}		
 	}
 }

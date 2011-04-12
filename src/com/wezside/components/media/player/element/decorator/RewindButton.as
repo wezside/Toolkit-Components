@@ -10,24 +10,22 @@ package com.wezside.components.media.player.element.decorator
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlayButton extends ControlElement
+	public class RewindButton extends ControlElement
 	{
-		
 		private var button:Button;
 		
-				
-		public function PlayButton( decorated:IUIDecorator )
+		public function RewindButton( decorated:IUIDecorator )
 		{
 			super( decorated );
 		}
-
+		
 		override public function build():void
 		{			
 			button = new Button();
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
-			button.text = "PLAY";
-			button.id = "play";
+			button.text = "REWIND";
+			button.id = "rewind";
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			button.build();
 			button.setStyle();
@@ -47,10 +45,11 @@ package com.wezside.components.media.player.element.decorator
 			super.state = value;
 			switch ( value )
 			{
-				case Player.STATE_PLAY:
+				case Player.STATE_RESET:
 					button.deactivate();
 					button.state = UIElementState.STATE_VISUAL_SELECTED;
 					break;
+				case Player.STATE_PLAY:
 				case Player.STATE_PAUSE:
 				default:
 					button.activate();
@@ -66,6 +65,6 @@ package com.wezside.components.media.player.element.decorator
 			{
 				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));
 			}
-		}
+		}		
 	}
 }

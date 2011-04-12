@@ -11,10 +11,12 @@ package com.wezside.components.media.player.media
 	 */
 	public class Media extends UIElement implements IMedia
 	{
+		
 		public static const ERROR_PLAY:String = "ERROR_PLAY";
 		
 		private var _error:IDictionaryCollection;
 		private var _resource:IMediaResource;
+		private var _playing:Boolean;
 		
 		public function Media() 
 		{
@@ -91,6 +93,16 @@ package com.wezside.components.media.player.media
 		public function set resource( value:IMediaResource ):void
 		{
 			_resource = value;
+		}
+
+		public function get playing():Boolean
+		{
+			return _playing;
+		}
+
+		public function set playing( value:Boolean ):void
+		{
+			_playing = value;
 		}
 	}
 }

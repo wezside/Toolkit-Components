@@ -22,7 +22,6 @@ package com.wezside.components.media.player.media
 	 */
 	public class MediaVideo extends Media implements IMedia
 	{
-		private var isPlaying:Boolean;
 		private var video:Video;
 		private var bytes:ByteArray = new ByteArray();
 		private var netStream:NetStream;
@@ -62,6 +61,7 @@ package com.wezside.components.media.player.media
 			downStream.readBytes( bytes, start, downStream.bytesAvailable );
 			if ( resource.autoPlay )
 			{
+				
 				netStream.play( null );
 				netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
 				netStream.appendBytes( bytes );
@@ -98,13 +98,13 @@ package com.wezside.components.media.player.media
 			if ( !resource.key )
 			{
 				error.addElement( ERROR_PLAY, "ERROR: Play for resource " + resource.id + " failed. " + "You need an API key to play VIMEO videos. Make sure the " + "resource has the 'key' property set." );
-				isPlaying = false;
+				playing = false;
 			}
-			else isPlaying = true;
+			else playing = true;
 			netStream.play( null );
 			netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
 			netStream.appendBytes( bytes );			
-			return isPlaying;
+			return playing;
 		}
 
 		/**
@@ -113,14 +113,25 @@ package com.wezside.components.media.player.media
 		 */
 		override public function pause():void
 		{
-			if ( isPlaying ) trace( resource.id, "paused." );
+			if ( playing )
+			{
+				trace( resource.id, "paused." );
+				netStream.pause();
+				playing = false;
+			}
 			else
 			{
 				// Only resume if possible, i.e. super.play(); is true
-				var success:Boolean = play();
-				if ( success ) trace( resource.id, "resumed." );
+				trace( resource.id, "resumed." );
+				netStream.resume();
+				playing = true;
 			}
-			isPlaying = !isPlaying;
+		}
+	
+		override public function seekTo( seconds:Number ):void
+		{
+			trace( "seekTo", seconds / 1000 );
+			netStream.seek( seconds / 1000 );
 		}
 
 		override public function purge():void
