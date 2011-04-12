@@ -33,13 +33,6 @@ package com.wezside.components.media.player.media
 			netConnection = new NetConnection();
 			netConnection.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			netConnection.connect( null );
-				
-			video = new Video();
-			addChild( video );
-			
-			netStream = new NetStream( netConnection );
-			netStream.client = this;
-			video.attachNetStream( netStream );			
 
 			var request:URLRequest = new URLRequest( resource.uri );
 			downStream = new URLStream();
@@ -59,7 +52,6 @@ package com.wezside.components.media.player.media
 			downStream.readBytes( bytes, start, downStream.bytesAvailable );
 			if ( resource.autoPlay )
 			{
-					
 				netStream.play( resource.uri );
 			}
 		}
@@ -102,7 +94,7 @@ package com.wezside.components.media.player.media
 			netStream.inBufferSeek = true;
 			return playing;
 		}
-	
+
 		override public function get currentTime():Number
 		{
 			return netStream.time;
@@ -128,14 +120,14 @@ package com.wezside.components.media.player.media
 				playing = true;
 			}
 		}
-	
+
 		override public function seekTo( seconds:Number ):void
 		{
 			trace( "seekTo", seconds, playing );
-			netStream.seek( seconds );	
+			netStream.seek( seconds );
 			if ( seconds == totalTime )
 			{
-				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
+				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ) );
 			}
 		}
 
@@ -150,9 +142,19 @@ package com.wezside.components.media.player.media
 			netStream = null;
 		}
 
-		public function onMetaData( info:Object ):void 
+		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
+		}
+
+		public function onPlayStatus( info:Object ):void
+		{
+			trace( "------------------", info );
+			switch ( info.code )
+			{
+				case "NetStream.Play.Complete":
+					break;
+			}
 		}
 
 		private function statusHandler( event:NetStatusEvent ):void
@@ -161,8 +163,20 @@ package com.wezside.components.media.player.media
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":
+					connectStream();
+					break;
+				case "NetStream.Play.Complete":
 					break;
 			}
+		}
+
+		private function connectStream():void
+		{
+			video = new Video();
+			addChild( video );
+			netStream = new NetStream( netConnection );
+			netStream.client = this;
+			video.attachNetStream( netStream );
 		}
 	}
 }
