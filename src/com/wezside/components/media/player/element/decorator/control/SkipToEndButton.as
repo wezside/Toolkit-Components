@@ -1,4 +1,4 @@
-package com.wezside.components.media.player.element.decorator
+package com.wezside.components.media.player.element.decorator.control
 {
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElementEvent;
@@ -6,28 +6,27 @@ package com.wezside.components.media.player.element.decorator
 	import com.wezside.components.control.Button;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import com.wezside.components.media.player.element.decorator.ControlElement;
 
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlayButton extends ControlElement
+	public class SkipToEndButton extends ControlElement
 	{
-		
 		private var button:Button;
 		
-				
-		public function PlayButton( decorated:IUIDecorator )
+		public function SkipToEndButton( decorated:IUIDecorator )
 		{
 			super( decorated );
 		}
-
+		
 		override public function build():void
 		{			
 			button = new Button();
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
-			button.text = "PLAY";
-			button.id = "play";
+			button.text = "SKIP TO END";
+			button.id = "ff";
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			button.build();
 			button.setStyle();
@@ -47,10 +46,8 @@ package com.wezside.components.media.player.element.decorator
 			super.state = value;
 			switch ( value )
 			{
+				case Player.STATE_SKIP_TO_START:
 				case Player.STATE_PLAY:
-					button.deactivate();
-					button.state = UIElementState.STATE_VISUAL_SELECTED;
-					break;
 				case Player.STATE_PAUSE:
 				default:
 					button.activate();
@@ -66,6 +63,6 @@ package com.wezside.components.media.player.element.decorator
 			{
 				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));
 			}
-		}
+		}		
 	}
 }

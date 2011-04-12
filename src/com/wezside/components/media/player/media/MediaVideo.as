@@ -11,9 +11,7 @@ package com.wezside.components.media.player.media
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.net.NetStreamAppendBytesAction;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
 	import flash.net.URLStream;
 	import flash.utils.ByteArray;
 
@@ -33,14 +31,14 @@ package com.wezside.components.media.player.media
 		{
 			resource.key = "flv";
 			netConnection = new NetConnection();
-			netConnection.addEventListener( NetStatusEvent.NET_STATUS, netConnectionStatusHandler );
+			netConnection.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			netConnection.connect( null );
 				
 			video = new Video();
 			addChild( video );
 			
 			netStream = new NetStream( netConnection );
-			netStream.client = {};
+			netStream.client = this;
 			video.attachNetStream( netStream );			
 
 			var request:URLRequest = new URLRequest( resource.uri );
@@ -61,11 +59,9 @@ package com.wezside.components.media.player.media
 			downStream.readBytes( bytes, start, downStream.bytesAvailable );
 			if ( resource.autoPlay )
 			{
-				
-				netStream.play( null );
-				netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
-				netStream.appendBytes( bytes );
-			}	
+					
+				netStream.play( resource.uri );
+			}
 		}
 
 		private function openHandler( event:Event ):void
@@ -95,16 +91,21 @@ package com.wezside.components.media.player.media
 
 		override public function play():Boolean
 		{
+			trace( resource.id, "play." );
 			if ( !resource.key )
 			{
 				error.addElement( ERROR_PLAY, "ERROR: Play for resource " + resource.id + " failed. " + "You need an API key to play VIMEO videos. Make sure the " + "resource has the 'key' property set." );
 				playing = false;
 			}
 			else playing = true;
-			netStream.play( null );
-			netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_BEGIN );
-			netStream.appendBytes( bytes );			
+			netStream.play( resource.uri );
+			netStream.inBufferSeek = true;
 			return playing;
+		}
+	
+		override public function get currentTime():Number
+		{
+			return netStream.time;
 		}
 
 		/**
@@ -130,14 +131,18 @@ package com.wezside.components.media.player.media
 	
 		override public function seekTo( seconds:Number ):void
 		{
-			trace( "seekTo", seconds / 1000 );
-			netStream.seek( seconds / 1000 );
+			trace( "seekTo", seconds, playing );
+			netStream.seek( seconds );	
+			if ( seconds == totalTime )
+			{
+				playing = false;
+				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
+			}
 		}
 
 		override public function purge():void
 		{
 			super.purge();
-
 			netConnection.close();
 			netConnection = null;
 			video.clear();
@@ -146,35 +151,19 @@ package com.wezside.components.media.player.media
 			netStream = null;
 		}
 
-		private function netConnectionStatusHandler( event:NetStatusEvent ):void
+		public function onMetaData( info:Object ):void 
 		{
-			trace( "event.info.code", event.info.code );
+			totalTime = info.duration;
+		}
+
+		private function statusHandler( event:NetStatusEvent ):void
+		{
+			trace( "statusHandler", event.info.code );
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":
-
-
-					break;
-				case "NetStream.Seek.Notify" :
-					trace( "NetStream Notify" );
-					netStream.appendBytesAction( NetStreamAppendBytesAction.RESET_SEEK );
-					netStream.appendBytes( bytes );
 					break;
 			}
-		}
-
-		public function createURLRequest( url:String, bytesFrom:Number, bytesTo:Number = 0 ):URLRequestHeader
-		{
-			var header:URLRequestHeader;
-			if ( bytesTo > 0 )
-			{
-				header = new URLRequestHeader( "Range", "bytes=" + bytesFrom + "-" + (bytesFrom + bytesTo) );
-			}
-			else
-			{
-				header = new URLRequestHeader( "Range", "bytes=" + bytesFrom + "-" );
-			}
-			return header;
 		}
 	}
 }

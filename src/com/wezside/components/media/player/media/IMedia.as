@@ -21,6 +21,12 @@ package com.wezside.components.media.player.media
 		function get playing():Boolean;
 		function set playing( value:Boolean ):void;
 		
+		function get currentTime():Number;
+		function set currentTime( value:Number ):void;
+		
+		function get totalTime():Number;
+		function set totalTime( value:Number ):void;
+		
 		function get error():IDictionaryCollection;
 		function set error( value:IDictionaryCollection ):void;
 		

@@ -17,6 +17,8 @@ package com.wezside.components.media.player.media
 		private var _error:IDictionaryCollection;
 		private var _resource:IMediaResource;
 		private var _playing:Boolean;
+		private var _currentTime:Number;
+		private var _totalTime:Number;
 		
 		public function Media() 
 		{
@@ -103,6 +105,26 @@ package com.wezside.components.media.player.media
 		public function set playing( value:Boolean ):void
 		{
 			_playing = value;
+		}
+
+		public function get currentTime():Number
+		{
+			return _currentTime;
+		}
+
+		public function set currentTime( value:Number ):void
+		{
+			_currentTime = value;
+		}
+
+		public function get totalTime():Number
+		{
+			return _totalTime;
+		}
+
+		public function set totalTime( value:Number ):void
+		{
+			_totalTime = value;
 		}
 	}
 }

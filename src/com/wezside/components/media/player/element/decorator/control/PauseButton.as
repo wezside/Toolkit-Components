@@ -1,13 +1,12 @@
-package com.wezside.components.media.player.element.decorator
+package com.wezside.components.media.player.element.decorator.control
 {
-	import flash.events.MouseEvent;
-	import flash.events.Event;
-	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
 	import com.wezside.components.control.Button;
 	import com.wezside.components.media.player.Player;
+	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import com.wezside.components.media.player.element.decorator.ControlElement;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -27,7 +26,7 @@ package com.wezside.components.media.player.element.decorator
 		{
 			button = new Button();
 			button.id = "pause";
-			button.text = "PAUSE";
+			button.text = "PAUSED";
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
 			button.build();
@@ -53,6 +52,8 @@ package com.wezside.components.media.player.element.decorator
 					button.deactivate();
 					button.state = UIElementState.STATE_VISUAL_SELECTED;
 					break;
+				case Player.STATE_SKIP_TO_END:
+				case Player.STATE_SKIP_TO_START:
 				case Player.STATE_PLAY:
 				default:
 					button.activate();
