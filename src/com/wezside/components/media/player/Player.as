@@ -66,6 +66,7 @@ package com.wezside.components.media.player
 		public static const MP3:String = "MP3";
 		public static const FLV:String = "FLV";
 		public static const F4V:String = "F4V";
+		public static const MP4:String = "MP4";
 		public static const VIMEO:String = "VIMEO";
 		public static const YOUTUBE:String = "YOUTUBE";
 		
@@ -82,6 +83,7 @@ package com.wezside.components.media.player
 			_typeClasses.addElement( MP3, MediaAudio );
 			_typeClasses.addElement( FLV, MediaVideo );
 			_typeClasses.addElement( F4V, MediaVideo );
+			_typeClasses.addElement( MP4, MediaVideo );
 			_typeClasses.addElement( VIMEO, MediaVimeo );
 			_typeClasses.addElement( YOUTUBE, MediaYoutube );			
 		}
@@ -418,17 +420,37 @@ package com.wezside.components.media.player
 
 		private function enterFrame( event:Event ):void
 		{
+			if ( !media )
+			{
+				removeEventListener( Event.ENTER_FRAME, enterFrame );
+				return;
+			}
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
-			var element:IControlElement;
+			var control:IPlayerControl;
 			while ( it.hasNext() )
 			{
-				element = it.next() as IControlElement;
-				if ( element && !element.flagForUpdate ) continue;
-				element.update( media );
+				control = it.next() as IPlayerControl;				
+				var element:IControlElement;				
+				var controlIt:IIterator = control.iterator( UIElement.ITERATOR_CHILDREN );
+				while ( controlIt.hasNext() )
+				{
+					element = controlIt.next() as IControlElement;
+					if ( !element.flagForUpdate ) continue;
+					element.update( media );
+				}
+				element = null;
+				controlIt.purge();
+				controlIt = null;
 			}
 			it.purge();
 			it = null;
 			element = null;	
+			
+			if ( media && media.currentTime == media.totalTime )
+			{
+				removeEventListener( Event.ENTER_FRAME, enterFrame );
+				trace( "media finished playback.")
+			}
 		}
 
 		private function mediaProgress( event:MediaEvent ):void
@@ -458,10 +480,6 @@ package com.wezside.components.media.player
 		private function mediaPlayBackComplete( event:MediaEvent ):void
 		{
 			trace( "Media payback complete ");
-			// Reset visual state. There is a usecase where the seek method will
-			// update the playing state
-//			if ( media && media.currentTime == 0 && media.playing )
-//				state = STATE_PLAY;
 		}
 
 	}

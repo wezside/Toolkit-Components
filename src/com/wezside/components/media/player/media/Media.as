@@ -17,9 +17,9 @@ package com.wezside.components.media.player.media
 		private var _error:IDictionaryCollection;
 		private var _resource:IMediaResource;
 		private var _playing:Boolean;
-		private var _currentTime:Number;
-		private var _totalTime:Number;
-		private var _progress:int = 0;
+		private var _currentTime:Number = 0;
+		private var _totalTime:Number = 0;
+		private var _progress:Number = 0;
 		
 		public function Media() 
 		{
@@ -128,12 +128,12 @@ package com.wezside.components.media.player.media
 			_totalTime = value;
 		}
 
-		public function get progress():int
+		public function get progress():Number
 		{
 			return _progress;
 		}
 
-		public function set progress( value:int ):void
+		public function set progress( value:Number ):void
 		{
 			_progress = value;
 		}

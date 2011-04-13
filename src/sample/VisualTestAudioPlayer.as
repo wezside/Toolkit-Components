@@ -1,5 +1,7 @@
 package sample
 {
+	import com.wezside.components.media.player.element.decorator.indicator.PlaybackIndicator;
+	import com.wezside.components.media.player.element.decorator.indicator.IndicatorBuffer;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -11,7 +13,7 @@ package sample
 	import com.wezside.components.media.player.element.decorator.control.PlayButton;
 	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.decorator.control.SkipToStartButton;
-	import com.wezside.components.media.player.element.decorator.indicator.ProgressIndicator;
+	import com.wezside.components.media.player.element.decorator.indicator.IndicatorProgress;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
@@ -59,7 +61,9 @@ package sample
 			
 			// Indicator control
 			indicator = new PlayerControl();
-			indicator.decorate( ProgressIndicator, null, null, null, null, true );
+			indicator.decorate( IndicatorProgress, null, null, null, null, true );
+			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
+			indicator.decorate( PlaybackIndicator, null, null, null, null, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -89,7 +93,7 @@ package sample
 			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
 			
 			var video:IMediaResource = new MediaResource();
-			video.uri = "http://stage.wezside.co.za/dieantwoord/archive/videos/rb-trailer.flv";
+			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
 			video.autoPlay = true;
 			video.bufferTime = 5;
 			
@@ -108,7 +112,7 @@ package sample
 			player.arrange();
 			addChild( player );
 			
-			player.play( "rb-trailer.flv" );
+			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
