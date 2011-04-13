@@ -57,7 +57,8 @@ package com.wezside.components.media.player.media
 				playing = false;
 			}
 			else playing = true;
-			netStream.play( resource.uri );
+			
+			if ( !resource.bufferTime ) netStream.play( resource.uri );
 			return playing;
 		}
 
@@ -107,6 +108,12 @@ package com.wezside.components.media.player.media
 			netStream.close();
 			netStream = null;
 		}
+	
+		override public function get buffering():Boolean
+		{
+			trace( "netStream.bufferLength", netStream.bufferLength );
+			return netStream.bufferLength < 0.1;
+		}
 
 		public function onXMPData( info:Object ):void
 		{
@@ -132,9 +139,10 @@ package com.wezside.components.media.player.media
 		{
 			trace( "completeHandler: " + event );
 			dispatchEvent( event );
-			downStream.readBytes( bytes, start, downStream.bytesAvailable );
+//			downStream.readBytes( bytes, start, downStream.bytesAvailable );
 			if ( resource.autoPlay && !resource.bufferTime )
 			{
+				trace( "---- PLAY NET STREAM" );
 				netStream.play( resource.uri );
 			}
 		}
@@ -147,7 +155,7 @@ package com.wezside.components.media.player.media
 		private function progressHandler( event:ProgressEvent ):void
 		{
 //			trace( "progressHandler: " + event );
-			progress = Math.round( event.bytesLoaded / event.bytesTotal * 100 );
+			progress = event.bytesLoaded / event.bytesTotal;
 			dispatchEvent( new MediaEvent( MediaEvent.PROGRESS, false, false, progress ));
 		}
 
@@ -187,8 +195,7 @@ package com.wezside.components.media.player.media
 			netStream.client = this;
 			netStream.bufferTime = 5;
 			netStream.bufferTimeMax = 10;
-			video.attachNetStream( netStream );
-			
+			video.attachNetStream( netStream );			
 			if ( resource.bufferTime ) netStream.play( resource.uri );
 		}
 	}
