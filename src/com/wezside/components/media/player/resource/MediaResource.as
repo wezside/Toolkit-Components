@@ -25,6 +25,7 @@ package com.wezside.components.media.player.resource
 		public static const QUALITY_LOW:int = 1;
 		public static const QUALITY_MEDIUM:int = 2;
 		public static const QUALITY_HIGH:int = 3;
+		private var _bufferTime:Number;
 
 		public function MediaResource() 
 		{
@@ -139,6 +140,16 @@ package com.wezside.components.media.player.resource
 		public function set quality( value:int ):void
 		{
 			_quality = value;
+		}
+
+		public function get bufferTime():Number
+		{
+			return _bufferTime;
+		}
+
+		public function set bufferTime( value:Number ):void
+		{
+			_bufferTime = value;
 		}
 	}
 }

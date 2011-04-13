@@ -33,6 +33,9 @@ package com.wezside.components.media.player.element.decorator.control
 			button.arrange();
 			button.activate();
 			addChild( button );			
+			
+			width = button.width;
+			height = button.height;			
 			super.build();
 		}
 

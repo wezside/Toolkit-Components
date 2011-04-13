@@ -27,7 +27,7 @@ package com.wezside.components.media.player.element.decorator.control
 			button = new Button();
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
-			button.text = "PLAY";
+			button.text = data;
 			button.id = "play";
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			button.build();
@@ -35,6 +35,10 @@ package com.wezside.components.media.player.element.decorator.control
 			button.arrange();
 			button.activate();
 			addChild( button );			
+			
+			width = button.width;
+			height = button.height;
+			
 			super.build();
 		}
 

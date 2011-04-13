@@ -1,5 +1,7 @@
 package com.wezside.components.media.player.element.decorator
 {
+	import com.wezside.components.media.player.media.IMedia;
+	import com.wezside.utilities.manager.style.IStyleManager;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElement;
 	import com.wezside.data.iterator.IIterator;
@@ -13,7 +15,12 @@ package com.wezside.components.media.player.element.decorator
 		
 		protected var decorated:IUIDecorator;
 		
-		private var _state:String;		
+		private var _data:*;
+		private var _state:String;
+		private var _width:Number = 0;
+		private var _height:Number = 0;
+		private var _styleManager:IStyleManager;
+		private var _flagForUpdate:Boolean;
 		
 		public function ControlElement( decorated:IUIDecorator ) 
 		{
@@ -30,7 +37,15 @@ package com.wezside.components.media.player.element.decorator
 		{
 			if ( decorated is IControlElement ) 
 				decorated.arrange();
-		}
+		}	
+
+		public function purge():void
+		{
+		}		
+		
+		public function update( media:IMedia ):void
+		{
+		}		
 
 		public function get styleName():String
 		{
@@ -57,5 +72,56 @@ package com.wezside.components.media.player.element.decorator
 			if ( decorated is IControlElement ) 
 				IControlElement( decorated ).state = value;
 		}
+	
+		override public function get width():Number
+		{
+			return _width;
+		}
+			
+		override public function set width( value:Number ):void
+		{
+			_width = value;
+		}
+	
+		override public function get height():Number
+		{
+			return _height;
+		}
+			
+		override public function set height( value:Number ):void
+		{
+			_height = value;
+		}
+
+		public function get styleManager():IStyleManager
+		{
+			return _styleManager;
+		}
+
+		public function set styleManager( value:IStyleManager ):void
+		{
+			_styleManager = value;
+		}
+
+		public function get data():*
+		{
+			return _data;
+		}
+
+		public function set data( value:* ):void
+		{
+			_data = value;
+		}
+
+		public function get flagForUpdate():Boolean
+		{
+			return _flagForUpdate;
+		}
+
+		public function set flagForUpdate( value:Boolean ):void
+		{
+			_flagForUpdate = value;
+		}
+
 	}
 }

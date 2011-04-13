@@ -8,11 +8,20 @@ package com.wezside.components.media.player.media
 	public class MediaEvent extends Event
 	{
 		
-		public static const COMPLETE : String = "COMPLETE";
+		public static const COMPLETE:String = "COMPLETE";
+		public static const PROGRESS:String = "PROGRESS";
 		
-		public function MediaEvent( type:String, bubbles:Boolean = false, cancelable:Boolean = false )
+		public var data:*;
+		
+		public function MediaEvent( type:String, bubbles:Boolean = false, cancelable:Boolean = false, data:* = null )
 		{
 			super( type, bubbles, cancelable );
+			this.data = data;
+		}
+			
+		override public function clone():Event
+		{
+			return new MediaEvent( type, bubbles, cancelable, data );
 		}
 	}
 }

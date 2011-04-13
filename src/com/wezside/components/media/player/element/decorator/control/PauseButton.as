@@ -34,7 +34,10 @@ package com.wezside.components.media.player.element.decorator.control
 			button.arrange();
 			button.activate();
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
-			addChild( button );	
+			addChild( button );
+			
+			width = button.width;
+			height = button.height;
 			super.build();
 		}
 
