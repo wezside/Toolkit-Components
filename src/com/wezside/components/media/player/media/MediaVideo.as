@@ -20,12 +20,14 @@ package com.wezside.components.media.player.media
 	 */
 	public class MediaVideo extends Media implements IMedia
 	{
+
 		private var video:Video;
 		private var bytes:ByteArray = new ByteArray();
 		private var netStream:NetStream;
 		private var netConnection:NetConnection;
 		private var downStream:URLStream;
 		private var start:uint = 0;
+
 
 		override public function load( resource:IMediaResource ):void
 		{
