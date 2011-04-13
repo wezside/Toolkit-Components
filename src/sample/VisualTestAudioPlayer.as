@@ -1,6 +1,5 @@
 package sample
 {
-	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -10,7 +9,9 @@ package sample
 	import com.wezside.components.media.player.element.PlayerPlayList;
 	import com.wezside.components.media.player.element.decorator.control.PauseButton;
 	import com.wezside.components.media.player.element.decorator.control.PlayButton;
+	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.decorator.control.SkipToStartButton;
+	import com.wezside.components.media.player.element.decorator.indicator.ProgressIndicator;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
@@ -21,15 +22,17 @@ package sample
 
 
 
+
 	/**
 	 * @author Wesley.Swanepoel
 	 */
 	public class VisualTestAudioPlayer extends Sprite
 	{
 		private var player:Player;
-		private var control:PlayerControl;
 		private var playlist:PlayerPlayList;
 		private var display:PlayerDisplay;
+		private var basic:PlayerControl;
+		private var indicator:PlayerControl;
 		
 		public function VisualTestAudioPlayer() 
 		{
@@ -42,23 +45,34 @@ package sample
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			control = new PlayerControl();
-			control.layout = new HorizontalLayout( control );
-			control.decorate( PlayButton );
-			control.decorate( PauseButton );
-			control.decorate( SkipToStartButton );
-			control.decorate( SkipToEndButton );
-			control.addEventListener( PlayerControlEvent.CLICK, controlClick );
-			control.build();
-			control.setStyle();
-			control.arrange();
+			// Basic controls
+			basic = new PlayerControl();
+			basic.layout = new HorizontalLayout( basic );
+			basic.decorate( PlayButton, "", "PLAY" );
+			basic.decorate( PauseButton );
+			basic.decorate( SkipToStartButton );
+			basic.decorate( SkipToEndButton );
+			basic.addEventListener( PlayerControlEvent.CLICK, click );
+			basic.build();
+			basic.setStyle();
+			basic.arrange();
 			
+			// Indicator control
+			indicator = new PlayerControl();
+			indicator.decorate( ProgressIndicator, null, null, null, null, true );
+			indicator.addEventListener( PlayerControlEvent.CLICK, click );
+			indicator.build();
+			indicator.setStyle();
+			indicator.arrange();
+			
+			// The FLV Display to use
 			display = new PlayerDisplay();
 			display.addMediaType( Player.FLV );
 			display.build();
 			display.setStyle();
 			display.arrange();
 			
+			// The Playlist 
 			playlist = new PlayerPlayList();
 			playlist.build();
 			playlist.setStyle();
@@ -75,8 +89,9 @@ package sample
 			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
 			
 			var video:IMediaResource = new MediaResource();
-			video.uri = "http://helpexamples.com/flash/video/water.flv";
+			video.uri = "http://stage.wezside.co.za/dieantwoord/archive/videos/rb-trailer.flv";
 			video.autoPlay = true;
+			video.bufferTime = 5;
 			
 			var image:IMediaResource = new MediaResource();
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
@@ -85,19 +100,20 @@ package sample
 			player.layout = new VerticalLayout( player );
 			player.resources = new Collection([ youtube, vimeo, audio, video, image ]);
 			player.addChild( display );
-			player.addChild( control );
+			player.addChild( basic );
+			player.addChild( indicator );
 			player.addChild( playlist );
 			player.build();
 			player.setStyle();
 			player.arrange();
 			addChild( player );
 			
-			player.play( "water.flv" );
+			player.play( "rb-trailer.flv" );
 		}
 
-		private function controlClick( event:PlayerControlEvent  ):void
+		private function click( event:PlayerControlEvent  ):void
 		{
-			trace( "PlayerControl", event.target.id, "clicked." );
+			trace( "Playerindicator", event.target.id, "clicked." );
 			if ( event.target.id == "pause" )
 				player.pause();
 				

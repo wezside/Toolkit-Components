@@ -19,6 +19,7 @@ package com.wezside.components.media.player.media
 		private var _playing:Boolean;
 		private var _currentTime:Number;
 		private var _totalTime:Number;
+		private var _progress:int = 0;
 		
 		public function Media() 
 		{
@@ -125,6 +126,21 @@ package com.wezside.components.media.player.media
 		public function set totalTime( value:Number ):void
 		{
 			_totalTime = value;
+		}
+
+		public function get progress():int
+		{
+			return _progress;
+		}
+
+		public function set progress( value:int ):void
+		{
+			_progress = value;
+		}
+
+		public function get buffering():Boolean
+		{
+			return false;
 		}
 	}
 }

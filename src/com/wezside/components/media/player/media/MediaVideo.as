@@ -47,41 +47,6 @@ package com.wezside.components.media.player.media
 			downStream.load( request );
 		}
 
-		private function completeHandler( event:Event ):void
-		{
-			trace( "completeHandler: " + event );
-			dispatchEvent( event );
-			downStream.readBytes( bytes, start, downStream.bytesAvailable );
-			if ( resource.autoPlay )
-			{
-				netStream.play( resource.uri );
-			}
-		}
-
-		private function openHandler( event:Event ):void
-		{
-			trace( "openHandler: " + event );
-		}
-
-		private function progressHandler( event:ProgressEvent ):void
-		{
-			trace( "progressHandler: " + event );
-		}
-
-		private function securityErrorHandler( event:SecurityErrorEvent ):void
-		{
-			trace( "securityErrorHandler: " + event );
-		}
-
-		private function httpStatusHandler( event:HTTPStatusEvent ):void
-		{
-			trace( "httpStatusHandler: " + event );
-		}
-
-		private function ioErrorHandler( event:IOErrorEvent ):void
-		{
-			trace( "ioErrorHandler: " + event );
-		}
 
 		override public function play():Boolean
 		{
@@ -143,6 +108,11 @@ package com.wezside.components.media.player.media
 			netStream = null;
 		}
 
+		public function onXMPData( info:Object ):void
+		{
+			trace( "onXMLData received ");
+		}
+
 		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
@@ -157,6 +127,44 @@ package com.wezside.components.media.player.media
 					break;
 			}
 		}
+		
+		private function completeHandler( event:Event ):void
+		{
+			trace( "completeHandler: " + event );
+			dispatchEvent( event );
+			downStream.readBytes( bytes, start, downStream.bytesAvailable );
+			if ( resource.autoPlay && !resource.bufferTime )
+			{
+				netStream.play( resource.uri );
+			}
+		}
+
+		private function openHandler( event:Event ):void
+		{
+			trace( "openHandler: " + event );
+		}
+
+		private function progressHandler( event:ProgressEvent ):void
+		{
+//			trace( "progressHandler: " + event );
+			progress = Math.round( event.bytesLoaded / event.bytesTotal * 100 );
+			dispatchEvent( new MediaEvent( MediaEvent.PROGRESS, false, false, progress ));
+		}
+
+		private function securityErrorHandler( event:SecurityErrorEvent ):void
+		{
+			trace( "securityErrorHandler: " + event );
+		}
+
+		private function httpStatusHandler( event:HTTPStatusEvent ):void
+		{
+			trace( "httpStatusHandler: " + event );
+		}
+
+		private function ioErrorHandler( event:IOErrorEvent ):void
+		{
+			trace( "ioErrorHandler: " + event );
+		}		
 
 		private function statusHandler( event:NetStatusEvent ):void
 		{
@@ -177,7 +185,11 @@ package com.wezside.components.media.player.media
 			addChild( video );
 			netStream = new NetStream( netConnection );
 			netStream.client = this;
+			netStream.bufferTime = 5;
+			netStream.bufferTimeMax = 10;
 			video.attachNetStream( netStream );
+			
+			if ( resource.bufferTime ) netStream.play( resource.uri );
 		}
 	}
 }

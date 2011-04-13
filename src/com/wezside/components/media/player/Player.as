@@ -1,12 +1,14 @@
 package com.wezside.components.media.player
 {
-	import com.wezside.components.media.player.media.MediaEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IPlayerControl;
+	import com.wezside.components.media.player.element.IPlayerElement;
+	import com.wezside.components.media.player.element.decorator.IControlElement;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
+	import com.wezside.components.media.player.media.MediaEvent;
 	import com.wezside.components.media.player.media.MediaImage;
 	import com.wezside.components.media.player.media.MediaSWF;
 	import com.wezside.components.media.player.media.MediaVideo;
@@ -122,8 +124,18 @@ package com.wezside.components.media.player
 		{
 			trace( " ---- control.state",  value );
 			super.state = value;
-			if ( control.state != value )
-				control.state = value;
+			
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
+			var object:IPlayerControl;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IPlayerControl;
+				if ( object.state != value )
+					object.state = value;
+			}
+			it.purge();
+			it = null;
+			object = null;
 		}
 
 		/**
@@ -148,6 +160,7 @@ package com.wezside.components.media.player
 					media.build();
 					media.setStyle();
 					media.arrange();
+					media.addEventListener( MediaEvent.PROGRESS, mediaProgress );
 					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					display.addChild( media as UIElement );
 					media.load( resource );
@@ -165,6 +178,7 @@ package com.wezside.components.media.player
 				else trace( "Couldn't play the resource", id, "because it couldn't be found." );
 			}
 		}
+
 
 	
 		public function pause( id:String = "" ):void
@@ -222,7 +236,8 @@ package com.wezside.components.media.player
 		{			
 			if ( !media ) return this;			
 			var mediaType:String;
-			var it:IIterator = allDisplays.iterator();
+			var it:IIterator = playerElements( IPlayerDisplay ).iterator();
+			trace( it.length() );
 			var playerDisplay:IPlayerDisplay;
 			var selectedDisplay:IPlayerDisplay;
 			while ( it.hasNext() )
@@ -245,16 +260,16 @@ package com.wezside.components.media.player
 		/**
 		 * Return all displays added to this Player instance.
 		 */
-		public function get allDisplays():ICollection
+		public function playerElements( PlayerElementType:Class = null ):ICollection
 		{
 			var collection:ICollection = new Collection();
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-			var object:IPlayerDisplay;
+			var object:IPlayerElement;
 			while ( it.hasNext() )
 			{
-				object = it.next() as IPlayerDisplay;
-				if ( !object ) continue;
-				collection.addElement( object );
+				object = it.next() as IPlayerElement;
+				if ( object is PlayerElementType || !PlayerElementType )
+					collection.addElement( object );					
 			}
 			it.purge();
 			it = null;
@@ -262,6 +277,9 @@ package com.wezside.components.media.player
 			return collection;
 		}
 
+		/**
+		 * Get the first control 
+		 */
 		public function get control():IPlayerControl
 		{
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
@@ -388,12 +406,54 @@ package com.wezside.components.media.player
 			{
 				var success:Boolean = media.play();
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
-				else state = STATE_PLAY;
+				else
+				{
+					state = STATE_PLAY;					
+					addEventListener( Event.ENTER_FRAME, enterFrame );
+				}
 			}
 			else
 				trace( "Media is ready to be played" );
 		}
 
+		private function enterFrame( event:Event ):void
+		{
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
+			var element:IControlElement;
+			while ( it.hasNext() )
+			{
+				element = it.next() as IControlElement;
+				if ( element && !element.flagForUpdate ) continue;
+				element.update( media );
+			}
+			it.purge();
+			it = null;
+			element = null;	
+		}
+
+		private function mediaProgress( event:MediaEvent ):void
+		{
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
+			var control:IPlayerControl;
+			while ( it.hasNext() )
+			{
+				control = it.next() as IPlayerControl;				
+				var element:IControlElement;				
+				var controlIt:IIterator = control.iterator( UIElement.ITERATOR_CHILDREN );
+				while ( controlIt.hasNext() )
+				{
+					element = controlIt.next() as IControlElement;
+					if ( !element.flagForUpdate ) continue;
+					element.update( event.currentTarget as IMedia );
+				}
+				element = null;
+				controlIt.purge();
+				controlIt = null;
+			}
+			it.purge();
+			it = null;
+			element = null;				
+		}
 
 		private function mediaPlayBackComplete( event:MediaEvent ):void
 		{

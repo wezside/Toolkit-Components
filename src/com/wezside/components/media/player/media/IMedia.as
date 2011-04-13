@@ -30,6 +30,11 @@ package com.wezside.components.media.player.media
 		function get error():IDictionaryCollection;
 		function set error( value:IDictionaryCollection ):void;
 		
+		function get progress():int;
+		function set progress( value:int ):void;
+		
+		function get buffering():Boolean;
+		
 		function seekTo( seconds:Number ):void;
 		function play():Boolean;
 		function pause():void;

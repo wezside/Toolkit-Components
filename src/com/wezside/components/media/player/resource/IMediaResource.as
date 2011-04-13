@@ -29,6 +29,8 @@ package com.wezside.components.media.player.resource
 		function set context( value:LoaderContext ):void
 		function get quality():int;
 		function set quality( value:int ):void;
+		function get bufferTime():Number;
+		function set bufferTime( value:Number ):void;
 
 	}
 }
