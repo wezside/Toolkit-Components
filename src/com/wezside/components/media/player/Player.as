@@ -33,8 +33,6 @@ package com.wezside.components.media.player
 	public class Player extends UIElement implements IPlayerDisplay
 	{
 
-		public static const STATE_SKIP_TO_START:String = "STATE_SKIP_TO_START";
-		public static const STATE_SKIP_TO_END:String = "STATE_SKIP_TO_END";
 		
 		private var media:IMedia;
 		private var _resources:ICollection;
@@ -53,7 +51,9 @@ package com.wezside.components.media.player
 		// Volume change occcured		
 		public static const STATE_VOLUME:String = "STATE_VOLUME";
 		// Used for rewind to start	
-		public static const STATE_RESET:String = "STATE_RESET";
+		public static const STATE_SKIP_TO_START:String = "STATE_SKIP_TO_START";
+		// Used for fast forward to end	
+		public static const STATE_SKIP_TO_END:String = "STATE_SKIP_TO_END";
 		
 		public static const SWF:String = "SWF";
 		public static const BMP:String = "BMP";
@@ -233,7 +233,7 @@ package com.wezside.components.media.player
 				if ( mediaType ) 
 				{
 					selectedDisplay = playerDisplay;
-					break;				
+					break;
 				}
 			}
 			it.purge();
