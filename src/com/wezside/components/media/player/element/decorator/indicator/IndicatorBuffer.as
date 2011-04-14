@@ -24,7 +24,7 @@ package com.wezside.components.media.player.element.decorator.indicator
 			
 			label = new Label();
 			label.autoSize = "left";
-			label.text = "some label";
+			label.text = "";
 			label.textColor = 0xffffff;
 			label.build();
 			label.setStyle();
@@ -41,9 +41,7 @@ package com.wezside.components.media.player.element.decorator.indicator
 				label.text = "Video is buffering";
 			}
 			else
-				label.text = "";
-			
-		}
-		
+				label.text = " ";			
+		}		
 	}
 }

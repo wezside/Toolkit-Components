@@ -52,6 +52,7 @@ package com.wezside.components.media.player.element.decorator.control
 			super.state = value;
 			switch ( value )
 			{
+				case Player.STATE_VOLUME: break;
 				case Player.STATE_PLAY:
 					button.deactivate();
 					button.state = UIElementState.STATE_VISUAL_SELECTED;

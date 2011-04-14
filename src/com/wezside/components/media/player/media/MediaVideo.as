@@ -1,19 +1,18 @@
 package com.wezside.components.media.player.media
 {
 	import com.wezside.components.media.player.resource.IMediaResource;
-
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.URLRequest;
 	import flash.net.URLStream;
-	import flash.utils.ByteArray;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -22,11 +21,11 @@ package com.wezside.components.media.player.media
 	{
 
 		private var video:Video;
-		private var bytes:ByteArray = new ByteArray();
 		private var netStream:NetStream;
 		private var netConnection:NetConnection;
 		private var downStream:URLStream;
-		private var start:uint = 0;
+		private var _buffering:Boolean;
+		private var _playbackFinished:Boolean;
 
 
 		override public function load( resource:IMediaResource ):void
@@ -62,6 +61,11 @@ package com.wezside.components.media.player.media
 			return playing;
 		}
 
+		/**
+		 * FIXME: Sometimes netStream.time indicates a position greater than the bytes that were downloaded. So 
+		 * this will then draw the playback indicator in front of the progress bar which is visually incorrect. 
+		 * Investigate if this is accurate or if we need to hack the visual side to correct this behaviour. 
+		 */
 		override public function get currentTime():Number
 		{
 			return netStream.time;
@@ -97,6 +101,16 @@ package com.wezside.components.media.player.media
 				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ) );
 			}
 		}
+			
+		override public function set volume( level:Number ):void
+		{
+			netStream.soundTransform = new SoundTransform( level );
+		}
+			
+		override public function get volume():Number
+		{
+			return netStream.soundTransform.volume;
+		}
 
 		override public function purge():void
 		{
@@ -111,40 +125,29 @@ package com.wezside.components.media.player.media
 	
 		override public function get buffering():Boolean
 		{
-			trace( "netStream.bufferLength", netStream.bufferLength );
-			return netStream.bufferLength < 0.1;
+			return _buffering;
+		}
+	
+		override public function get playbackFinished():Boolean
+		{
+			return _playbackFinished;
 		}
 
 		public function onXMPData( info:Object ):void
 		{
-			trace( "onXMLData received ");
+			trace( "onXMLData received ", info );
 		}
 
 		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
 		}
-
-		public function onPlayStatus( info:Object ):void
-		{
-			trace( "------------------", info );
-			switch ( info.code )
-			{
-				case "NetStream.Play.Complete":
-					break;
-			}
-		}
 		
 		private function completeHandler( event:Event ):void
 		{
-			trace( "completeHandler: " + event );
 			dispatchEvent( event );
-//			downStream.readBytes( bytes, start, downStream.bytesAvailable );
 			if ( resource.autoPlay && !resource.bufferTime )
-			{
-				trace( "---- PLAY NET STREAM" );
 				netStream.play( resource.uri );
-			}
 		}
 
 		private function openHandler( event:Event ):void
@@ -156,6 +159,9 @@ package com.wezside.components.media.player.media
 		{
 //			trace( "progressHandler: " + event );
 			progress = event.bytesLoaded / event.bytesTotal;
+			
+			// See fixme in currentTime getter
+			if ( progress  < netStream.time / totalTime  ) progress = netStream.time / totalTime;
 			dispatchEvent( new MediaEvent( MediaEvent.PROGRESS, false, false, progress ));
 		}
 
@@ -184,6 +190,21 @@ package com.wezside.components.media.player.media
 					break;
 				case "NetStream.Play.Complete":
 					break;
+				case "NetStream.Buffer.Empty":
+					_buffering = true;					
+					break;
+				case "NetStream.Buffer.Flush":
+				case "NetStream.Buffer.Full":
+					_buffering = false;
+					break;
+				case "NetStream.Play.Start":
+					_playbackFinished = false;
+					break;
+				case "NetStream.Play.Stop":
+					_playbackFinished = true;
+					break;
+				case "NetStream.Play.StreamNotFound":
+					break;
 			}
 		}
 
@@ -192,10 +213,11 @@ package com.wezside.components.media.player.media
 			video = new Video();
 			addChild( video );
 			netStream = new NetStream( netConnection );
+			netStream.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			netStream.client = this;
 			netStream.bufferTime = 5;
-			netStream.bufferTimeMax = 10;
 			video.attachNetStream( netStream );			
+
 			if ( resource.bufferTime ) netStream.play( resource.uri );
 		}
 	}

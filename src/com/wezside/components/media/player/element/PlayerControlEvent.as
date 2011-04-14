@@ -10,16 +10,18 @@ package com.wezside.components.media.player.element
 	{
 		
 		public static const CLICK:String = "CLICK";
+		public var data:*;
 		
 		
-		public function PlayerControlEvent( type:String, bubbles:Boolean = false, cancelable:Boolean = false )
+		public function PlayerControlEvent( type:String, bubbles:Boolean = false, cancelable:Boolean = false, data:* = null )
 		{
 			super( type, bubbles, cancelable );
+			this.data = data;
 		}
 			
 		override public function clone():Event
 		{
-			return new PlayerControlEvent( type, bubbles, cancelable );
+			return new PlayerControlEvent( type, bubbles, cancelable, data );
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package sample
 {
-	import com.wezside.components.media.player.element.decorator.indicator.PlaybackIndicator;
-	import com.wezside.components.media.player.element.decorator.indicator.IndicatorBuffer;
+	import com.wezside.components.media.player.element.decorator.control.MuteButton;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -13,10 +12,13 @@ package sample
 	import com.wezside.components.media.player.element.decorator.control.PlayButton;
 	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.decorator.control.SkipToStartButton;
+	import com.wezside.components.media.player.element.decorator.indicator.IndicatorBuffer;
+	import com.wezside.components.media.player.element.decorator.indicator.IndicatorPlayback;
 	import com.wezside.components.media.player.element.decorator.indicator.IndicatorProgress;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -54,6 +56,7 @@ package sample
 			basic.decorate( PauseButton );
 			basic.decorate( SkipToStartButton );
 			basic.decorate( SkipToEndButton );
+			basic.decorate( MuteButton );
 			basic.addEventListener( PlayerControlEvent.CLICK, click );
 			basic.build();
 			basic.setStyle();
@@ -63,7 +66,7 @@ package sample
 			indicator = new PlayerControl();
 			indicator.decorate( IndicatorProgress, null, null, null, null, true );
 			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
-			indicator.decorate( PlaybackIndicator, null, null, null, null, true );
+			indicator.decorate( IndicatorPlayback, null, null, null, null, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -97,12 +100,17 @@ package sample
 			video.autoPlay = true;
 			video.bufferTime = 5;
 			
+			var video2:IMediaResource = new MediaResource();
+			video2.uri = "http://helpexamples.com/flash/video/water.flv";
+			video2.bufferTime = 5;
+			video2.autoPlay = true;			
+			
 			var image:IMediaResource = new MediaResource();
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
 			
 			player = new Player();
 			player.layout = new VerticalLayout( player );
-			player.resources = new Collection([ youtube, vimeo, audio, video, image ]);
+			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2 ]);
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
@@ -111,13 +119,13 @@ package sample
 			player.setStyle();
 			player.arrange();
 			addChild( player );
-			
+
 			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
 		{
-			trace( "Playerindicator", event.target.id, "clicked." );
+			trace( "Player indicator", event.target.id, "clicked." );
 			if ( event.target.id == "pause" )
 				player.pause();
 				
@@ -129,6 +137,9 @@ package sample
 				
 			if ( event.target.id == "ff" )
 				player.seek( player.totalTime );
+				
+			if ( event.target.id == "mute" )
+				player.volume( event.data ? 0 : 1, 10 );
 
 		}		
 	}

@@ -33,7 +33,11 @@ package com.wezside.components.media.player.media
 		function get progress():Number;
 		function set progress( value:Number ):void;
 		
+		function get volume():Number;
+		function set volume( value:Number ):void;
+		
 		function get buffering():Boolean;
+		function get playbackFinished():Boolean;
 		
 		function seekTo( seconds:Number ):void;
 		function play():Boolean;
