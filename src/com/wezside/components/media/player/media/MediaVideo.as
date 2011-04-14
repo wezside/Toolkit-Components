@@ -61,11 +61,7 @@ package com.wezside.components.media.player.media
 			return playing;
 		}
 
-		/**
-		 * FIXME: Sometimes netStream.time indicates a position greater than the bytes that were downloaded. So 
-		 * this will then draw the playback indicator in front of the progress bar which is visually incorrect. 
-		 * Investigate if this is accurate or if we need to hack the visual side to correct this behaviour. 
-		 */
+
 		override public function get currentTime():Number
 		{
 			return netStream.time;
@@ -155,6 +151,12 @@ package com.wezside.components.media.player.media
 			trace( "openHandler: " + event );
 		}
 
+		/**
+		 * Sometimes netStream.time indicates a position greater than the bytes that were downloaded. So 
+		 * this will then draw the playback indicator in front of the progress bar which is visually incorrect. 
+		 * To fix this behaviour we check if this is happening and then set the progress value to the netstream 
+		 * currentTime and totalTime ration instead. 
+		 */
 		private function progressHandler( event:ProgressEvent ):void
 		{
 //			trace( "progressHandler: " + event );
