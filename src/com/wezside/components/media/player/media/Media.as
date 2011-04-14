@@ -17,8 +17,8 @@ package com.wezside.components.media.player.media
 		private var _error:IDictionaryCollection;
 		private var _resource:IMediaResource;
 		private var _playing:Boolean;
+		private var _totalTime:Number = -1;
 		private var _currentTime:Number = 0;
-		private var _totalTime:Number = 0;
 		private var _progress:Number = 0;
 		
 		public function Media() 
@@ -60,6 +60,15 @@ package com.wezside.components.media.player.media
 			trace( "Media.seekTo()" );
 		}
 
+		public function set volume( level:Number ):void
+		{
+		}
+		
+		public function get volume():Number
+		{
+			return 0;
+		}
+		
 		public function get data():*
 		{
 		}
@@ -142,5 +151,11 @@ package com.wezside.components.media.player.media
 		{
 			return false;
 		}
+
+		public function get playbackFinished():Boolean
+		{
+			return false;
+		}
+
 	}
 }

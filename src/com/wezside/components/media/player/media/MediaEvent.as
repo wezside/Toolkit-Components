@@ -10,6 +10,7 @@ package com.wezside.components.media.player.media
 		
 		public static const COMPLETE:String = "COMPLETE";
 		public static const PROGRESS:String = "PROGRESS";
+		public static const PLAYBACK_COMPLETE:String = "PLAYBACK_COMPLETE";
 		
 		public var data:*;
 		

@@ -1,5 +1,6 @@
 package com.wezside.components.media.player
 {
+	import flash.events.TimerEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IPlayerControl;
@@ -22,6 +23,7 @@ package com.wezside.components.media.player
 	import com.wezside.data.iterator.IIterator;
 
 	import flash.events.Event;
+	import flash.utils.Timer;
 
 	
 	/**
@@ -36,7 +38,11 @@ package com.wezside.components.media.player
 	{
 
 		
-		private var media:IMedia;
+		private var media:IMedia;	
+		private var volumeLevel:Number = -1;
+		private var volumeTime:Number = -1;
+		private var time:Number = 0;
+				
 		private var _resources:ICollection;
 		private var _typeClasses:IDictionaryCollection;
 		
@@ -69,6 +75,8 @@ package com.wezside.components.media.player
 		public static const MP4:String = "MP4";
 		public static const VIMEO:String = "VIMEO";
 		public static const YOUTUBE:String = "YOUTUBE";
+		private var volumeSource : Number;
+
 		
 		public function Player() 
 		{
@@ -124,7 +132,7 @@ package com.wezside.components.media.player
 			
 		override public function set state( value:String ):void
 		{
-			trace( " ---- control.state",  value );
+			trace( " ---- control.state",  value, super.state );
 			super.state = value;
 			
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
@@ -208,6 +216,11 @@ package com.wezside.components.media.player
 			}
 		}
 		
+		/**
+		 * Seek to a specific position within the media. 
+		 * <br>
+		 * @param seconds The seconds to seek to.
+		 */
 		public function seek( seconds:Number ):void
 		{
 			if ( media )
@@ -228,6 +241,55 @@ package com.wezside.components.media.player
 		}		
 		
 		/**
+		 * Set the volume level. Use the second parameter to set how long it will 
+		 * take to reach the target level specified as the first parameter.
+		 * <br>
+		 * @param level The volume level ranging from 0 to 1
+		 * @param time The time it takes to reach the level parameter.  
+		 */
+		public function volume( level:Number, time:Number = 0 ):void
+		{
+			if ( media )
+			{
+				// Check if mute or unMute
+				if ( time == 0 )
+				{
+					media.volume = level;
+					state = STATE_VOLUME;
+				}
+				else 
+				{
+					volumeTime = time;
+					volumeLevel = level;
+					volumeSource = media.volume;
+					state = STATE_VOLUME;					
+					addEventListener( Event.ENTER_FRAME, volumeEnterFrame );
+				}
+			}
+		}
+
+		private function volumeEnterFrame( event:Event ):void
+		{			
+			if ( media && volumeLevel != -1 && volumeTime != -1 && media.volume != volumeLevel )
+			{
+				media.volume = easeInOut( 0, media.volume, ( volumeLevel - volumeSource ) * stage.frameRate, 10 );
+				trace( media.volume, time );
+			}
+			else
+			{
+				removeEventListener( Event.ENTER_FRAME, volumeEnterFrame );	
+			}
+		}
+		
+		public function easeInOut( t:Number, b:Number, c:Number, d:Number ):Number
+		{
+			if (t == 0) return b;
+			if (t == d) return b + c;
+			if ((t /= d / 2) < 1) return c / 2 * Math.pow( 2, 10 * (t - 1) ) + b;
+			return c / 2 * (-Math.pow( 2, -10 * --t ) + 2) + b;
+		}		
+		
+		/**
 		 * <p>Return the current display object associated with the current media type. So if an IPlayerDisplay
 		 * was created with a "vimeo" media type, and the current media item to be played is video on Vimeo,
 		 * this IPlayerDisplay will be returned.</p>
@@ -239,7 +301,7 @@ package com.wezside.components.media.player
 			if ( !media ) return this;			
 			var mediaType:String;
 			var it:IIterator = playerElements( IPlayerDisplay ).iterator();
-			trace( it.length() );
+
 			var playerDisplay:IPlayerDisplay;
 			var selectedDisplay:IPlayerDisplay;
 			while ( it.hasNext() )
@@ -446,12 +508,27 @@ package com.wezside.components.media.player
 			it = null;
 			element = null;	
 			
-			if ( media && media.currentTime == media.totalTime )
+			if ( media && media.playbackFinished )
 			{
 				removeEventListener( Event.ENTER_FRAME, enterFrame );
-				trace( "media finished playback.")
+				dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
+				state = STATE_PAUSE;
 			}
+
 		}
+		
+		/**
+		 *  Robert Penner's equation. Cubic easing in/out - acceleration until halfway, then deceleration
+		 *  @param t Current time
+		 *  @param b Beginning value
+		 *  @param c Change in value
+		 *  @param d Duration
+		 */
+		private function easeInOutCubic( t:Number, b:Number, c:Number, d:Number ):Number 
+		{
+			if (( t /= d*0.5 ) < 1) return c*0.5*t*t*t + b;
+			return c*0.5*((t-=2)*t*t + 2) + b;
+		}		
 
 		private function mediaProgress( event:MediaEvent ):void
 		{

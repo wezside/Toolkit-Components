@@ -9,12 +9,12 @@ package com.wezside.components.media.player.element.decorator.indicator
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlaybackIndicator extends ControlElement
+	public class IndicatorPlayback extends ControlElement
 	{
 		private var bar:Sprite;
 		
 		
-		public function PlaybackIndicator( decorated:IUIDecorator )
+		public function IndicatorPlayback( decorated:IUIDecorator )
 		{
 			super( decorated );
 		}
@@ -22,7 +22,7 @@ package com.wezside.components.media.player.element.decorator.indicator
 		override public function build():void
 		{			
 			bar = new Sprite();
-			bar.graphics.beginFill( 0xffee00 );
+			bar.graphics.beginFill( 0xffffff );
 			bar.graphics.drawRect(0, 0, 2, 20 );
 			bar.graphics.endFill();
 			addChild( bar );
