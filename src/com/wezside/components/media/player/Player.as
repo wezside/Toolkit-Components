@@ -1,5 +1,6 @@
 package com.wezside.components.media.player
 {
+	import com.greensock.TweenLite;
 	import flash.events.TimerEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
@@ -263,31 +264,28 @@ package com.wezside.components.media.player
 					volumeLevel = level;
 					volumeSource = media.volume;
 					state = STATE_VOLUME;					
-					addEventListener( Event.ENTER_FRAME, volumeEnterFrame );
+//					addEventListener( Event.ENTER_FRAME, volumeEnterFrame );
+					TweenLite.to( media, volumeTime, { volume: volumeLevel });
+//					var timer:Timer = new Timer( 100, volumeTime );
+//					timer.addEventListener( TimerEvent.TIMER, timerComplete );
+//					timer.start();
 				}
 			}
 		}
 
-		private function volumeEnterFrame( event:Event ):void
+		private function timerComplete( event:Event ):void
 		{			
 			if ( media && volumeLevel != -1 && volumeTime != -1 && media.volume != volumeLevel )
 			{
-				media.volume = easeInOut( 0, media.volume, ( volumeLevel - volumeSource ) * stage.frameRate, 10 );
+				media.volume = easeInOutCubic( ++time, media.volume, ( volumeLevel - volumeSource ), volumeTime * 0.010 );
 				trace( media.volume, time );
 			}
 			else
 			{
-				removeEventListener( Event.ENTER_FRAME, volumeEnterFrame );	
+				trace( "Volume change finish" );
+				removeEventListener( Event.ENTER_FRAME, timerComplete );	
 			}
-		}
-		
-		public function easeInOut( t:Number, b:Number, c:Number, d:Number ):Number
-		{
-			if (t == 0) return b;
-			if (t == d) return b + c;
-			if ((t /= d / 2) < 1) return c / 2 * Math.pow( 2, 10 * (t - 1) ) + b;
-			return c / 2 * (-Math.pow( 2, -10 * --t ) + 2) + b;
-		}		
+		}	
 		
 		/**
 		 * <p>Return the current display object associated with the current media type. So if an IPlayerDisplay
