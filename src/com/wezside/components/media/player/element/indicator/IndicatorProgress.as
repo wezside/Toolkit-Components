@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.element.indicator
 {
+	import com.wezside.components.UIElementState;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import flash.events.MouseEvent;
 	import com.wezside.components.IUIDecorator;
@@ -38,6 +39,8 @@ package com.wezside.components.media.player.element.indicator
 			bar.build();
 			bar.setStyle();
 			bar.arrange();
+			bar.mouseEnabled = false;
+			bar.mouseChildren = false;
 			addChild( bar );
 						
 			progress = new Sprite();
@@ -45,22 +48,28 @@ package com.wezside.components.media.player.element.indicator
 			progress.graphics.drawRect( 0, 0, 200, 20 );
 			progress.graphics.endFill();
 			progress.addEventListener( MouseEvent.CLICK, click );
-			addChild( progress );		
+			progress.addEventListener( MouseEvent.ROLL_OVER, rollOver );
+			progress.addEventListener( MouseEvent.ROLL_OUT, rollOut );
+			addChild( progress );
+						
+			handle = new UIElement();
+			handle.background = new ShapeRectangle( handle );
+			handle.background.width = 1;
+			handle.background.height = 20;
+			handle.background.colours = [ 0xffee00, 0xffee00 ];
+			handle.background.alphas = [ 1, 1 ];
+			handle.build();
+			handle.setStyle();
+			handle.arrange();
+			handle.visible = false;
+			handle.mouseEnabled = false;
+			handle.mouseChildren = false;
+			addChild( handle );			
 			
 			width = progress.width;
 			height = progress.height;
-			
+						
 			super.build();
-		}
-
-		private function click( event:MouseEvent ):void
-		{
-			if ( media )
-			{
-				var seconds:Number = event.localX / 200 * media.totalTime;
-				trace( "click ", media, seconds );
-				dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, { id: "progress", seconds: seconds }));
-			}
 		}
 
 		override public function purge(): void 
@@ -70,10 +79,37 @@ package com.wezside.components.media.player.element.indicator
 		
 		override public function update( media:IMedia ):void
 		{
-			trace( "media.progress", media.progress );
 			this.media = media;
 			progress.width = media.progress * 200;
 			if ( progress.width >= 200 ) flagForUpdate = false;
+		}
+
+		private function rollOut( event:MouseEvent ):void
+		{
+			progress.removeEventListener( MouseEvent.MOUSE_MOVE, mouseMove );
+			progress.addEventListener( MouseEvent.ROLL_OVER, rollOver );	
+			handle.visible = false;
+		}
+
+		private function rollOver( event:MouseEvent ):void
+		{
+			event.currentTarget.removeEventListener( MouseEvent.ROLL_OVER, rollOver );	
+			event.currentTarget.addEventListener( MouseEvent.MOUSE_MOVE, mouseMove );	
+			handle.visible = true;
+		}
+
+		private function mouseMove( event:MouseEvent ):void
+		{
+			handle.x = int( event.localX );
+		}
+
+		private function click( event:MouseEvent ):void
+		{
+			if ( media )
+			{
+				var seconds:Number = event.localX / 200 * media.totalTime;
+				dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, { id: "progress", seconds: seconds }));
+			}
 		}
 	}
 }
