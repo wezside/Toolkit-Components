@@ -76,7 +76,8 @@ package com.wezside.components.media.player
 		public static const MP4:String = "MP4";
 		public static const VIMEO:String = "VIMEO";
 		public static const YOUTUBE:String = "YOUTUBE";
-		private var volumeSource : Number;
+		private var volumeSource:Number;
+		private var volumeChange:Number;
 
 		
 		public function Player() 
@@ -263,29 +264,44 @@ package com.wezside.components.media.player
 					volumeTime = time;
 					volumeLevel = level;
 					volumeSource = media.volume;
+					volumeChange = volumeLevel - volumeSource;
+					this.time = 0;
 					state = STATE_VOLUME;					
-//					addEventListener( Event.ENTER_FRAME, volumeEnterFrame );
-					TweenLite.to( media, volumeTime, { volume: volumeLevel });
-//					var timer:Timer = new Timer( 100, volumeTime );
-//					timer.addEventListener( TimerEvent.TIMER, timerComplete );
-//					timer.start();
+					addEventListener( Event.ENTER_FRAME, volumeEnterFrame );
 				}
 			}
 		}
 
-		private function timerComplete( event:Event ):void
+		private function volumeEnterFrame( event:Event ):void
 		{			
 			if ( media && volumeLevel != -1 && volumeTime != -1 && media.volume != volumeLevel )
 			{
-				media.volume = easeInOutCubic( ++time, media.volume, ( volumeLevel - volumeSource ), volumeTime * 0.010 );
-				trace( media.volume, time );
+				time += 1;
+				media.volume = easeInOutCubic( time, volumeSource, volumeChange, volumeTime * stage.frameRate );
 			}
 			else
 			{
-				trace( "Volume change finish" );
-				removeEventListener( Event.ENTER_FRAME, timerComplete );	
+				removeEventListener( Event.ENTER_FRAME, volumeEnterFrame );	
 			}
 		}	
+				
+		/**
+		 *  Robert Penner's equation. Cubic easing in/out - acceleration until halfway, then deceleration
+		 *  @param t Current time
+		 *  @param b Beginning value
+		 *  @param c Change in value
+		 *  @param d Duration
+		 */
+		private function easeInOutCubic( t:Number, b:Number, c:Number, d:Number ):Number 
+		{
+			if (( t /= d*0.5 ) < 1) return c*0.5*t*t*t + b;
+			return c*0.5*((t-=2)*t*t + 2) + b;
+		}			
+		
+		private function linearTween( t:Number, b:Number, c:Number, d:Number ):Number 
+		{
+			return c*t/d + b;
+		}
 		
 		/**
 		 * <p>Return the current display object associated with the current media type. So if an IPlayerDisplay
@@ -514,19 +530,7 @@ package com.wezside.components.media.player
 			}
 
 		}
-		
-		/**
-		 *  Robert Penner's equation. Cubic easing in/out - acceleration until halfway, then deceleration
-		 *  @param t Current time
-		 *  @param b Beginning value
-		 *  @param c Change in value
-		 *  @param d Duration
-		 */
-		private function easeInOutCubic( t:Number, b:Number, c:Number, d:Number ):Number 
-		{
-			if (( t /= d*0.5 ) < 1) return c*0.5*t*t*t + b;
-			return c*0.5*((t-=2)*t*t + 2) + b;
-		}		
+	
 
 		private function mediaProgress( event:MediaEvent ):void
 		{
