@@ -26,6 +26,8 @@ package com.wezside.components.media.player.element.indicator
 			bar.graphics.drawRect(0, 0, 2, 20 );
 			bar.graphics.endFill();
 			addChild( bar );
+			mouseChildren = false;
+			mouseEnabled = false;
 			super.build();
 		}
 			

@@ -165,11 +165,11 @@ package com.wezside.components.media.player
 					media = new MediaClazz();
 					media.data = resource.data;
 					media.resource = resource;
+					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					media.build();
 					media.setStyle();
 					media.arrange();
 					media.addEventListener( Event.COMPLETE, mediaComplete );
-					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					display.addChild( media as UIElement );
 					media.load( resource );
 					addEventListener( Event.ENTER_FRAME, enterFrame );										

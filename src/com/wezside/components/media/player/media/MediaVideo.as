@@ -82,7 +82,7 @@ package com.wezside.components.media.player.media
 			stream.seek( seconds );
 			if ( seconds == totalTime )
 			{
-				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ) );
+				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 			}
 		}
 			
@@ -194,6 +194,7 @@ package com.wezside.components.media.player.media
 					break;
 				case "stream.Play.Stop":
 					_playbackFinished = true;
+					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 					break;
 				case "stream.Play.StreamNotFound":
 					break;
