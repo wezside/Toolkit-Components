@@ -129,22 +129,28 @@ package sample
 
 		private function click( event:PlayerControlEvent  ):void
 		{
-			trace( "Player indicator", event.target.id, "clicked." );
-			if ( event.target.id == "pause" )
-				player.pause();
-				
-			if ( event.target.id == "play" )
-				player.play();
-				
-			if ( event.target.id == "rewind" )
-				player.seek( 0 );
-				
-			if ( event.target.id == "ff" )
-				player.seek( player.totalTime );
-				
-			if ( event.target.id == "mute" )
-				player.volume( event.data ? 0 : 1, 1 );
-
+			if ( event.target.hasOwnProperty( "id" ))
+			{
+				if ( event.target.id == "pause" )
+					player.pause();
+					
+				if ( event.target.id == "play" )
+					player.play();
+					
+				if ( event.target.id == "rewind" )
+					player.seek( 0 );
+					
+				if ( event.target.id == "ff" )
+					player.seek( player.totalTime );
+					
+				if ( event.target.id == "mute" )
+					player.volume( event.data ? 0 : 1, 1 );
+			}
+			if ( event.data && event.data.id == "progress" )
+			{
+				trace( "Seek to position", event.data.seconds );
+				player.seek( event.data.seconds );
+			}
 		}		
 	}
 }

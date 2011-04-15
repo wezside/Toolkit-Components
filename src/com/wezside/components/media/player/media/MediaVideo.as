@@ -216,6 +216,7 @@ package com.wezside.components.media.player.media
 			}
 			else if ( autoPlay )
 			{
+				dispatchEvent( new Event( Event.COMPLETE ));
 				stream.play( resource.uri );
 			}
 			else

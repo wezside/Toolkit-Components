@@ -1,5 +1,7 @@
 package com.wezside.components.media.player.element.indicator
 {
+	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import flash.events.MouseEvent;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
@@ -17,6 +19,7 @@ package com.wezside.components.media.player.element.indicator
 		private var handle:UIElement;
 		private var progress:Sprite;
 		private var bar:UIElement;
+		private var media:IMedia;
 		
 		
 		public function IndicatorProgress( decorated:IUIDecorator )
@@ -41,24 +44,23 @@ package com.wezside.components.media.player.element.indicator
 			progress.graphics.beginFill( 0, 1 );
 			progress.graphics.drawRect( 0, 0, 200, 20 );
 			progress.graphics.endFill();
-			addChild( progress );
-						
-			handle = new UIElement();
-			handle.background = new ShapeRectangle( handle );
-			handle.background.width = 20;
-			handle.background.height = 20;
-			handle.background.colours = [ 0, 0 ];
-			handle.background.alphas = [ 1, 1 ];
-			handle.build();
-			handle.setStyle();
-			handle.arrange();
-			handle.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
-//			addChild( handle );			
+			progress.addEventListener( MouseEvent.CLICK, click );
+			addChild( progress );		
 			
 			width = progress.width;
 			height = progress.height;
 			
 			super.build();
+		}
+
+		private function click( event:MouseEvent ):void
+		{
+			if ( media )
+			{
+				var seconds:Number = event.localX / 200 * media.totalTime;
+				trace( "click ", media, seconds );
+				dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, { id: "progress", seconds: seconds }));
+			}
 		}
 
 		override public function purge(): void 
@@ -69,14 +71,9 @@ package com.wezside.components.media.player.element.indicator
 		override public function update( media:IMedia ):void
 		{
 			trace( "media.progress", media.progress );
+			this.media = media;
 			progress.width = media.progress * 200;
 			if ( progress.width >= 200 ) flagForUpdate = false;
 		}
-		
-		private function stateChange( event:UIElementEvent ):void
-		{
-		}			
-		
-		
 	}
 }
