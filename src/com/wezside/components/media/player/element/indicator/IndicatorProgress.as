@@ -1,12 +1,12 @@
-package com.wezside.components.media.player.element.decorator.indicator
+package com.wezside.components.media.player.element.indicator
 {
-	import flash.display.Sprite;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import com.wezside.components.media.player.element.decorator.ControlElement;
+	import com.wezside.components.media.player.element.ControlElement;
 	import com.wezside.components.media.player.media.IMedia;
+	import flash.display.Sprite;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -68,6 +68,7 @@ package com.wezside.components.media.player.element.decorator.indicator
 		
 		override public function update( media:IMedia ):void
 		{
+			trace( "media.progress", media.progress );
 			progress.width = media.progress * 200;
 			if ( progress.width >= 200 ) flagForUpdate = false;
 		}

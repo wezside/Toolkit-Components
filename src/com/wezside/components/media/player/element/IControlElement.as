@@ -1,4 +1,4 @@
-package com.wezside.components.media.player.element.decorator
+package com.wezside.components.media.player.element
 {
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.utilities.manager.style.IStyleManager;

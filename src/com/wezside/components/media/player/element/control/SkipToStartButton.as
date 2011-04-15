@@ -1,12 +1,12 @@
-package com.wezside.components.media.player.element.decorator.control
+package com.wezside.components.media.player.element.control
 {
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
 	import com.wezside.components.control.Button;
 	import com.wezside.components.media.player.Player;
+	import com.wezside.components.media.player.element.ControlElement;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
-	import com.wezside.components.media.player.element.decorator.ControlElement;
 
 	/**
 	 * @author Wesley.Swanepoel

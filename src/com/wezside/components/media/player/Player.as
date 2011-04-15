@@ -2,9 +2,9 @@ package com.wezside.components.media.player
 {
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
+	import com.wezside.components.media.player.element.IControlElement;
 	import com.wezside.components.media.player.element.IPlayerControl;
 	import com.wezside.components.media.player.element.IPlayerElement;
-	import com.wezside.components.media.player.element.decorator.IControlElement;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -20,8 +20,8 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
-
 	import flash.events.Event;
+
 
 	
 	/**
@@ -165,14 +165,14 @@ package com.wezside.components.media.player
 					media = new MediaClazz();
 					media.data = resource.data;
 					media.resource = resource;
-					media.addEventListener( Event.COMPLETE, mediaComplete );
 					media.build();
 					media.setStyle();
 					media.arrange();
-					media.addEventListener( MediaEvent.PROGRESS, mediaProgress );
+					media.addEventListener( Event.COMPLETE, mediaComplete );
 					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					display.addChild( media as UIElement );
 					media.load( resource );
+					addEventListener( Event.ENTER_FRAME, enterFrame );										
 				}
 				else
 					trace( "No class was found for the resource type", resource.type );
@@ -466,7 +466,6 @@ package com.wezside.components.media.player
 				else
 				{
 					state = STATE_PLAY;					
-					addEventListener( Event.ENTER_FRAME, enterFrame );
 				}
 			}
 			else
@@ -477,6 +476,7 @@ package com.wezside.components.media.player
 		{
 			if ( !media )
 			{
+				trace( "No media instance. Remove ENTER_FRAME." );
 				removeEventListener( Event.ENTER_FRAME, enterFrame );
 				return;
 			}
@@ -503,35 +503,11 @@ package com.wezside.components.media.player
 			
 			if ( media && media.playbackFinished )
 			{
+				trace( "Media instance playback finished. Remove ENTER_FRAME." );
 				removeEventListener( Event.ENTER_FRAME, enterFrame );
 				dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
 				state = STATE_PAUSE;
 			}
-		}
-	
-
-		private function mediaProgress( event:MediaEvent ):void
-		{
-			var it:IIterator = playerElements( IPlayerControl ).iterator();
-			var control:IPlayerControl;
-			while ( it.hasNext() )
-			{
-				control = it.next() as IPlayerControl;				
-				var element:IControlElement;				
-				var controlIt:IIterator = control.iterator( UIElement.ITERATOR_CHILDREN );
-				while ( controlIt.hasNext() )
-				{
-					element = controlIt.next() as IControlElement;
-					if ( !element.flagForUpdate ) continue;
-					element.update( event.currentTarget as IMedia );
-				}
-				element = null;
-				controlIt.purge();
-				controlIt = null;
-			}
-			it.purge();
-			it = null;
-			element = null;				
 		}
 
 		private function mediaPlayBackComplete( event:MediaEvent ):void

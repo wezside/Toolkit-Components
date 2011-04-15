@@ -1,10 +1,8 @@
 package com.wezside.components.media.player.element
 {
 	import com.wezside.components.UIElement;
-	import com.wezside.components.media.player.element.decorator.ControlElement;
-	import com.wezside.components.media.player.element.decorator.IControlElement;
-
 	import flash.display.DisplayObject;
+
 	
 	/**
 	 * @author Wesley.Swanepoel
