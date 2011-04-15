@@ -37,7 +37,8 @@ package com.wezside.components.media.player.element.decorator.control
 			button.build();
 			button.setStyle();
 			button.arrange();
-			button.activate();
+			button.deactivate();
+			button.state = UIElementState.STATE_VISUAL_DISABLED;
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			addChild( button );
 			
@@ -45,6 +46,18 @@ package com.wezside.components.media.player.element.decorator.control
 			height = button.height;			
 			
 		}
+		
+		override public function set state( value:String ):void
+		{
+			super.state = value;
+			switch ( value )
+			{
+				case Player.STATE_PLAY:
+					button.activate();
+					button.state = UIElementState.STATE_VISUAL_UP;
+					break;
+			}
+		}		
 		
 		private function click( event:UIElementEvent ):void
 		{

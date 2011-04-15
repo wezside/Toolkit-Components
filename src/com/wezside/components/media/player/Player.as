@@ -507,7 +507,6 @@ package com.wezside.components.media.player
 				dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
 				state = STATE_PAUSE;
 			}
-
 		}
 	
 
