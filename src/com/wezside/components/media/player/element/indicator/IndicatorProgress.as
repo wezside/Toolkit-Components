@@ -54,7 +54,7 @@ package com.wezside.components.media.player.element.indicator
 						
 			handle = new UIElement();
 			handle.background = new ShapeRectangle( handle );
-			handle.background.width = 1;
+			handle.background.width = 20;
 			handle.background.height = 20;
 			handle.background.colours = [ 0xffee00, 0xffee00 ];
 			handle.background.alphas = [ 1, 1 ];
@@ -100,6 +100,7 @@ package com.wezside.components.media.player.element.indicator
 
 		private function mouseMove( event:MouseEvent ):void
 		{
+			trace( event.localX );
 			handle.x = int( event.localX );
 		}
 
