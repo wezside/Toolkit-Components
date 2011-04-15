@@ -1,7 +1,5 @@
 package com.wezside.components.media.player
 {
-	import com.greensock.TweenLite;
-	import flash.events.TimerEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IPlayerControl;
@@ -24,7 +22,6 @@ package com.wezside.components.media.player
 	import com.wezside.data.iterator.IIterator;
 
 	import flash.events.Event;
-	import flash.utils.Timer;
 
 	
 	/**
@@ -277,30 +274,12 @@ package com.wezside.components.media.player
 			if ( media && volumeLevel != -1 && volumeTime != -1 && media.volume != volumeLevel )
 			{
 				time += 1;
-				media.volume = easeInOutCubic( time, volumeSource, volumeChange, volumeTime * stage.frameRate );
+				media.volume = Equations.easeInOutCubic( time, volumeSource, volumeChange, volumeTime * stage.frameRate );
 			}
 			else
 			{
 				removeEventListener( Event.ENTER_FRAME, volumeEnterFrame );	
 			}
-		}	
-				
-		/**
-		 *  Robert Penner's equation. Cubic easing in/out - acceleration until halfway, then deceleration
-		 *  @param t Current time
-		 *  @param b Beginning value
-		 *  @param c Change in value
-		 *  @param d Duration
-		 */
-		private function easeInOutCubic( t:Number, b:Number, c:Number, d:Number ):Number 
-		{
-			if (( t /= d*0.5 ) < 1) return c*0.5*t*t*t + b;
-			return c*0.5*((t-=2)*t*t + 2) + b;
-		}			
-		
-		private function linearTween( t:Number, b:Number, c:Number, d:Number ):Number 
-		{
-			return c*t/d + b;
 		}
 		
 		/**
