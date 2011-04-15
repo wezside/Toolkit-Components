@@ -1,10 +1,10 @@
-package com.wezside.components.media.player.element.decorator.indicator
+package com.wezside.components.media.player.element.indicator
 {
-	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.IUIDecorator;
-	import com.wezside.components.media.player.element.decorator.ControlElement;
-
+	import com.wezside.components.media.player.element.ControlElement;
+	import com.wezside.components.media.player.media.IMedia;
 	import flash.display.Sprite;
+
 
 	/**
 	 * @author Wesley.Swanepoel

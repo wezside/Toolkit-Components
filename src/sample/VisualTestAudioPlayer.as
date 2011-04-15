@@ -1,6 +1,5 @@
 package sample
 {
-	import com.wezside.components.media.player.element.decorator.control.MuteButton;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -8,21 +7,22 @@ package sample
 	import com.wezside.components.media.player.element.PlayerControl;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import com.wezside.components.media.player.element.PlayerPlayList;
-	import com.wezside.components.media.player.element.decorator.control.PauseButton;
-	import com.wezside.components.media.player.element.decorator.control.PlayButton;
-	import com.wezside.components.media.player.element.decorator.control.SkipToEndButton;
-	import com.wezside.components.media.player.element.decorator.control.SkipToStartButton;
-	import com.wezside.components.media.player.element.decorator.indicator.IndicatorBuffer;
-	import com.wezside.components.media.player.element.decorator.indicator.IndicatorPlayback;
-	import com.wezside.components.media.player.element.decorator.indicator.IndicatorProgress;
+	import com.wezside.components.media.player.element.control.MuteButton;
+	import com.wezside.components.media.player.element.control.PauseButton;
+	import com.wezside.components.media.player.element.control.PlayButton;
+	import com.wezside.components.media.player.element.control.SkipToEndButton;
+	import com.wezside.components.media.player.element.control.SkipToStartButton;
+	import com.wezside.components.media.player.element.indicator.IndicatorBuffer;
+	import com.wezside.components.media.player.element.indicator.IndicatorPlayback;
+	import com.wezside.components.media.player.element.indicator.IndicatorProgress;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
-
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+
 
 
 
@@ -98,7 +98,11 @@ package sample
 			var video:IMediaResource = new MediaResource();
 			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
 			video.autoPlay = true;
-			video.bufferTime = 5;
+//			video.bufferTime = 5;
+			
+			var videoMov:IMediaResource = new MediaResource();
+			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
+			videoMov.autoPlay = true;
 			
 			var video2:IMediaResource = new MediaResource();
 			video2.uri = "http://helpexamples.com/flash/video/water.flv";
@@ -110,7 +114,7 @@ package sample
 			
 			player = new Player();
 			player.layout = new VerticalLayout( player );
-			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2 ]);
+			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
