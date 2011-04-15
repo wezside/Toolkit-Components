@@ -139,7 +139,7 @@ package sample
 				player.seek( player.totalTime );
 				
 			if ( event.target.id == "mute" )
-				player.volume( event.data ? 0 : 1, 10 );
+				player.volume( event.data ? 0 : 1, 1 );
 
 		}		
 	}
