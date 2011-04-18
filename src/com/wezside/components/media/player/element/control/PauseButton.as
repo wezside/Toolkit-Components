@@ -34,6 +34,11 @@ package com.wezside.components.media.player.element.control
 			button.arrange();
 			button.activate();
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			if ( super.state == Player.STATE_PAUSE )
+			{
+				button.deactivate();
+				button.state = UIElementState.STATE_VISUAL_SELECTED;
+			}			
 			addChild( button );
 			
 			width = button.width;
@@ -44,6 +49,7 @@ package com.wezside.components.media.player.element.control
 		override public function set state( value:String ):void
 		{
 			super.state = value;
+			trace( "PauseButton", value );
 			switch ( value )
 			{
 				case Player.STATE_VOLUME: break;

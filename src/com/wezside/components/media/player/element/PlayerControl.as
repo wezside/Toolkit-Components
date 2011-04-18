@@ -10,7 +10,9 @@ package com.wezside.components.media.player.element
 	public class PlayerControl extends UIElement implements IPlayerControl 
 	{
 				
+		private var _displayWidth:int;
 		private var _element:IControlElement;
+		private var _displayHeight:int;
 		
 				
 		public function PlayerControl() 
@@ -26,8 +28,8 @@ package com.wezside.components.media.player.element
 			
 		override public function arrange():void
 		{
-			_element.arrange();
 			super.arrange();
+			_element.arrange();
 		}
 				
 		override public function set state( value:String ):void
@@ -44,6 +46,28 @@ package com.wezside.components.media.player.element
 		public function set element( value:IControlElement ):void
 		{
 			_element = value;
+		}
+		
+		public function set displayWidth( value:int ):void 
+		{
+			_displayWidth = value;
+			_element.width = _displayWidth;
+			_element.build();
+		}
+		
+		public function get displayWidth():int
+		{
+			return _displayWidth;
+		}
+		
+		public function get displayHeight():int
+		{
+			return _displayHeight;
+		}
+		
+		public function set displayHeight( value:int ):void
+		{
+			_displayHeight = value;
 		}
 
 		/**

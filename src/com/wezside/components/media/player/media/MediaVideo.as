@@ -24,8 +24,7 @@ package com.wezside.components.media.player.media
 		private var netConnection:NetConnection;
 		private var _buffering:Boolean;
 		private var _playbackFinished:Boolean;
-
-
+		
 		override public function load( resource:IMediaResource ):void
 		{
 			resource.key = "flv";
@@ -49,10 +48,10 @@ package com.wezside.components.media.player.media
 			return playing;
 		}
 
-
 		override public function get currentTime():Number
 		{
-			return stream.time;
+			trace( "currentTime", playing )
+			return !playing ? super.currentTime : stream.time;
 		}
 
 		/**
@@ -80,6 +79,7 @@ package com.wezside.components.media.player.media
 		{
 			trace( "seekTo", seconds, playing );
 			stream.seek( seconds );
+			currentTime = seconds;
 			if ( seconds == totalTime )
 			{
 				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
@@ -132,7 +132,11 @@ package com.wezside.components.media.player.media
 			totalTime = info.duration;
 			video.width = info.width;
 			video.height = info.height;
-			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, { w: video.width, h: video.height }));
+			resource.meta = new MediaMeta();
+			for ( var a:String in info )
+				if ( resource.meta.hasOwnProperty( a ))
+					resource.meta[a] = info[a];
+			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
 		}
 		
 		private function completeHandler( event:Event ):void
@@ -177,29 +181,29 @@ package com.wezside.components.media.player.media
 
 		private function statusHandler( event:NetStatusEvent ):void
 		{
-			trace( "statusHandler", event.info.code );
+//			trace( "statusHandler", event.info.code );
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":
 					connectStream();
 					break;
-				case "stream.Play.Complete":
+				case "NetStream.Play.Complete":
 					break;
-				case "stream.Buffer.Empty":
+				case "NetStream.Buffer.Empty":
 					_buffering = true;					
 					break;
-				case "stream.Buffer.Flush":
-				case "stream.Buffer.Full":
+				case "NetStream.Buffer.Flush":
+				case "NetStream.Buffer.Full":
 					_buffering = false;
 					break;
-				case "stream.Play.Start":
+				case "NetStream.Play.Start":
 					_playbackFinished = false;
 					break;
-				case "stream.Play.Stop":
+				case "NetStream.Play.Stop":
 					_playbackFinished = true;
 					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 					break;
-				case "stream.Play.StreamNotFound":
+				case "NetStream.Play.StreamNotFound":
 					break;
 			}
 		}

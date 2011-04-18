@@ -156,6 +156,5 @@ package com.wezside.components.media.player.media
 		{
 			return false;
 		}
-
 	}
 }

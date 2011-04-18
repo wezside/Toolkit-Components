@@ -3,6 +3,7 @@ package com.wezside.components.media.player.element.indicator
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.media.player.element.ControlElement;
 	import com.wezside.components.media.player.media.IMedia;
+
 	import flash.display.Sprite;
 
 
@@ -11,8 +12,8 @@ package com.wezside.components.media.player.element.indicator
 	 */
 	public class IndicatorPlayback extends ControlElement
 	{
-		private var bar:Sprite;
 		
+		private var bar:Sprite;
 		
 		public function IndicatorPlayback( decorated:IUIDecorator )
 		{
@@ -20,7 +21,7 @@ package com.wezside.components.media.player.element.indicator
 		}
 			
 		override public function build():void
-		{			
+		{	
 			bar = new Sprite();
 			bar.graphics.beginFill( 0xffffff );
 			bar.graphics.drawRect(0, 0, 2, 20 );
@@ -34,8 +35,12 @@ package com.wezside.components.media.player.element.indicator
 		override public function update( media:IMedia ):void
 		{
 			super.update( media );
-			
-			bar.x = media.currentTime / media.totalTime * 200;
+			bar.x = media.currentTime / media.totalTime * width;
 		}
+			
+		override public function set state( value:String ):void
+		{
+			super.state = value;			
+		}		
 	}
 }
