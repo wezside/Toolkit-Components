@@ -165,11 +165,12 @@ package com.wezside.components.media.player
 					media = new MediaClazz();
 					media.data = resource.data;
 					media.resource = resource;
-					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					media.build();
 					media.setStyle();
 					media.arrange();
 					media.addEventListener( Event.COMPLETE, mediaComplete );
+					media.addEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
+					media.addEventListener( MediaEvent.META, mediaMetaData );
 					display.addChild( media as UIElement );
 					media.load( resource );
 					addEventListener( Event.ENTER_FRAME, enterFrame );										
@@ -188,6 +189,12 @@ package com.wezside.components.media.player
 			}
 		}
 
+		private function mediaMetaData( event:MediaEvent ):void
+		{
+			IPlayerDisplay( display ).displayWidth = event.data.w;
+			IPlayerDisplay( display ).displayHeight = event.data.h;
+			arrange();
+		}
 
 	
 		public function pause( id:String = "" ):void
@@ -513,6 +520,36 @@ package com.wezside.components.media.player
 		private function mediaPlayBackComplete( event:MediaEvent ):void
 		{
 			trace( "Media payback complete ");
+		}
+
+		/**
+		 * Not used.
+		 */
+		public function get displayWidth():int
+		{
+			return 0;
+		}
+
+		/**
+		 * Not used.
+		 */
+		public function set displayWidth( value:int ):void
+		{
+		}
+
+		/**
+		 * Not used.
+		 */
+		public function get displayHeight():int
+		{
+			return 0;
+		}
+
+		/**
+		 * Not used.
+		 */
+		public function set displayHeight( value:int ):void
+		{
 		}
 
 	}

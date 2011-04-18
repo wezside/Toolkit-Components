@@ -10,6 +10,8 @@ package com.wezside.components.media.player.display
 	public class PlayerDisplay extends UIElement implements IPlayerDisplay 
 	{
 		
+		private var _displayWidth:int;
+		private var _displayHeight:int;
 		private var types:IDictionaryCollection;
 				
 		
@@ -38,12 +40,32 @@ package com.wezside.components.media.player.display
 			
 		override public function get width():Number
 		{
-			return super.width;
+			return _displayWidth ? _displayWidth : super.width;
 		}
 			
 		override public function get height():Number
 		{
-			return 250;
+			return _displayHeight ? _displayHeight : super.height;
+		}
+		
+		public function get displayHeight():int
+		{
+			return _displayHeight;
+		}
+		
+		public function set displayHeight( value:int ):void
+		{
+			_displayHeight = value;
+		}
+		
+		public function get displayWidth():int
+		{
+			return _displayWidth;
+		}
+		
+		public function set displayWidth( value:int ):void
+		{
+			_displayWidth = value;
 		}
 
 	}

@@ -121,7 +121,7 @@ package sample
 			player.addChild( playlist );
 			player.build();
 			player.setStyle();
-			player.arrange();
+//			player.arrange();
 			addChild( player );
 
 			player.play( "Sucker Punch - Trailer HD.flv" );
