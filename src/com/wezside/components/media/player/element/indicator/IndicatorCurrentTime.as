@@ -1,10 +1,10 @@
 package com.wezside.components.media.player.element.indicator
 {
 	import com.wezside.components.IUIDecorator;
-	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.element.ControlElement;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.text.Label;
+	import com.wezside.utilities.date.DateUtil;
 
 	/**
 	 * @author FChowdhury
@@ -13,10 +13,12 @@ package com.wezside.components.media.player.element.indicator
 	{
 
 		private var label:Label;
+		private var dateUtil:DateUtil;
 
 		public function IndicatorCurrentTime( decorated:IUIDecorator )
 		{
 			super( decorated );
+			dateUtil = new DateUtil();
 		}
 
 		override public function build():void
@@ -28,30 +30,29 @@ package com.wezside.components.media.player.element.indicator
 			label.textColor = 0xFF0000;
 			label.width = width;
 			label.height = height;
-			label.x = 0;
+			label.x = 5;
 			label.build();
 			label.setStyle();
 			label.arrange();
 			addChild( label );
-			
 			super.build();
-		}
-
-		override public function set state( value:String ):void
-		{
-			super.state = value;
-			switch ( value )
-			{
-				case Player.STATE_PLAY:
-					break;
-			}
 		}
 
 		override public function update( media:IMedia ):void
 		{
 			super.update( media );
-			label.text = String( int(( media.currentTime ) * 100 ) / 100 );
-			label.x = int( media.currentTime / media.totalTime * width );
+			var milliseconds:Number = media.currentTime * 1000;
+			var mins:String = dateUtil.minutesFromMilliseconds( milliseconds ).toString();
+			var seconds:String = dateUtil.secondsFromMilliseconds( milliseconds ).toString();			
+			label.text = formatDuration( mins, seconds );
+			label.x = int( media.currentTime / media.totalTime * width ) + 5;			
+		}
+
+		private function formatDuration( mins:String, seconds:String ):String
+		{
+			if ( mins.length == 1 ) mins = "0" + mins;
+			if ( seconds.length == 1 ) seconds = "0" + seconds;
+			return mins + ":" + seconds;
 		}
 	}
 }
