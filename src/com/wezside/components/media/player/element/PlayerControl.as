@@ -1,6 +1,8 @@
 package com.wezside.components.media.player.element
 {
 	import com.wezside.components.UIElement;
+	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.DisplayObject;
 
 	
@@ -45,6 +47,14 @@ package com.wezside.components.media.player.element
 			return _autoSize;
 		}
 		
+		/**
+		 * This flag will opt in or opt out of resizing. If true the width and height values
+		 * will be determined by the Player's autoSizePolicy property. 
+		 * <br>
+		 * @param value The flag value indicating if auto sizing should occur for the decorator 
+		 * IControlElements applied to this PlayerControl instance
+		 * @see com.wezside.components.media.player.Player Player Class
+		 */
 		public function set autoSize( value:Boolean ):void
 		{
 			_autoSize = value;
@@ -63,11 +73,16 @@ package com.wezside.components.media.player.element
 		public function set displayWidth( value:int ):void 
 		{
 			_displayWidth = value;
-			if ( _autoSize )
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var element:IControlElement;
+			while ( it.hasNext() )
 			{
-				_element.width = _displayWidth;
-				_element.build();
+				element = it.next() as IControlElement;
+				element.width = value;
 			}
+			it.purge();
+			it = null;
+			element = null;
 		}
 		
 		public function get displayWidth():int
@@ -83,11 +98,16 @@ package com.wezside.components.media.player.element
 		public function set displayHeight( value:int ):void
 		{
 			_displayHeight = value;
-			if ( _autoSize )
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var element:IControlElement;
+			while ( it.hasNext() )
 			{
-				_element.height = _displayHeight;
-				_element.build();
-			}			
+				element = it.next() as IControlElement;
+				element.height = value;
+			}
+			it.purge();
+			it = null;
+			element = null;
 		}
 
 		/**

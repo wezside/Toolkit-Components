@@ -35,13 +35,17 @@ package com.wezside.components.media.player
 	 */
 	public class Player extends UIElement implements IPlayerDisplay
 	{
-
+		public static const AUTOSIZE_NONE:String = "AUTOSIZE_NONE";
+		public static const AUTOSIZE_STAGE:String = "AUTOSIZE_STAGE";
 		
 		private var media:IMedia;	
+		private var time:Number = 0;
 		private var volumeLevel:Number = -1;
 		private var volumeTime:Number = -1;
-		private var time:Number = 0;
+		private var volumeSource:Number;
+		private var volumeChange:Number;
 				
+		private var _autoSizePolicy:String;
 		private var _resources:ICollection;
 		private var _typeClasses:IDictionaryCollection;
 		
@@ -74,12 +78,11 @@ package com.wezside.components.media.player
 		public static const MP4:String = "MP4";
 		public static const VIMEO:String = "VIMEO";
 		public static const YOUTUBE:String = "YOUTUBE";
-		private var volumeSource:Number;
-		private var volumeChange:Number;
 
 		
 		public function Player() 
 		{
+			_autoSizePolicy = AUTOSIZE_NONE;
 			_resources = new Collection();
 			_typeClasses = new DictionaryCollection();
 			_typeClasses.addElement( SWF, MediaSWF );
@@ -245,7 +248,7 @@ package com.wezside.components.media.player
 			}
 			else
 				trace( "No current Media playing." );
-		}		
+		}
 		
 		/**
 		 * Set the volume level. Use the second parameter to set how long it will 
@@ -422,6 +425,23 @@ package com.wezside.components.media.player
 			return media ? media.totalTime : -1;
 		}
 		
+		public function get autoSizePolicy():String
+		{
+			return _autoSizePolicy;
+		}
+		
+		/**
+		 * This policy is used to determine which width and height values will be used. If set to NONE then 
+		 * the video's meta data will be read and used. If it is said to AUTOSIZE_STAGE then the stage width 
+		 * and height properties will be used. 
+		 * <br>
+		 * @param value The String constant found on the Player class indicating which autosize policy to use.
+		 */
+		public function set autoSizePolicy( value:String ):void
+		{
+			_autoSizePolicy = value;
+		}
+		
 		/**
 		 * Parse the media type of the uri. Will always return the last match in the regex expression. 
 		 * This is to include filenames. 
@@ -471,18 +491,29 @@ package com.wezside.components.media.player
 		private function mediaMetaData( event:MediaEvent ):void
 		{
 			var meta:MediaMeta = event.data as MediaMeta;
+			var w:int = meta.width;
+			var h:int = meta.height;
 			
+			if ( autoSizePolicy == Player.AUTOSIZE_STAGE )
+			{
+				w = stage.stageWidth;
+				h = stage.stageHeight;
+			}
 			
-			IPlayerDisplay( display ).displayWidth = meta.width;
-			IPlayerDisplay( display ).displayHeight = meta.height;
-			
+			// Display doesn't need arrange() to be invoked as the display height 
+			// and width values are simply used for Player layout purposes.
+			IPlayerDisplay( display ).displayWidth = w;
+			IPlayerDisplay( display ).displayHeight = h;
+						
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			var object:IPlayerControl;
 			while ( it.hasNext() )
 			{
 				object = it.next() as IPlayerControl;
-				object.displayWidth = meta.width;
-				object.displayHeight = meta.height;
+				if ( !object.autoSize ) continue;
+				object.displayWidth = w;
+				object.displayHeight = h;
+				object.arrange();
 			}
 			it.purge();
 			it = null;
@@ -547,6 +578,7 @@ package com.wezside.components.media.player
 			dispatchEvent( event );
 			media.seekTo( 0.01 );
 			media.pause();			
+			enterFrame();
 		}
 
 		/**

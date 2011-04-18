@@ -29,10 +29,8 @@ package com.wezside.components.media.player.element.indicator
 		}
 			
 		override public function build():void
-		{						
-
-			trace( "width", width );
-			if ( bar ) bar.purge();
+		{									
+			trace( "IndicatorProgress.build()", width );
 			bar = new UIElement();
 			bar.background = new ShapeRectangle( bar );
 			bar.background.width = width;
@@ -46,14 +44,6 @@ package com.wezside.components.media.player.element.indicator
 			bar.mouseChildren = false;
 			addChild( bar );
 						
-			if ( progress )
-			{
-				progress.removeEventListener( MouseEvent.CLICK, click );
-				progress.removeEventListener( MouseEvent.ROLL_OVER, rollOver );
-				progress.removeEventListener( MouseEvent.ROLL_OUT, rollOut );
-				progress.graphics.clear();
-				progress = null;
-			}
 			progress = new Sprite();
 			progress.graphics.beginFill( 0, 1 );
 			progress.graphics.drawRect( 0, 0, width, 20 );
@@ -63,7 +53,6 @@ package com.wezside.components.media.player.element.indicator
 			progress.addEventListener( MouseEvent.ROLL_OUT, rollOut );
 			addChild( progress );
 						
-			if ( handle ) handle.purge();
 			handle = new UIElement();
 			handle.background = new ShapeRectangle( handle );
 			handle.background.width = 2;
@@ -79,6 +68,16 @@ package com.wezside.components.media.player.element.indicator
 			addChild( handle );			
 						
 			super.build();
+		}
+	
+		override public function arrange():void
+		{
+			super.arrange();
+			
+			trace( "IndicatorProgress.arrange()", width );
+			bar.background.width = width;
+			bar.background.arrange();
+			progress.width = width;
 		}
 
 		override public function purge(): void 
@@ -114,16 +113,16 @@ package com.wezside.components.media.player.element.indicator
 
 		private function mouseMove( event:MouseEvent ):void
 		{
-			handle.x = int( event.localX );
+			handle.x = int( event.localX * progress.scaleX );
 		}
 
 		private function click( event:MouseEvent ):void
 		{
 			if ( media )
 			{
-				seconds = event.localX / width * media.totalTime;
+				seconds = event.localX  * progress.scaleX / width * media.totalTime;
 				handle.visible = true;
-				handle.x = int( event.localX );
+				handle.x = int( event.localX  * progress.scaleX );
 				dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, { id: "progress", seconds: seconds }));
 			}
 		}

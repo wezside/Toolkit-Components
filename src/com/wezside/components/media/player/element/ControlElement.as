@@ -30,11 +30,7 @@ package com.wezside.components.media.player.element
 		public function build():void
 		{
 			if ( decorated is IControlElement ) 
-			{
-				decorated.width = width;
-				decorated.height = height;
 				IControlElement( decorated ).build();
-			}
 		}
 
 		public function arrange():void
