@@ -13,6 +13,8 @@ package com.wezside.components.media.player.element
 		private var _displayWidth:int;
 		private var _element:IControlElement;
 		private var _displayHeight:int;
+		private var _autoSize:Boolean;
+		
 		
 				
 		public function PlayerControl() 
@@ -38,6 +40,16 @@ package com.wezside.components.media.player.element
 			_element.state = value;
 		}
 		
+		public function get autoSize():Boolean
+		{
+			return _autoSize;
+		}
+		
+		public function set autoSize( value:Boolean ):void
+		{
+			_autoSize = value;
+		}
+		
 		public function get element():IControlElement
 		{
 			return _element;
@@ -51,8 +63,11 @@ package com.wezside.components.media.player.element
 		public function set displayWidth( value:int ):void 
 		{
 			_displayWidth = value;
-			_element.width = _displayWidth;
-			_element.build();
+			if ( _autoSize )
+			{
+				_element.width = _displayWidth;
+				_element.build();
+			}
 		}
 		
 		public function get displayWidth():int
@@ -68,6 +83,11 @@ package com.wezside.components.media.player.element
 		public function set displayHeight( value:int ):void
 		{
 			_displayHeight = value;
+			if ( _autoSize )
+			{
+				_element.height = _displayHeight;
+				_element.build();
+			}			
 		}
 
 		/**

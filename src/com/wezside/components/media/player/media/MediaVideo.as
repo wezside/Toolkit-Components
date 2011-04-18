@@ -50,7 +50,6 @@ package com.wezside.components.media.player.media
 
 		override public function get currentTime():Number
 		{
-			trace( "currentTime", playing )
 			return !playing ? super.currentTime : stream.time;
 		}
 

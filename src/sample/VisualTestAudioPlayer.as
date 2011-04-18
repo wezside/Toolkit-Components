@@ -1,5 +1,6 @@
 package sample
 {
+	import com.wezside.components.media.player.element.indicator.IndicatorCurrentTime;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.Player;
@@ -48,6 +49,7 @@ package sample
 			
 			// Basic controls
 			basic = new PlayerControl();
+			basic.autoSize = true;
 			basic.layout = new HorizontalLayout( basic );
 			basic.decorate( PlayButton, "", "PLAY" );
 			basic.decorate( PauseButton );
@@ -61,9 +63,11 @@ package sample
 			
 			// Indicator control
 			indicator = new PlayerControl();
-			indicator.decorate( IndicatorProgress, null, null, null, null, true );
-			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
-			indicator.decorate( IndicatorPlayback, null, null, null, null, true );
+			indicator.autoSize = true;
+			indicator.decorate( IndicatorProgress, null, null, 200, 20, true );
+			indicator.decorate( IndicatorBuffer, null, null, 200, 20, true );
+			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
+			indicator.decorate( IndicatorPlayback, null, null, 200, 20, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -72,6 +76,7 @@ package sample
 			// The FLV Display to use
 			display = new PlayerDisplay();
 			display.addMediaType( Player.FLV );
+			display.addMediaType( Player.MP4 );
 			display.build();
 			display.setStyle();
 			display.arrange();
@@ -95,11 +100,11 @@ package sample
 			var video:IMediaResource = new MediaResource();
 			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
 			video.autoPlay = true;
-//			video.bufferTime = 5;
+			video.bufferTime = 5;
 			
 			var videoMov:IMediaResource = new MediaResource();
 			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
-			videoMov.autoPlay = true;
+			videoMov.autoPlay = false;
 			
 			var video2:IMediaResource = new MediaResource();
 			video2.uri = "http://helpexamples.com/flash/video/water.flv";

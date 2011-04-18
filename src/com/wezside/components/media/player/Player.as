@@ -540,8 +540,7 @@ package com.wezside.components.media.player
 			event.stopImmediatePropagation();
 			dispatchEvent( event );
 			media.seekTo( 0.01 );
-			media.pause();
-			
+			media.pause();			
 		}
 
 		/**
