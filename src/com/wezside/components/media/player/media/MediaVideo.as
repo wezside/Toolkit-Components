@@ -120,6 +120,18 @@ package com.wezside.components.media.player.media
 		{
 			return stream.bytesLoaded / stream.bytesTotal;
 		}
+	
+		override public function set width( value:Number ):void
+		{
+			if ( video ) video.width = value;
+			super.width;
+		}
+	
+		override public function set height( value:Number ):void
+		{
+			if ( video ) video.height = value;
+			super.height;
+		}
 
 		public function onXMPData( info:Object ):void
 		{
@@ -129,8 +141,8 @@ package com.wezside.components.media.player.media
 		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
-			video.width = info.width;
-			video.height = info.height;
+//			video.width = info.width;
+//			video.height = info.height;
 			resource.meta = new MediaMeta();
 			for ( var a:String in info )
 				if ( resource.meta.hasOwnProperty( a ))

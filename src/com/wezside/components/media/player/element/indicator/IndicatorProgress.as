@@ -30,12 +30,11 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{									
-			trace( "IndicatorProgress.build()", width );
 			bar = new UIElement();
 			bar.background = new ShapeRectangle( bar );
 			bar.background.width = width;
 			bar.background.height = 20;
-			bar.background.colours = [ 0xff0000, 0xff0000 ];
+			bar.background.colours = [ 0x1c1c1c, 0x1c1c1c ];
 			bar.background.alphas = [ 1, 1 ];
 			bar.build();
 			bar.setStyle();
@@ -45,7 +44,7 @@ package com.wezside.components.media.player.element.indicator
 			addChild( bar );
 						
 			progress = new Sprite();
-			progress.graphics.beginFill( 0, 1 );
+			progress.graphics.beginFill( 0x73141B, 1 );
 			progress.graphics.drawRect( 0, 0, width, 20 );
 			progress.graphics.endFill();
 			progress.addEventListener( MouseEvent.CLICK, click );
@@ -57,7 +56,7 @@ package com.wezside.components.media.player.element.indicator
 			handle.background = new ShapeRectangle( handle );
 			handle.background.width = 2;
 			handle.background.height = 20;
-			handle.background.colours = [ 0xffee00, 0xffee00 ];
+			handle.background.colours = [ 0x676968, 0x676968];
 			handle.background.alphas = [ 1, 1 ];
 			handle.build();
 			handle.setStyle();
@@ -73,8 +72,6 @@ package com.wezside.components.media.player.element.indicator
 		override public function arrange():void
 		{
 			super.arrange();
-			
-			trace( "IndicatorProgress.arrange()", width );
 			bar.background.width = width;
 			bar.background.arrange();
 			progress.width = width;

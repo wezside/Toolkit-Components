@@ -22,10 +22,8 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{	
-			trace( "IndicatorPlayback.build()", width );
-			
 			bar = new Sprite();
-			bar.graphics.beginFill( 0xffffff );
+			bar.graphics.beginFill( 0xFFFFFF );
 			bar.graphics.drawRect(0, 0, 2, 20 );
 			bar.graphics.endFill();
 			addChild( bar );
@@ -42,8 +40,7 @@ package com.wezside.components.media.player.element.indicator
 		override public function update( media:IMedia ):void
 		{
 			super.update( media );
-			bar.x = media.currentTime / media.totalTime * width;
-			trace( bar.x );
+			bar.x = Math.round( media.currentTime / media.totalTime * width );
 		}
 			
 		override public function set state( value:String ):void
