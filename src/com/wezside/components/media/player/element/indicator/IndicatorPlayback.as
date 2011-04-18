@@ -22,8 +22,8 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{	
-			if ( width == 0 ) width = 200;
-			if ( bar ) bar.graphics.clear();
+			trace( "IndicatorPlayback.build()", width );
+			
 			bar = new Sprite();
 			bar.graphics.beginFill( 0xffffff );
 			bar.graphics.drawRect(0, 0, 2, 20 );
@@ -33,16 +33,22 @@ package com.wezside.components.media.player.element.indicator
 			mouseEnabled = false;
 			super.build();
 		}
+				
+		override public function arrange():void
+		{
+			super.arrange();
+		}
 			
 		override public function update( media:IMedia ):void
 		{
 			super.update( media );
 			bar.x = media.currentTime / media.totalTime * width;
+			trace( bar.x );
 		}
 			
 		override public function set state( value:String ):void
 		{
-			super.state = value;			
+			super.state = value;
 		}		
 	}
 }

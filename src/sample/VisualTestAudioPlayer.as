@@ -50,6 +50,7 @@ package sample
 			
 			// Basic controls
 			basic = new PlayerControl();
+			basic.autoSize = false;
 			basic.layout = new HorizontalLayout( basic );
 			basic.decorate( PlayButton, "", "PLAY" );
 			basic.decorate( PauseButton );
@@ -64,10 +65,10 @@ package sample
 			// Indicator control
 			indicator = new PlayerControl();
 			indicator.autoSize = true;
-			indicator.decorate( IndicatorProgress, null, null, 400, 20, true );
-			indicator.decorate( IndicatorBuffer, null, null, 400, 20, true );
-			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
-			indicator.decorate( IndicatorPlayback, null, null, 400, 20, true );
+			indicator.decorate( IndicatorProgress, null, null, 200, null, true );
+//			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
+//			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
+			indicator.decorate( IndicatorPlayback, null, null, null, null, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -125,15 +126,16 @@ package sample
 			player.background.colours = [ 0xcccccc, 0xcccccc ];
 			player.background.alphas = [ 1, 1 ];
 			// Player specific properties
-//			player.sizePolicy = Player.SCALE_TO_FIT;
+			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
+			player.autoSizePolicy = Player.AUTOSIZE_NONE;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
-//			player.addChild( playlist );
+			player.addChild( playlist );
 			player.build();
 			player.setStyle();
-//			player.arrange();
+			player.arrange();
 			addChild( player );
 			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
