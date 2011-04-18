@@ -102,7 +102,7 @@ package com.wezside.components.media.player
 		override public function build():void
 		{
 			super.build();
-			
+			trace( "Player.build()" );
 			var it:IIterator = _resources.iterator();
 			var resource:IMediaResource;
 			while ( it.hasNext() )
@@ -496,20 +496,17 @@ package com.wezside.components.media.player
 			
 			if ( autoSizePolicy == Player.AUTOSIZE_STAGE )
 			{
-				w = stage.stageWidth;
-				h = stage.stageHeight;
+				w = stage.stageWidth - layout.left - layout.right;
+				h = stage.stageHeight - layout.top - layout.bottom;
 			}
-			
-			// Display doesn't need arrange() to be invoked as the display height 
-			// and width values are simply used for Player layout purposes.
-			IPlayerDisplay( display ).displayWidth = w;
-			IPlayerDisplay( display ).displayHeight = h;
-						
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			var object:IPlayerControl;
 			while ( it.hasNext() )
 			{
 				object = it.next() as IPlayerControl;
+				// FIXME: Issue here is this line assumes we are using a 
+				// Vertical Layout decorator - any other layout usecase will yield incorrect layout
+				h -= object.height;
 				if ( !object.autoSize ) continue;
 				object.displayWidth = w;
 				object.displayHeight = h;
@@ -518,6 +515,12 @@ package com.wezside.components.media.player
 			it.purge();
 			it = null;
 			object = null;
+			
+			// Display doesn't need arrange() to be invoked as the display height 
+			// and width values are simply used for Player layout purposes.
+			IPlayerDisplay( display ).displayWidth = w;
+			IPlayerDisplay( display ).displayHeight = h;
+						
 			arrange();
 		}		
 

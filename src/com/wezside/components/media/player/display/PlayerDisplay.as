@@ -1,8 +1,10 @@
 package com.wezside.components.media.player.display
 {
 	import com.wezside.components.UIElement;
+	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.IDictionaryCollection;
+	import com.wezside.data.iterator.IIterator;
 	
 	/**
 	 * @author Wesley.Swanepoel
@@ -56,6 +58,17 @@ package com.wezside.components.media.player.display
 		public function set displayHeight( value:int ):void
 		{
 			_displayHeight = value;
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var media:IMedia;
+			while ( it.hasNext() )
+			{
+				media = it.next() as IMedia;
+				if ( !media ) continue;
+				media.height = value;
+			}
+			it.purge();
+			it = null;
+			media = null;
 		}
 		
 		public function get displayWidth():int
@@ -66,6 +79,17 @@ package com.wezside.components.media.player.display
 		public function set displayWidth( value:int ):void
 		{
 			_displayWidth = value;
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var media:IMedia;
+			while ( it.hasNext() )
+			{
+				media = it.next() as IMedia;
+				if ( !media ) continue;
+				media.width = value;
+			}
+			it.purge();
+			it = null;
+			media = null;			
 		}
 
 	}

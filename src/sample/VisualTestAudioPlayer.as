@@ -1,10 +1,9 @@
 package sample
 {
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import com.wezside.components.media.player.element.indicator.IndicatorCurrentTime;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
+	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
+	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.display.PlayerDisplay;
 	import com.wezside.components.media.player.element.PlayerControl;
@@ -15,12 +14,12 @@ package sample
 	import com.wezside.components.media.player.element.control.PlayButton;
 	import com.wezside.components.media.player.element.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.control.SkipToStartButton;
-	import com.wezside.components.media.player.element.indicator.IndicatorBuffer;
 	import com.wezside.components.media.player.element.indicator.IndicatorPlayback;
 	import com.wezside.components.media.player.element.indicator.IndicatorProgress;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -68,7 +67,7 @@ package sample
 			indicator.decorate( IndicatorProgress, null, null, 200, null, true );
 //			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
 //			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
-			indicator.decorate( IndicatorPlayback, null, null, null, null, true );
+			indicator.decorate( IndicatorPlayback, null, null, 20, null, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -115,6 +114,7 @@ package sample
 			var image:IMediaResource = new MediaResource();
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
 			
+			// Build player component
 			player = new Player();
 			player.layout = new VerticalLayout( player );
 			player.layout = new PaddedLayout( player.layout );
@@ -123,11 +123,11 @@ package sample
 			player.layout.bottom = 10;
 			player.layout.left = 10;			
 			player.background = new ShapeRectangle( player );
-			player.background.colours = [ 0xcccccc, 0xcccccc ];
+			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
 			// Player specific properties
 			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
-			player.autoSizePolicy = Player.AUTOSIZE_NONE;
+//			player.autoSizePolicy = Player.AUTOSIZE_NONE;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );
@@ -137,7 +137,7 @@ package sample
 			player.setStyle();
 			player.arrange();
 			addChild( player );
-			player.play( "Sucker Punch - Trailer HD.flv" );
+			player.play( "Sucker Punch - Trailer HD.mp4" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
