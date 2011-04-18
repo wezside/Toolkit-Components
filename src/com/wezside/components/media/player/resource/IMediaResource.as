@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.resource
 {
+	import com.wezside.components.media.player.media.MediaMeta;
 	import flash.system.LoaderContext;
 	/**
 	 * @author Wesley.Swanepoel
@@ -31,6 +32,7 @@ package com.wezside.components.media.player.resource
 		function set quality( value:int ):void;
 		function get bufferTime():Number;
 		function set bufferTime( value:Number ):void;
-
+		function get meta():MediaMeta;
+		function set meta( value:MediaMeta ):void;
 	}
 }

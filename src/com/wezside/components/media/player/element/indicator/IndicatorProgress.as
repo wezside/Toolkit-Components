@@ -1,15 +1,14 @@
 package com.wezside.components.media.player.element.indicator
 {
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.media.player.element.PlayerControlEvent;
-	import flash.events.MouseEvent;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.element.ControlElement;
+	import com.wezside.components.media.player.element.PlayerControlEvent;
 	import com.wezside.components.media.player.media.IMedia;
+
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -21,6 +20,7 @@ package com.wezside.components.media.player.element.indicator
 		private var progress:Sprite;
 		private var bar:UIElement;
 		private var media:IMedia;
+		private var seconds : Number;
 		
 		
 		public function IndicatorProgress( decorated:IUIDecorator )
@@ -30,9 +30,10 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{						
+			if ( bar ) bar.purge();
 			bar = new UIElement();
 			bar.background = new ShapeRectangle( bar );
-			bar.background.width = 200;
+			bar.background.width = width;
 			bar.background.height = 20;
 			bar.background.colours = [ 0xff0000, 0xff0000 ];
 			bar.background.alphas = [ 1, 1 ];
@@ -43,15 +44,24 @@ package com.wezside.components.media.player.element.indicator
 			bar.mouseChildren = false;
 			addChild( bar );
 						
+			if ( progress )
+			{
+				progress.removeEventListener( MouseEvent.CLICK, click );
+				progress.removeEventListener( MouseEvent.ROLL_OVER, rollOver );
+				progress.removeEventListener( MouseEvent.ROLL_OUT, rollOut );
+				progress.graphics.clear();
+				progress = null;
+			}
 			progress = new Sprite();
 			progress.graphics.beginFill( 0, 1 );
-			progress.graphics.drawRect( 0, 0, 200, 20 );
+			progress.graphics.drawRect( 0, 0, width, 20 );
 			progress.graphics.endFill();
 			progress.addEventListener( MouseEvent.CLICK, click );
 			progress.addEventListener( MouseEvent.ROLL_OVER, rollOver );
 			progress.addEventListener( MouseEvent.ROLL_OUT, rollOut );
 			addChild( progress );
 						
+			if ( handle ) handle.purge();
 			handle = new UIElement();
 			handle.background = new ShapeRectangle( handle );
 			handle.background.width = 2;
@@ -65,9 +75,6 @@ package com.wezside.components.media.player.element.indicator
 			handle.mouseEnabled = false;
 			handle.mouseChildren = false;
 			addChild( handle );			
-			
-			width = progress.width;
-			height = progress.height;
 						
 			super.build();
 		}
@@ -80,8 +87,13 @@ package com.wezside.components.media.player.element.indicator
 		override public function update( media:IMedia ):void
 		{
 			this.media = media;
-			progress.width = media.progress * 200;
-			if ( progress.width >= 200 ) flagForUpdate = false;
+			progress.width = media.progress * width;
+			if ( progress.width >= width ) flagForUpdate = false;
+		}
+	
+		override public function set state( value:String ):void
+		{
+			super.state = value;
 		}
 
 		private function rollOut( event:MouseEvent ):void
@@ -101,14 +113,15 @@ package com.wezside.components.media.player.element.indicator
 		private function mouseMove( event:MouseEvent ):void
 		{
 			handle.x = int( event.localX );
-			trace( event.localX, handle.x )
 		}
 
 		private function click( event:MouseEvent ):void
 		{
 			if ( media )
 			{
-				var seconds:Number = event.localX / 200 * media.totalTime;
+				seconds = event.localX / width * media.totalTime;
+				handle.visible = true;
+				handle.x = int( event.localX );
 				dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, { id: "progress", seconds: seconds }));
 			}
 		}

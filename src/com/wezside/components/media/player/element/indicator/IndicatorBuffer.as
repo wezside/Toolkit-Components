@@ -21,7 +21,6 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{
-			
 			label = new Label();
 			label.autoSize = "left";
 			label.text = "";

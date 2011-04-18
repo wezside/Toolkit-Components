@@ -1,5 +1,6 @@
 package com.wezside.components.media.player
 {
+	import com.wezside.components.media.player.media.MediaMeta;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IControlElement;
@@ -184,6 +185,8 @@ package com.wezside.components.media.player
 				{
 					state = STATE_PLAY;
 					media.pause();
+					if ( media.playing && !hasEventListener( Event.ENTER_FRAME ))
+						addEventListener( Event.ENTER_FRAME, enterFrame );										
 				}
 				else trace( "Couldn't play the resource", id, "because it couldn't be found." );
 			}
@@ -191,8 +194,20 @@ package com.wezside.components.media.player
 
 		private function mediaMetaData( event:MediaEvent ):void
 		{
-			IPlayerDisplay( display ).displayWidth = event.data.w;
-			IPlayerDisplay( display ).displayHeight = event.data.h;
+			var meta:MediaMeta = event.data as MediaMeta;
+			IPlayerDisplay( display ).displayWidth = meta.width;
+			IPlayerDisplay( display ).displayHeight = meta.height;
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
+			var object:IPlayerControl;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IPlayerControl;
+				object.displayWidth = meta.width;
+				object.displayHeight = meta.height;
+			}
+			it.purge();
+			it = null;
+			object = null;
 			arrange();
 		}
 
@@ -223,7 +238,9 @@ package com.wezside.components.media.player
 		}
 		
 		/**
-		 * Seek to a specific position within the media. 
+		 * Seek to a specific position within the media. Because the enter frame handle which udpates all ControlElements 
+		 * doesn't get called during the PAUSE state we need to invoke it manually. This is used to update the playhead 
+		 * position for example when seek is used in a paused state. 
 		 * <br>
 		 * @param seconds The seconds to seek to.
 		 */
@@ -240,7 +257,11 @@ package com.wezside.components.media.player
 				media.seekTo( seconds );
 				
 				if ( media.playing ) state = STATE_PLAY;
-				else  state = STATE_PAUSE;
+				else
+				{
+					state = STATE_PAUSE;
+					enterFrame();
+				}
 			}
 			else
 				trace( "No current Media playing." );
@@ -472,14 +493,14 @@ package com.wezside.components.media.player
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
 				else
 				{
-					state = STATE_PLAY;					
+					state = STATE_PLAY;	
 				}
 			}
 			else
 				trace( "Media is ready to be played" );
 		}
 
-		private function enterFrame( event:Event ):void
+		private function enterFrame( event:Event = null ):void
 		{
 			if ( !media )
 			{
@@ -487,6 +508,7 @@ package com.wezside.components.media.player
 				removeEventListener( Event.ENTER_FRAME, enterFrame );
 				return;
 			}
+
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			var control:IPlayerControl;
 			while ( it.hasNext() )
@@ -507,19 +529,19 @@ package com.wezside.components.media.player
 			it.purge();
 			it = null;
 			element = null;	
-			
-			if ( media && media.playbackFinished )
-			{
-				trace( "Media instance playback finished. Remove ENTER_FRAME." );
-				removeEventListener( Event.ENTER_FRAME, enterFrame );
-				dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
-				state = STATE_PAUSE;
-			}
 		}
 
 		private function mediaPlayBackComplete( event:MediaEvent ):void
 		{
-			trace( "Media payback complete ");
+			trace( "Media instance playback finished. Remove ENTER_FRAME." );
+			removeEventListener( Event.ENTER_FRAME, enterFrame );
+			dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
+			state = STATE_PAUSE;
+			event.stopImmediatePropagation();
+			dispatchEvent( event );
+			media.seekTo( 0.01 );
+			media.pause();
+			
 		}
 
 		/**

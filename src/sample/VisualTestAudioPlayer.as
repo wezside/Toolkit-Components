@@ -24,9 +24,6 @@ package sample
 	import flash.events.Event;
 
 
-
-
-
 	/**
 	 * @author Wesley.Swanepoel
 	 */

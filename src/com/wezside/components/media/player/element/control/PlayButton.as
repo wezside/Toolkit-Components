@@ -34,6 +34,11 @@ package com.wezside.components.media.player.element.control
 			button.setStyle();
 			button.arrange();
 			button.activate();
+			if ( super.state == Player.STATE_PLAY )
+			{
+				button.deactivate();
+				button.state = UIElementState.STATE_VISUAL_SELECTED;
+			}
 			addChild( button );			
 			
 			width = button.width;

@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.resource
 {
+	import com.wezside.components.media.player.media.MediaMeta;
 	import flash.system.LoaderContext;
 
 	/**
@@ -20,12 +21,13 @@ package com.wezside.components.media.player.resource
 		private var _context:LoaderContext;
 		private var _autoPlay:Boolean;
 		private var _quality:int;
+		private var _bufferTime:Number;
 
 		public static const QUALITY_DEFAULT:int = 0;
 		public static const QUALITY_LOW:int = 1;
 		public static const QUALITY_MEDIUM:int = 2;
 		public static const QUALITY_HIGH:int = 3;
-		private var _bufferTime:Number;
+		private var _meta:MediaMeta;
 
 		public function MediaResource() 
 		{
@@ -150,6 +152,16 @@ package com.wezside.components.media.player.resource
 		public function set bufferTime( value:Number ):void
 		{
 			_bufferTime = value;
+		}
+
+		public function get meta():MediaMeta
+		{
+			return _meta;
+		}
+
+		public function set meta( value:MediaMeta ):void
+		{
+			_meta = value;
 		}
 	}
 }
