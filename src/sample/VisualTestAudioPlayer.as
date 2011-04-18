@@ -44,8 +44,7 @@ package sample
 		}
 
 		private function stageInit( event:Event ):void
-		{		
-			
+		{			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
@@ -105,7 +104,7 @@ package sample
 			
 			var videoMov:IMediaResource = new MediaResource();
 			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
-			videoMov.autoPlay = false;
+			videoMov.autoPlay = true;
 			
 			var video2:IMediaResource = new MediaResource();
 			video2.uri = "http://helpexamples.com/flash/video/water.flv";
@@ -116,26 +115,26 @@ package sample
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
 			
 			player = new Player();
-			player.layout = new PaddedLayout( player );
+			player.layout = new VerticalLayout( player );
+			player.layout = new PaddedLayout( player.layout );
 			player.layout.top = 10;
 			player.layout.right = 10;
 			player.layout.bottom = 10;
-			player.layout.left = 10;
-			
+			player.layout.left = 10;			
 			player.background = new ShapeRectangle( player );
 			player.background.colours = [ 0xcccccc, 0xcccccc ];
 			player.background.alphas = [ 1, 1 ];
-			player.layout = new VerticalLayout( player.layout );
+			// Player specific properties
+//			player.sizePolicy = Player.SCALE_TO_FIT;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
-//			player.addChild( basic );
+			player.addChild( basic );
 			player.addChild( indicator );
 //			player.addChild( playlist );
 			player.build();
 			player.setStyle();
 //			player.arrange();
 			addChild( player );
-
 			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 

@@ -199,6 +199,7 @@ package com.wezside.components.media.player.media
 					_playbackFinished = false;
 					break;
 				case "NetStream.Play.Stop":
+					_buffering = false;
 					_playbackFinished = true;
 					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 					break;

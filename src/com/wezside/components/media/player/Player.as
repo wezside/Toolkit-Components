@@ -191,26 +191,6 @@ package com.wezside.components.media.player
 				else trace( "Couldn't play the resource", id, "because it couldn't be found." );
 			}
 		}
-
-		private function mediaMetaData( event:MediaEvent ):void
-		{
-			var meta:MediaMeta = event.data as MediaMeta;
-			IPlayerDisplay( display ).displayWidth = meta.width;
-			IPlayerDisplay( display ).displayHeight = meta.height;
-			var it:IIterator = playerElements( IPlayerControl ).iterator();
-			var object:IPlayerControl;
-			while ( it.hasNext() )
-			{
-				object = it.next() as IPlayerControl;
-				object.displayWidth = meta.width;
-				object.displayHeight = meta.height;
-			}
-			it.purge();
-			it = null;
-			object = null;
-			arrange();
-		}
-
 	
 		public function pause( id:String = "" ):void
 		{
@@ -483,6 +463,32 @@ package com.wezside.components.media.player
 			}
 			return id;
 		}			
+
+		/**
+		 * Update the display width and height for all the IPlayerControl elements and
+		 * also for the associated IPlayerDisplay element.
+		 */
+		private function mediaMetaData( event:MediaEvent ):void
+		{
+			var meta:MediaMeta = event.data as MediaMeta;
+			
+			
+			IPlayerDisplay( display ).displayWidth = meta.width;
+			IPlayerDisplay( display ).displayHeight = meta.height;
+			
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
+			var object:IPlayerControl;
+			while ( it.hasNext() )
+			{
+				object = it.next() as IPlayerControl;
+				object.displayWidth = meta.width;
+				object.displayHeight = meta.height;
+			}
+			it.purge();
+			it = null;
+			object = null;
+			arrange();
+		}		
 
 		private function mediaComplete( event:Event ):void
 		{
