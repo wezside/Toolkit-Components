@@ -130,6 +130,9 @@ package com.wezside.components.media.player.media
 		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
+			video.width = info.width;
+			video.height = info.height;
+			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, { w: video.width, h: video.height }));
 		}
 		
 		private function completeHandler( event:Event ):void

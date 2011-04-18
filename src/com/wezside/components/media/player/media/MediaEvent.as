@@ -8,6 +8,7 @@ package com.wezside.components.media.player.media
 	public class MediaEvent extends Event
 	{
 		
+		public static const META:String = "META";
 		public static const COMPLETE:String = "COMPLETE";
 		public static const PROGRESS:String = "PROGRESS";
 		public static const PLAYBACK_COMPLETE:String = "PLAYBACK_COMPLETE";
