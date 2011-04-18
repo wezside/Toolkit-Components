@@ -30,7 +30,8 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{						
-			if ( width == 0 ) width = 200;
+
+			trace( "width", width );
 			if ( bar ) bar.purge();
 			bar = new UIElement();
 			bar.background = new ShapeRectangle( bar );

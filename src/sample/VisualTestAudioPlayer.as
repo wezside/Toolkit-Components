@@ -1,5 +1,7 @@
 package sample
 {
+	import com.wezside.components.decorators.layout.PaddedLayout;
+	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.element.indicator.IndicatorCurrentTime;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
@@ -49,7 +51,6 @@ package sample
 			
 			// Basic controls
 			basic = new PlayerControl();
-			basic.autoSize = true;
 			basic.layout = new HorizontalLayout( basic );
 			basic.decorate( PlayButton, "", "PLAY" );
 			basic.decorate( PauseButton );
@@ -64,10 +65,10 @@ package sample
 			// Indicator control
 			indicator = new PlayerControl();
 			indicator.autoSize = true;
-			indicator.decorate( IndicatorProgress, null, null, 200, 20, true );
-			indicator.decorate( IndicatorBuffer, null, null, 200, 20, true );
+			indicator.decorate( IndicatorProgress, null, null, 400, 20, true );
+			indicator.decorate( IndicatorBuffer, null, null, 400, 20, true );
 			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
-			indicator.decorate( IndicatorPlayback, null, null, 200, 20, true );
+			indicator.decorate( IndicatorPlayback, null, null, 400, 20, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -115,12 +116,21 @@ package sample
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
 			
 			player = new Player();
-			player.layout = new VerticalLayout( player );
+			player.layout = new PaddedLayout( player );
+			player.layout.top = 10;
+			player.layout.right = 10;
+			player.layout.bottom = 10;
+			player.layout.left = 10;
+			
+			player.background = new ShapeRectangle( player );
+			player.background.colours = [ 0xcccccc, 0xcccccc ];
+			player.background.alphas = [ 1, 1 ];
+			player.layout = new VerticalLayout( player.layout );
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
-			player.addChild( basic );
+//			player.addChild( basic );
 			player.addChild( indicator );
-			player.addChild( playlist );
+//			player.addChild( playlist );
 			player.build();
 			player.setStyle();
 //			player.arrange();
