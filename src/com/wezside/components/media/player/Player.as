@@ -488,6 +488,7 @@ package com.wezside.components.media.player
 				object = it.next() as IPlayerControl;
 				// FIXME: Issue here is this line assumes we are using a 
 				// Vertical Layout decorator - any other layout usecase will yield incorrect layout
+				// Will need to detect the Layout decorator and calculate accordingly
 				h -= object.height;
 				if ( !object.autoSize ) continue;
 				object.displayWidth = w;
@@ -498,11 +499,13 @@ package com.wezside.components.media.player
 			it = null;
 			object = null;
 			
-			// Display doesn't need arrange() to be invoked as the display height 
-			// and width values are simply used for Player layout purposes.
+			// Set all the width and height props required to layout the display
+			// based on the policy chosen.
+			IPlayerDisplay( display ).originalWidth = meta.width;
+			IPlayerDisplay( display ).originalHeight = meta.height;
 			IPlayerDisplay( display ).displayWidth = w;
 			IPlayerDisplay( display ).displayHeight = h;
-						
+			IPlayerDisplay( display ).arrange();
 			arrange();
 		}		
 

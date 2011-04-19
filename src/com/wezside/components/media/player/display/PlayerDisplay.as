@@ -1,5 +1,7 @@
 package com.wezside.components.media.player.display
 {
+	import com.wezside.components.decorators.shape.ShapeRectangle;
+	import flash.display.DisplayObject;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.data.collection.DictionaryCollection;
@@ -25,7 +27,47 @@ package com.wezside.components.media.player.display
 		{
 			resizer = new Resizer();
 			types = new DictionaryCollection();	
+			background = new ShapeRectangle( this );
+			background.alphas = [ 1, 1 ];
+			background.colours = [ 0, 0 ];
+			background.autoDetectWidth = false;
+			background.autoDetectHeight = false;
 		}		
+	
+		override public function arrange():void
+		{
+			background.width = _displayWidth;
+			background.height = _displayHeight;
+			super.arrange();
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var media:IMedia;			
+			if ( maintainAspectRatio )
+			{
+				if ( displayWidth > displayHeight )
+				{
+					trace( "Media is LANDSCAPE. Resize to width" );
+					while ( it.hasNext() )
+					{
+						media = it.next() as IMedia;
+						if ( !media ) continue;
+						resizer.resizeToWidth( media as DisplayObject, displayWidth );
+					}					
+				}
+				else
+				{
+					trace( "Media is PORTRAIT. Resize to width" );
+					while ( it.hasNext() )
+					{
+						media = it.next() as IMedia;
+						if ( !media ) continue;
+						resizer.resizeToWidth( media as DisplayObject, displayHeight );
+					}
+				}
+			}	
+			it.purge();
+			it = null;
+			media = null;	
+		}
 
 		public function show():void
 		{
@@ -63,13 +105,14 @@ package com.wezside.components.media.player.display
 		public function set displayHeight( value:int ):void
 		{
 			_displayHeight = value;
+			
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var media:IMedia;
 			while ( it.hasNext() )
 			{
 				media = it.next() as IMedia;
 				if ( !media ) continue;
-				media.height = value;
+				if ( !maintainAspectRatio ) media.height = value;
 			}
 			it.purge();
 			it = null;
@@ -85,21 +128,13 @@ package com.wezside.components.media.player.display
 		{
 			_displayWidth = value;
 			
-			
-			
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var media:IMedia;
 			while ( it.hasNext() )
 			{
 				media = it.next() as IMedia;
 				if ( !media ) continue;
-				
-				if ( maintainAspectRatio )
-				{
-					media.width = value;
-				}
-				else
-					media.width = value;
+				if ( !maintainAspectRatio ) media.width = value;
 			}
 			it.purge();
 			it = null;
@@ -114,6 +149,26 @@ package com.wezside.components.media.player.display
 		public function set maintainAspectRatio( value:Boolean ):void
 		{
 			_maintainAspectRatio = value;
+		}
+
+		public function get originalWidth():int
+		{
+			return resizer.originalWidth;
+		}
+
+		public function set originalWidth( value:int ):void
+		{
+			resizer.originalWidth = value;
+		}
+
+		public function get originalHeight():int
+		{
+			return resizer.originalHeight;
+		}
+
+		public function set originalHeight( value:int ):void
+		{
+			resizer.originalHeight = value;
 		}
 
 	}
