@@ -7,7 +7,8 @@ package com.wezside.components.media.player.display
 	 */
 	public interface IPlayerDisplay extends IPlayerElement
 	{
-		
+		function get maintainAspectRatio():Boolean;
+		function set maintainAspectRatio( value:Boolean ):void;
 		function get displayWidth():int;
 		function set displayWidth( value:int ):void;
 		function get displayHeight():int;

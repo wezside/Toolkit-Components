@@ -15,6 +15,7 @@ package com.wezside.components.media.player.display
 		private var _displayWidth:int;
 		private var _displayHeight:int;
 		private var types:IDictionaryCollection;
+		private var _maintainAspectRatio:Boolean;
 				
 		
 		public function PlayerDisplay() 
@@ -90,6 +91,16 @@ package com.wezside.components.media.player.display
 			it.purge();
 			it = null;
 			media = null;			
+		}
+
+		public function get maintainAspectRatio():Boolean
+		{
+			return _maintainAspectRatio;
+		}
+
+		public function set maintainAspectRatio( value:Boolean ):void
+		{
+			_maintainAspectRatio = value;
 		}
 
 	}
