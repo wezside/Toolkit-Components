@@ -12,5 +12,7 @@ package com.wezside.components.media.player.element
 		function set displayWidth( value:int ):void;
 		function get displayHeight():int;
 		function set displayHeight( value:int ):void;	
+		
+		function hasLayoutDecorator( clazz:Class ):void;
 	}
 }

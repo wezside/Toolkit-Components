@@ -8,6 +8,9 @@ package com.wezside.components.media.player.element
 	 */
 	public interface IControlElement extends IUIDecorator
 	{
+		
+		function get autoSize():Boolean;
+		function set autoSize( value:Boolean ):void;
 		function get state():String;
 		function set state( value:String ):void;
 		function get styleName():String;
