@@ -279,6 +279,11 @@ package com.wezside.components.media.player
 				}
 			}
 		}
+		
+		public function get currentVolume():Number
+		{
+			return media ? media.volume : -1;
+		}
 
 		private function volumeEnterFrame( event:Event ):void
 		{			

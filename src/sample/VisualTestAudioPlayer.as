@@ -55,7 +55,6 @@ package sample
 			basic.decorate( PauseButton );
 			basic.decorate( SkipToStartButton );
 			basic.decorate( SkipToEndButton );
-			basic.decorate( MuteButton );
 			basic.addEventListener( PlayerControlEvent.CLICK, click );
 			basic.build();
 			basic.setStyle();
@@ -63,10 +62,12 @@ package sample
 			
 			// Indicator control
 			indicator = new PlayerControl();
-			indicator.autoSize = true;
+			indicator.layout = new HorizontalLayout( indicator );
+			indicator.autoSize = false;
 			indicator.decorate( IndicatorProgress, null, null, 200, null, true );
 //			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
 //			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
+			indicator.decorate( MuteButton );
 			indicator.decorate( IndicatorPlayback, null, null, 20, null, true );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
@@ -126,7 +127,7 @@ package sample
 			player.background = new ShapeRectangle( player );
 			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
-			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
+//			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );
@@ -136,7 +137,7 @@ package sample
 			player.setStyle();
 			player.arrange();
 			addChild( player );
-			player.play( "Sucker Punch - Trailer HD.mp4" );
+			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
@@ -156,7 +157,7 @@ package sample
 					player.seek( player.totalTime );
 					
 				if ( event.target.id == "mute" )
-					player.volume( event.data ? 0 : 1, 1 );
+					player.volume( event.data ? 0 : player.currentVolume, 1 );
 			}
 			if ( event.data && event.data.id == "progress" )
 			{
