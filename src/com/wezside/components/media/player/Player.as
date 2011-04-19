@@ -33,7 +33,7 @@ package com.wezside.components.media.player
 	 *  
 	 * @author Wesley.Swanepoel
 	 */
-	public class Player extends UIElement implements IPlayerDisplay
+	public class Player extends UIElement
 	{
 		public static const AUTOSIZE_NONE:String = "AUTOSIZE_NONE";
 		public static const AUTOSIZE_STAGE:String = "AUTOSIZE_STAGE";
@@ -373,24 +373,6 @@ package com.wezside.components.media.player
 			visible = false;
 		}		
 
-		/**
-		 * This method is not applicable to this class.
-		 * @return Empty string
-		 */
-		public function find( mediaType:String ):String
-		{
-			return "";
-		}
-		
-		/**
-		 * This method is not applicable to this class.
-		 */
-		public function addMediaType( id:String ):void
-		{
-			throw new Error( "The Player class is the default IPlayerDisplay and doesn't allow specific media type associations. To add a specific media type, you have to create " +
-							 "a new IPlayerDisplay class and add it as a child of the Player instance. " );
-		}		
-
 		public function get resources():ICollection
 		{
 			return _resources;
@@ -583,37 +565,6 @@ package com.wezside.components.media.player
 			media.pause();			
 			enterFrame();
 		}
-
-		/**
-		 * Not used.
-		 */
-		public function get displayWidth():int
-		{
-			return 0;
-		}
-
-		/**
-		 * Not used.
-		 */
-		public function set displayWidth( value:int ):void
-		{
-		}
-
-		/**
-		 * Not used.
-		 */
-		public function get displayHeight():int
-		{
-			return 0;
-		}
-
-		/**
-		 * Not used.
-		 */
-		public function set displayHeight( value:int ):void
-		{
-		}
-
 	}
 }
 
