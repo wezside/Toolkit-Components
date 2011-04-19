@@ -20,7 +20,8 @@ package com.wezside.components.media.player.element.indicator
 		private var progress:Sprite;
 		private var bar:UIElement;
 		private var media:IMedia;
-		private var seconds : Number;
+		private var seconds:Number;
+		private var playbackBar:Sprite;
 		
 		
 		public function IndicatorProgress( decorated:IUIDecorator )
@@ -65,6 +66,12 @@ package com.wezside.components.media.player.element.indicator
 			handle.mouseEnabled = false;
 			handle.mouseChildren = false;
 			addChild( handle );			
+			
+			playbackBar = new Sprite();
+			playbackBar.graphics.beginFill( 0xFFFFFF );
+			playbackBar.graphics.drawRect(0, 0, 2, 20 );
+			playbackBar.graphics.endFill();
+			addChild( playbackBar );			
 						
 			super.build();
 		}
@@ -87,6 +94,7 @@ package com.wezside.components.media.player.element.indicator
 			this.media = media;
 			progress.width = media.progress * width;
 			if ( progress.width >= width ) flagForUpdate = false;
+			playbackBar.x = media.currentTime / media.totalTime * width;			
 		}
 	
 		override public function set state( value:String ):void

@@ -1,5 +1,7 @@
 package com.wezside.components.media.player.element
 {
+	import com.wezside.data.collection.Collection;
+	import com.wezside.data.collection.ICollection;
 	import com.wezside.components.UIElement;
 	import com.wezside.data.iterator.IIterator;
 
@@ -71,19 +73,38 @@ package com.wezside.components.media.player.element
 			addChild( _element as DisplayObject );
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function set displayWidth( value:int ):void 
 		{
 			_displayWidth = value;
-			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			
+			// Get all non autoSize elements
+			var w:Number = 0;
+			var it:IIterator = autoSizeElements( false ).iterator();
 			var element:IControlElement;
 			while ( it.hasNext() )
 			{
 				element = it.next() as IControlElement;
-				if ( element.autoSize ) element.width = value;
+				w += element.width;
 			}
 			it.purge();
 			it = null;
 			element = null;
+			
+			// Get all autoSize elements
+			var remainingWidth:Number = _displayWidth - w;
+			it = autoSizeElements( true ).iterator();
+			while ( it.hasNext() )
+			{
+				element = it.next() as IControlElement;
+				element.width = int( remainingWidth / it.length() );
+			}
+			it.purge();
+			it = null;
+			element = null;			
+			
 		}
 		
 		public function get displayWidth():int
@@ -99,16 +120,47 @@ package com.wezside.components.media.player.element
 		public function set displayHeight( value:int ):void
 		{
 			_displayHeight = value;
+			
+			// Get all non autoSize elements
+			var h:Number = 0;
+			var it:IIterator = autoSizeElements( false ).iterator();
+			var element:IControlElement;
+			while ( it.hasNext() )
+			{
+				element = it.next() as IControlElement;
+				h += element.height;
+			}
+			it.purge();
+			it = null;
+			element = null;
+			
+			// Get all autoSize elements
+			var remainingHeight:Number = _displayHeight - h;
+			it = autoSizeElements( true ).iterator();
+			while ( it.hasNext() )
+			{
+				element = it.next() as IControlElement;
+				element.height = int( remainingHeight / it.length() );
+			}
+			it.purge();
+			it = null;
+			element = null;	
+		}
+		
+		private function autoSizeElements( value:Boolean ):ICollection
+		{
+			var collection:ICollection = new Collection();
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var element:IControlElement;
 			while ( it.hasNext() )
 			{
 				element = it.next() as IControlElement;
-				if ( element.autoSize ) element.height = value;
+				if ( element.autoSize == value ) collection.addElement( element );
 			}
 			it.purge();
 			it = null;
-			element = null;
+			element = null;			
+			return collection;
 		}
 	}
 }
