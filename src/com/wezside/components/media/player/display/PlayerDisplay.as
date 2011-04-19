@@ -5,6 +5,7 @@ package com.wezside.components.media.player.display
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
+	import com.wezside.utilities.imaging.Resizer;
 	
 	/**
 	 * @author Wesley.Swanepoel
@@ -14,12 +15,15 @@ package com.wezside.components.media.player.display
 		
 		private var _displayWidth:int;
 		private var _displayHeight:int;
-		private var types:IDictionaryCollection;
 		private var _maintainAspectRatio:Boolean;
+		
+		private var resizer:Resizer;
+		private var types:IDictionaryCollection;
 				
 		
 		public function PlayerDisplay() 
 		{
+			resizer = new Resizer();
 			types = new DictionaryCollection();	
 		}		
 
@@ -80,13 +84,22 @@ package com.wezside.components.media.player.display
 		public function set displayWidth( value:int ):void
 		{
 			_displayWidth = value;
+			
+			
+			
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var media:IMedia;
 			while ( it.hasNext() )
 			{
 				media = it.next() as IMedia;
 				if ( !media ) continue;
-				media.width = value;
+				
+				if ( maintainAspectRatio )
+				{
+					media.width = value;
+				}
+				else
+					media.width = value;
 			}
 			it.purge();
 			it = null;

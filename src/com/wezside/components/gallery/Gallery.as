@@ -23,7 +23,6 @@
  */
 package com.wezside.components.gallery 
 {
-	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.decorators.layout.DistributeLayout;
@@ -38,12 +37,13 @@ package com.wezside.components.gallery
 	import com.wezside.components.gallery.item.ReflectionItem;
 	import com.wezside.components.gallery.transition.IGalleryTransition;
 	import com.wezside.data.collection.Collection;
+	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.date.DateUtil;
 	import com.wezside.utilities.file.FileUtil;
-	import com.wezside.utilities.imaging.ImageResize;
+	import com.wezside.utilities.imaging.Resizer;
 	import com.wezside.utilities.logging.Tracer;
 
 	import flash.display.Bitmap;
@@ -646,7 +646,7 @@ package com.wezside.components.gallery
 		private function resize( object:DisplayObject, policy:String ):DisplayObject
 		{
 			var value:int = _resizePolicy == Gallery.RESIZE_HEIGHT ? _thumbHeight : _thumbWidth;			
-			var resizeUtil:ImageResize = new ImageResize();
+			var resizeUtil:Resizer = new Resizer();
 			if ( policy == RESIZE_HEIGHT && value != -1 ) object = resizeUtil.resizeToHeight( object, value );
 			if ( policy == RESIZE_WIDTH && value != -1 ) object = resizeUtil.resizeToWidth( object, value );
 			resizeUtil = null;		 
