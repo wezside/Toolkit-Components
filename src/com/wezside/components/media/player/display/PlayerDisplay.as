@@ -30,43 +30,49 @@ package com.wezside.components.media.player.display
 			background = new ShapeRectangle( this );
 			background.alphas = [ 1, 1 ];
 			background.colours = [ 0, 0 ];
-			background.autoDetectWidth = false;
-			background.autoDetectHeight = false;
 		}		
 	
+		/**
+		 * The condition displayWidth and displayHeight properties need to be set 
+		 * before the arrange should be called. This is to ensure the background get 
+		 * the correct values.
+		 */
 		override public function arrange():void
 		{
-			background.width = _displayWidth;
-			background.height = _displayHeight;
-			super.arrange();
-			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-			var media:IMedia;			
-			if ( maintainAspectRatio )
+			if ( _displayWidth != 0 && _displayHeight != 0 )
 			{
-				if ( displayWidth > displayHeight )
+				background.width = _displayWidth;
+				background.height = _displayHeight;
+				super.arrange();
+				var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+				var media:IMedia;			
+				if ( maintainAspectRatio )
 				{
-					trace( "Media is LANDSCAPE. Resize to width" );
-					while ( it.hasNext() )
+					if ( displayWidth > displayHeight )
 					{
-						media = it.next() as IMedia;
-						if ( !media ) continue;
-						resizer.resizeToWidth( media as DisplayObject, displayWidth );
-					}					
-				}
-				else
-				{
-					trace( "Media is PORTRAIT. Resize to width" );
-					while ( it.hasNext() )
-					{
-						media = it.next() as IMedia;
-						if ( !media ) continue;
-						resizer.resizeToWidth( media as DisplayObject, displayHeight );
+						while ( it.hasNext() )
+						{
+							media = it.next() as IMedia;
+							if ( !media ) continue;
+							resizer.resizeToWidth( media as DisplayObject, displayWidth );
+							resizer.distribute( media as DisplayObject, displayHeight, Resizer.DISTRIBUTE_TO_HEIGHT );
+						}
 					}
-				}
-			}	
-			it.purge();
-			it = null;
-			media = null;	
+					else
+					{
+						while ( it.hasNext() )
+						{
+							media = it.next() as IMedia;
+							if ( !media ) continue;
+							resizer.resizeToWidth( media as DisplayObject, displayHeight );
+							resizer.distribute( media as DisplayObject, displayHeight, Resizer.DISTRIBUTE_TO_HEIGHT );
+						}
+					}
+				}	
+				it.purge();
+				it = null;
+				media = null;
+			}
 		}
 
 		public function show():void

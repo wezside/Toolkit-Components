@@ -474,8 +474,7 @@ package com.wezside.components.media.player
 		{
 			var meta:MediaMeta = event.data as MediaMeta;
 			var w:int = meta.width;
-			var h:int = meta.height;
-			
+			var h:int = meta.height;			
 			if ( autoSizePolicy == Player.AUTOSIZE_STAGE )
 			{
 				w = stage.stageWidth - layout.left - layout.right;
