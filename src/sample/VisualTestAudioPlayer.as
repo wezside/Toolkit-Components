@@ -14,7 +14,6 @@ package sample
 	import com.wezside.components.media.player.element.control.PlayButton;
 	import com.wezside.components.media.player.element.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.control.SkipToStartButton;
-	import com.wezside.components.media.player.element.indicator.IndicatorPlayback;
 	import com.wezside.components.media.player.element.indicator.IndicatorProgress;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
@@ -68,12 +67,10 @@ package sample
 			indicator.element = new IndicatorProgress( indicator );
 			indicator.element.width = 200;
 			indicator.element.autoSize = true;
+			indicator.element.flagForUpdate = true;
 			indicator.element = new MuteButton( indicator.element );
 			indicator.element.width = 200;
 			indicator.element.autoSize = false;
-			indicator.element = new IndicatorPlayback( indicator.element );
-			indicator.element.width = 2;
-			indicator.element.autoSize = true;
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
