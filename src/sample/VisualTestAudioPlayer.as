@@ -81,7 +81,7 @@ package sample
 			
 			// The FLV Display to use
 			display = new PlayerDisplay();
-			display.maintainAspectRatio = false;
+			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
 			display.build();
