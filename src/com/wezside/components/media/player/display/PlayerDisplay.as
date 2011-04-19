@@ -46,7 +46,7 @@ package com.wezside.components.media.player.display
 				super.arrange();
 				var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 				var media:IMedia;			
-				if ( maintainAspectRatio )
+				if ( maintainAspectRatio && ( displayWidth != originalWidth || displayHeight != originalHeight ))
 				{
 					if ( displayWidth > displayHeight )
 					{
