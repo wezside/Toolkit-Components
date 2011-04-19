@@ -75,6 +75,7 @@ package sample
 			
 			// The FLV Display to use
 			display = new PlayerDisplay();
+			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
 			display.build();
@@ -125,9 +126,7 @@ package sample
 			player.background = new ShapeRectangle( player );
 			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
-			// Player specific properties
 			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
-//			player.autoSizePolicy = Player.AUTOSIZE_NONE;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );
@@ -137,7 +136,7 @@ package sample
 			player.setStyle();
 			player.arrange();
 			addChild( player );
-			player.play( "Sucker Punch - Trailer HD.mp4" );
+			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
