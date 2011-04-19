@@ -501,13 +501,14 @@ package com.wezside.components.media.player
 				// Only if a vertical layout is applied to the Player
 				if ( hasLayoutDecorator( layout, VerticalLayout ))
 					h -= object.height;
+				
 				// Only if a horizontal layout is applied to the Player
 				if ( hasLayoutDecorator( layout, HorizontalLayout ))
 					w -= object.width;				
 				
 				if ( !object.autoSize ) continue;
-				object.displayWidth = w;
-				object.displayHeight = h;
+				if ( hasLayoutDecorator( layout, VerticalLayout )) object.displayWidth = w;
+				if ( hasLayoutDecorator( layout, HorizontalLayout )) object.displayHeight = h;
 				object.arrange();
 			}
 			it.purge();

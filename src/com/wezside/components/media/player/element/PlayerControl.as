@@ -1,8 +1,10 @@
 package com.wezside.components.media.player.element
 {
+	import com.wezside.components.UIElement;
+	import com.wezside.components.decorators.layout.HorizontalLayout;
+	import com.wezside.components.decorators.layout.ILayout;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
-	import com.wezside.components.UIElement;
 	import com.wezside.data.iterator.IIterator;
 
 	import flash.display.DisplayObject;
@@ -82,16 +84,22 @@ package com.wezside.components.media.player.element
 			
 			// Get all non autoSize elements
 			var w:Number = 0;
-			var it:IIterator = autoSizeElements( false ).iterator();
-			var element:IControlElement;
-			while ( it.hasNext() )
+			
+			// Only deduct the non-autosize elements width if the layout
+			// is HorizontalLayout
+			if ( hasLayoutDecorator( layout, HorizontalLayout ))
 			{
-				element = it.next() as IControlElement;
-				w += element.width;
+				var it:IIterator = autoSizeElements( false ).iterator();
+				var element:IControlElement;
+				while ( it.hasNext() )
+				{
+					element = it.next() as IControlElement;
+					w += element.width;
+				}
+				it.purge();
+				it = null;
+				element = null;
 			}
-			it.purge();
-			it = null;
-			element = null;
 			
 			// Get all autoSize elements
 			var remainingWidth:Number = _displayWidth - w;
@@ -145,6 +153,18 @@ package com.wezside.components.media.player.element
 			it.purge();
 			it = null;
 			element = null;	
+		}
+
+		public function hasLayoutDecorator( layout:ILayout, decorator:Class ):Boolean
+		{
+			if ( layout is decorator ) return true;
+			var result:Boolean;
+			var chainLayout:ILayout = layout.chain();
+			if ( chainLayout )
+				result = hasLayoutDecorator( chainLayout, decorator );
+			else
+				result = layout is decorator;
+			return result;
 		}
 		
 		private function autoSizeElements( value:Boolean ):ICollection

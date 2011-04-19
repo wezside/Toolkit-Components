@@ -54,7 +54,6 @@ package sample
 			basic.element.data = "PLAY";
 			basic.element = new PauseButton( basic.element );
 			basic.element = new SkipToStartButton( basic.element );
-			basic.element = new SkipToEndButton( basic.element );
 			basic.addEventListener( PlayerControlEvent.CLICK, click );
 			basic.build();
 			basic.setStyle();
@@ -62,15 +61,16 @@ package sample
 			
 			// Indicator control
 			indicator = new PlayerControl();
-			indicator.layout = new HorizontalLayout( indicator );
 			indicator.autoSize = true;
+			indicator.layout = new HorizontalLayout( indicator );
 			indicator.element = new IndicatorProgress( indicator );
-			indicator.element.width = 200;
+			indicator.element.width = 50;
+			indicator.element.height = 20;
 			indicator.element.autoSize = true;
 			indicator.element.flagForUpdate = true;
 			indicator.element = new MuteButton( indicator.element );
 			indicator.element.width = 200;
-			indicator.element.autoSize = false;
+			indicator.element = new SkipToEndButton( indicator.element );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -78,7 +78,7 @@ package sample
 			
 			// The FLV Display to use
 			display = new PlayerDisplay();
-//			display.maintainAspectRatio = true;
+			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
 			display.build();
