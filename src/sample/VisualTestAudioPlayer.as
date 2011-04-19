@@ -136,7 +136,7 @@ package sample
 			player.setStyle();
 			player.arrange();
 			addChild( player );
-			player.play( "Sucker Punch - Trailer HD.flv" );
+			player.play( "Sucker Punch - Trailer HD.mp4" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
