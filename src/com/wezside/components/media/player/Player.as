@@ -1,7 +1,9 @@
 package com.wezside.components.media.player
 {
-	import com.wezside.components.media.player.media.MediaMeta;
 	import com.wezside.components.UIElement;
+	import com.wezside.components.decorators.layout.HorizontalLayout;
+	import com.wezside.components.decorators.layout.ILayout;
+	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.media.player.display.IPlayerDisplay;
 	import com.wezside.components.media.player.element.IControlElement;
 	import com.wezside.components.media.player.element.IPlayerControl;
@@ -11,6 +13,7 @@ package com.wezside.components.media.player
 	import com.wezside.components.media.player.media.MediaAudio;
 	import com.wezside.components.media.player.media.MediaEvent;
 	import com.wezside.components.media.player.media.MediaImage;
+	import com.wezside.components.media.player.media.MediaMeta;
 	import com.wezside.components.media.player.media.MediaSWF;
 	import com.wezside.components.media.player.media.MediaVideo;
 	import com.wezside.components.media.player.media.MediaVimeo;
@@ -21,6 +24,7 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.events.Event;
 
 
@@ -473,7 +477,9 @@ package com.wezside.components.media.player
 
 		/**
 		 * Update the display width and height for all the IPlayerControl elements and
-		 * also for the associated IPlayerDisplay element.
+		 * also for the associated IPlayerDisplay element. The values will be determined 
+		 * by the autoSizePolicy set. The calculation will also be impacted by the layout
+		 * decorators used to determine what the display width and height should be.
 		 */
 		private function mediaMetaData( event:MediaEvent ):void
 		{
@@ -490,10 +496,15 @@ package com.wezside.components.media.player
 			while ( it.hasNext() )
 			{
 				object = it.next() as IPlayerControl;
-				// FIXME: Issue here is this line assumes we are using a 
-				// Vertical Layout decorator - any other layout usecase will yield incorrect layout
-				// Will need to detect the Layout decorator and calculate accordingly
-				h -= object.height;
+				
+				// Deduct the height of all the IPlayerControl elements present
+				// Only if a vertical layout is applied to the Player
+				if ( hasLayoutDecorator( layout, VerticalLayout ))
+					h -= object.height;
+				// Only if a horizontal layout is applied to the Player
+				if ( hasLayoutDecorator( layout, HorizontalLayout ))
+					w -= object.width;				
+				
 				if ( !object.autoSize ) continue;
 				object.displayWidth = w;
 				object.displayHeight = h;
@@ -512,6 +523,18 @@ package com.wezside.components.media.player
 			IPlayerDisplay( display ).arrange();
 			arrange();
 		}		
+		
+		public function hasLayoutDecorator( layout:ILayout, decorator:Class ):Boolean
+		{
+			if ( layout is decorator ) return true;
+			var result:Boolean;
+			var chainLayout:ILayout = layout.chain();
+			if ( chainLayout )
+				result = hasLayoutDecorator( chainLayout, decorator );
+			else
+				result = layout is decorator;
+			return result;
+		}
 
 		private function mediaComplete( event:Event ):void
 		{

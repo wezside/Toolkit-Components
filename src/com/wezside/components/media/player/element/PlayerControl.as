@@ -79,7 +79,6 @@ package com.wezside.components.media.player.element
 			while ( it.hasNext() )
 			{
 				element = it.next() as IControlElement;
-				trace( element, element.autoSize );
 				if ( element.autoSize ) element.width = value;
 			}
 			it.purge();
@@ -110,10 +109,6 @@ package com.wezside.components.media.player.element
 			it.purge();
 			it = null;
 			element = null;
-		}
-
-		public function hasLayoutDecorator( clazz:Class ):void
-		{
 		}
 	}
 }
