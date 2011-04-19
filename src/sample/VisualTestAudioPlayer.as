@@ -51,10 +51,11 @@ package sample
 			basic = new PlayerControl();
 			basic.autoSize = false;
 			basic.layout = new HorizontalLayout( basic );
-			basic.decorate( PlayButton, "", "PLAY" );
-			basic.decorate( PauseButton );
-			basic.decorate( SkipToStartButton );
-			basic.decorate( SkipToEndButton );
+			basic.element = new PlayButton( basic );
+			basic.element.data = "PLAY";
+			basic.element = new PauseButton( basic.element );
+			basic.element = new SkipToStartButton( basic.element );
+			basic.element = new SkipToEndButton( basic.element );
 			basic.addEventListener( PlayerControlEvent.CLICK, click );
 			basic.build();
 			basic.setStyle();
@@ -63,12 +64,16 @@ package sample
 			// Indicator control
 			indicator = new PlayerControl();
 			indicator.layout = new HorizontalLayout( indicator );
-			indicator.autoSize = false;
-			indicator.decorate( IndicatorProgress, null, null, 200, null, true );
-//			indicator.decorate( IndicatorBuffer, null, null, null, null, true );
-//			indicator.decorate( IndicatorCurrentTime, null, null, null, null, true );
-			indicator.decorate( MuteButton );
-			indicator.decorate( IndicatorPlayback, null, null, 20, null, true );
+			indicator.autoSize = true;
+			indicator.element = new IndicatorProgress( indicator );
+			indicator.element.width = 200;
+			indicator.element.autoSize = true;
+			indicator.element = new MuteButton( indicator.element );
+			indicator.element.width = 200;
+			indicator.element.autoSize = false;
+			indicator.element = new IndicatorPlayback( indicator.element );
+			indicator.element.width = 2;
+			indicator.element.autoSize = true;
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -127,7 +132,7 @@ package sample
 			player.background = new ShapeRectangle( player );
 			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
-//			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
+			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
 			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
 			player.addChild( display );
 			player.addChild( basic );

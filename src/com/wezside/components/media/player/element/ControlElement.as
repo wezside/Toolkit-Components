@@ -21,6 +21,7 @@ package com.wezside.components.media.player.element
 		private var _height:Number = 0;
 		private var _styleManager:IStyleManager;
 		private var _flagForUpdate:Boolean;
+		private var _autoSize:Boolean;
 		
 		public function ControlElement( decorated:IUIDecorator ) 
 		{
@@ -121,6 +122,16 @@ package com.wezside.components.media.player.element
 		public function set flagForUpdate( value:Boolean ):void
 		{
 			_flagForUpdate = value;
+		}
+
+		public function get autoSize():Boolean
+		{
+			return _autoSize;
+		}
+
+		public function set autoSize( value:Boolean ):void
+		{
+			_autoSize = value;
 		}
 
 	}
