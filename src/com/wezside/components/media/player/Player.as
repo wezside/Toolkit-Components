@@ -39,8 +39,7 @@ package com.wezside.components.media.player
 	 */
 	public class Player extends UIElement
 	{
-		public static const AUTOSIZE_NONE:String = "AUTOSIZE_NONE";
-		public static const AUTOSIZE_STAGE:String = "AUTOSIZE_STAGE";
+
 		
 		private var media:IMedia;	
 		private var time:Number = 0;
@@ -86,7 +85,7 @@ package com.wezside.components.media.player
 		
 		public function Player() 
 		{
-			_autoSizePolicy = AUTOSIZE_NONE;
+			_autoSizePolicy = PlayerAutoSizePolicy.NONE;
 			_resources = new Collection();
 			_typeClasses = new DictionaryCollection();
 			_typeClasses.addElement( SWF, MediaSWF );
@@ -484,9 +483,19 @@ package com.wezside.components.media.player
 		private function mediaMetaData( event:MediaEvent ):void
 		{
 			var meta:MediaMeta = event.data as MediaMeta;
-			var w:int = meta.width;
-			var h:int = meta.height;			
-			if ( autoSizePolicy == Player.AUTOSIZE_STAGE )
+			var w:int = 0;
+			var h:int = 0;			
+			if ( autoSizePolicy == PlayerAutoSizePolicy.NONE )
+			{
+				w = IPlayerDisplay( display ).displayWidth;
+				h = IPlayerDisplay( display ).displayHeight;
+			}			
+			if ( autoSizePolicy == PlayerAutoSizePolicy.META )
+			{
+				w = meta.width;
+				h = meta.height;
+			}			
+			if ( autoSizePolicy == PlayerAutoSizePolicy.STAGE )
 			{
 				w = stage.stageWidth - layout.left - layout.right;
 				h = stage.stageHeight - layout.top - layout.bottom;
@@ -499,12 +508,12 @@ package com.wezside.components.media.player
 				
 				// Deduct the height of all the IPlayerControl elements present
 				// Only if a vertical layout is applied to the Player
-				if ( hasLayoutDecorator( layout, VerticalLayout ))
+				if ( hasLayoutDecorator( layout, VerticalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
 					h -= object.height;
 				
 				// Only if a horizontal layout is applied to the Player
-				if ( hasLayoutDecorator( layout, HorizontalLayout ))
-					w -= object.width;				
+				if ( hasLayoutDecorator( layout, HorizontalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
+					w -= object.width;
 				
 				if ( !object.autoSize ) continue;
 				if ( hasLayoutDecorator( layout, VerticalLayout )) object.displayWidth = w;
@@ -514,6 +523,7 @@ package com.wezside.components.media.player
 			it.purge();
 			it = null;
 			object = null;
+			trace( meta.width, meta.height, w, h );
 			
 			// Set all the width and height props required to layout the display
 			// based on the policy chosen.
@@ -544,10 +554,7 @@ package com.wezside.components.media.player
 			{
 				var success:Boolean = media.play();
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
-				else
-				{
-					state = STATE_PLAY;	
-				}
+				else state = STATE_PLAY;	
 			}
 			else
 				trace( "Media is ready to be played" );
@@ -561,9 +568,8 @@ package com.wezside.components.media.player
 				removeEventListener( Event.ENTER_FRAME, enterFrame );
 				return;
 			}
-
-			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			var control:IPlayerControl;
+			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			while ( it.hasNext() )
 			{
 				control = it.next() as IPlayerControl;				

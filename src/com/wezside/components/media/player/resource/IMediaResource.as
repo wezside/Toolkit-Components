@@ -10,6 +10,8 @@ package com.wezside.components.media.player.resource
 		
 		function get id():String;
 		function set id( value:String ):void;		
+		function get title():String;
+		function set title( value:String ):void;
 		function get type():String;
 		function set type( value:String ):void;
 		function get uri():String;

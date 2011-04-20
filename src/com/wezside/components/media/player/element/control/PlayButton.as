@@ -25,6 +25,8 @@ package com.wezside.components.media.player.element.control
 		override public function build():void
 		{			
 			button = new Button();
+			button.styleName = styleName;
+			button.styleManager = styleManager;
 			button.autoSize = "left";
 			button.textColorSelected = 0xff0000;
 			button.text = data;

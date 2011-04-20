@@ -192,7 +192,7 @@ package com.wezside.components.media.player.media
 
 		private function statusHandler( event:NetStatusEvent ):void
 		{
-//			trace( "statusHandler", event.info.code );
+			trace( "statusHandler", event.info.code );
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":

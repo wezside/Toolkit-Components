@@ -35,17 +35,17 @@ package com.wezside.components.media.player.display
 		/**
 		 * The condition displayWidth and displayHeight properties need to be set 
 		 * before the arrange should be called. This is to ensure the background get 
-		 * the correct values.
+		 * the correct values. This will happen when the Player class receives the
+		 * current playing media resource's meta data.
 		 */
 		override public function arrange():void
 		{
 			if ( _displayWidth != 0 && _displayHeight != 0 )
 			{
 				background.width = _displayWidth;
-				background.height = _displayHeight;
-				super.arrange();
+				background.height = _displayHeight;				
 				var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-				var media:IMedia;			
+				var media:IMedia;	
 				if ( maintainAspectRatio && ( displayWidth != originalWidth || displayHeight != originalHeight ))
 				{
 					if ( displayWidth > displayHeight )
@@ -55,6 +55,11 @@ package com.wezside.components.media.player.display
 							media = it.next() as IMedia;
 							if ( !media ) continue;
 							resizer.resizeToWidth( media as DisplayObject, displayWidth );
+							if ( media.height > displayHeight )
+							{
+								resizer.resizeToHeight( media as DisplayObject, displayHeight );
+								resizer.distribute( media as DisplayObject, displayWidth, Resizer.DISTRIBUTE_TO_WIDTH );
+							}
 							resizer.distribute( media as DisplayObject, displayHeight, Resizer.DISTRIBUTE_TO_HEIGHT );
 						}
 					}
@@ -64,14 +69,20 @@ package com.wezside.components.media.player.display
 						{
 							media = it.next() as IMedia;
 							if ( !media ) continue;
-							resizer.resizeToWidth( media as DisplayObject, displayHeight );
-							resizer.distribute( media as DisplayObject, displayHeight, Resizer.DISTRIBUTE_TO_HEIGHT );
+							resizer.resizeToHeight( media as DisplayObject, displayHeight );
+							if ( media.width > displayWidth )
+							{
+								resizer.resizeToWidth( media as DisplayObject, displayWidth );
+								resizer.distribute( media as DisplayObject, displayHeight, Resizer.DISTRIBUTE_TO_HEIGHT );
+							}							
+							resizer.distribute( media as DisplayObject, displayWidth, Resizer.DISTRIBUTE_TO_WIDTH );
 						}
 					}
-				}	
+				}
 				it.purge();
 				it = null;
 				media = null;
+				super.arrange();
 			}
 		}
 
@@ -118,7 +129,7 @@ package com.wezside.components.media.player.display
 			{
 				media = it.next() as IMedia;
 				if ( !media ) continue;
-				if ( !maintainAspectRatio ) media.height = value;
+				media.height = value;
 			}
 			it.purge();
 			it = null;
@@ -140,7 +151,7 @@ package com.wezside.components.media.player.display
 			{
 				media = it.next() as IMedia;
 				if ( !media ) continue;
-				if ( !maintainAspectRatio ) media.width = value;
+				media.width = value;
 			}
 			it.purge();
 			it = null;
@@ -152,6 +163,11 @@ package com.wezside.components.media.player.display
 			return _maintainAspectRatio;
 		}
 
+		/**
+		 * Set this property to true if the media display should resize keeping the aspect ratio 
+		 * as it was. The media will only be resized to maintain its aspect ratio should either of 
+		 * this display width or height proeprties be different to the media's original width and height. 
+		 */
 		public function set maintainAspectRatio( value:Boolean ):void
 		{
 			_maintainAspectRatio = value;

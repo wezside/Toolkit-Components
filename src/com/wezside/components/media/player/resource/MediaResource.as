@@ -1,12 +1,14 @@
 package com.wezside.components.media.player.resource
 {
 	import com.wezside.components.media.player.media.MediaMeta;
+	import com.wezside.data.IDeserializable;
+
 	import flash.system.LoaderContext;
 
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class MediaResource implements IMediaResource
+	public class MediaResource implements IMediaResource,IDeserializable
 	{
 		
 		private var _data:*;
@@ -22,12 +24,13 @@ package com.wezside.components.media.player.resource
 		private var _autoPlay:Boolean;
 		private var _quality:int;
 		private var _bufferTime:Number;
+		private var _meta:MediaMeta;
+		private var _title:String;
 
 		public static const QUALITY_DEFAULT:int = 0;
 		public static const QUALITY_LOW:int = 1;
 		public static const QUALITY_MEDIUM:int = 2;
 		public static const QUALITY_HIGH:int = 3;
-		private var _meta:MediaMeta;
 
 		public function MediaResource() 
 		{
@@ -162,6 +165,16 @@ package com.wezside.components.media.player.resource
 		public function set meta( value:MediaMeta ):void
 		{
 			_meta = value;
+		}
+
+		public function get title():String
+		{
+			return _title;
+		}
+
+		public function set title( value:String ):void
+		{
+			_title = value;
 		}
 	}
 }
