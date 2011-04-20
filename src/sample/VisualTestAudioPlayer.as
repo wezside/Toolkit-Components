@@ -25,8 +25,6 @@ package sample
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
-
-
 	/**
 	 * @author Wesley.Swanepoel
 	 */

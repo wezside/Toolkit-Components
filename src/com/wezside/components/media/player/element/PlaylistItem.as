@@ -31,15 +31,13 @@ package com.wezside.components.media.player.element
 			{
 				if ( resource.meta.duration )
 					addChild( buildLabel( resource.meta.duration.toString(), "playlist-item-duration" ));
-			}
-				
+			}				
 		}
 			
 		override public function arrange():void
 		{
 			super.arrange();
 		}
-		
 		
 		private function buildLabel( text:String, styleName:String, html:Boolean = false ):Label
 		{
