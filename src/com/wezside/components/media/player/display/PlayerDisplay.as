@@ -1,13 +1,15 @@
 package com.wezside.components.media.player.display
 {
-	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import flash.display.DisplayObject;
 	import com.wezside.components.UIElement;
+	import com.wezside.components.decorators.layout.ILayout;
+	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.imaging.Resizer;
+
+	import flash.display.DisplayObject;
 	
 	/**
 	 * @author Wesley.Swanepoel
@@ -15,8 +17,8 @@ package com.wezside.components.media.player.display
 	public class PlayerDisplay extends UIElement implements IPlayerDisplay 
 	{
 		
-		private var _displayWidth:int;
-		private var _displayHeight:int;
+		private var _displayWidth:int = 320;
+		private var _displayHeight:int = 240;
 		private var _maintainAspectRatio:Boolean;
 		
 		private var resizer:Resizer;
@@ -191,6 +193,20 @@ package com.wezside.components.media.player.display
 		public function set originalHeight( value:int ):void
 		{
 			resizer.originalHeight = value;
+		}
+
+		public function get autoSize():Boolean
+		{
+			return false;
+		}
+
+		public function set autoSize( value:Boolean ):void
+		{
+		}
+
+		public function hasLayoutDecorator( layout:ILayout, decorator:Class ):Boolean
+		{
+			return false;
 		}
 
 	}

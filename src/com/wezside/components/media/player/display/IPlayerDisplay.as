@@ -13,10 +13,6 @@ package com.wezside.components.media.player.display
 		function set originalWidth( value:int ):void;
 		function get originalHeight():int;
 		function set originalHeight( value:int ):void;
-		function get displayWidth():int;
-		function set displayWidth( value:int ):void;
-		function get displayHeight():int;
-		function set displayHeight( value:int ):void;
 		
 		function show():void;
 		function hide():void;

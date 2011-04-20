@@ -8,6 +8,7 @@ package com.wezside.components.media.player
 	import com.wezside.components.media.player.element.IControlElement;
 	import com.wezside.components.media.player.element.IPlayerControl;
 	import com.wezside.components.media.player.element.IPlayerElement;
+	import com.wezside.components.media.player.element.IPlayerPlayList;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -500,30 +501,11 @@ package com.wezside.components.media.player
 				w = stage.stageWidth - layout.left - layout.right;
 				h = stage.stageHeight - layout.top - layout.bottom;
 			}
-			var it:IIterator = playerElements( IPlayerControl ).iterator();
-			var object:IPlayerControl;
-			while ( it.hasNext() )
-			{
-				object = it.next() as IPlayerControl;
-				
-				// Deduct the height of all the IPlayerControl elements present
-				// Only if a vertical layout is applied to the Player
-				if ( hasLayoutDecorator( layout, VerticalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
-					h -= object.height;
-				
-				// Only if a horizontal layout is applied to the Player
-				if ( hasLayoutDecorator( layout, HorizontalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
-					w -= object.width;
-				
-				if ( !object.autoSize ) continue;
-				if ( hasLayoutDecorator( layout, VerticalLayout )) object.displayWidth = w;
-				if ( hasLayoutDecorator( layout, HorizontalLayout )) object.displayHeight = h;
-				object.arrange();
-			}
-			it.purge();
-			it = null;
-			object = null;
-			trace( meta.width, meta.height, w, h );
+			
+			var info:Object = calculate( IPlayerElement, w, h );
+//			info = calculate( IPlayerPlayList, info.w, info.h );
+			w = info.w;
+			h = info.h;
 			
 			// Set all the width and height props required to layout the display
 			// based on the policy chosen.
@@ -588,6 +570,42 @@ package com.wezside.components.media.player
 			it.purge();
 			it = null;
 			element = null;	
+		}
+		
+		/**
+		 * This method will adjust the height and width based on the autoSize policy setting 
+		 * taken into consideration all IPlayerElements present. It also determines what layout
+		 * decorator has been applied to the Player class. This will dictate which property 
+		 * should be adjusted, i.e. VerticalLayout will be width.
+		 */
+		private function calculate( ElementClass:Class, w:int, h:int ):Object
+		{
+			// Iterate over IPlayerElement elements and calcuate new width and height
+			var it:IIterator = playerElements( ElementClass ).iterator();
+			var object:*;
+			while ( it.hasNext() )
+			{
+				object = it.next() as ElementClass;
+				if ( object is IPlayerDisplay ) continue;
+				
+				// Deduct the height of all the IPlayerControl elements present
+				// Only if a vertical layout is applied to the Player
+				if ( hasLayoutDecorator( layout, VerticalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
+					h -= object.height;
+				
+				// Only if a horizontal layout is applied to the Player
+				if ( hasLayoutDecorator( layout, HorizontalLayout ) && autoSizePolicy == PlayerAutoSizePolicy.STAGE )
+					w -= object.width;
+				
+				if ( !object.autoSize ) continue;
+				if ( hasLayoutDecorator( layout, VerticalLayout )) object.displayWidth = w;
+				if ( hasLayoutDecorator( layout, HorizontalLayout )) object.displayHeight = h;
+				object.arrange();
+			}
+			it.purge();
+			it = null;
+			object = null;
+			return { w: w, h: h };
 		}
 
 		private function mediaPlayBackComplete( event:MediaEvent ):void
