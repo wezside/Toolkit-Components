@@ -141,8 +141,6 @@ package com.wezside.components.media.player.media
 		public function onMetaData( info:Object ):void
 		{
 			totalTime = info.duration;
-//			video.width = info.width;
-//			video.height = info.height;
 			resource.meta = new MediaMeta();
 			for ( var a:String in info )
 				if ( resource.meta.hasOwnProperty( a ))

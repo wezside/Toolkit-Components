@@ -6,7 +6,7 @@ package com.wezside.components.media.player.element.control
 	import com.wezside.components.control.Button;
 	import com.wezside.components.media.player.Player;
 	import com.wezside.components.media.player.element.ControlElement;
-	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import com.wezside.components.media.player.event.PlayerControlEvent;
 
 	/**
 	 * @author Wesley.Swanepoel

@@ -6,8 +6,8 @@ package com.wezside.components.media.player.element
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
-
 	import flash.display.DisplayObject;
+
 
 	
 	/**

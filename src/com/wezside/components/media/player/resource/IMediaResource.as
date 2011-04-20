@@ -36,5 +36,7 @@ package com.wezside.components.media.player.resource
 		function set bufferTime( value:Number ):void;
 		function get meta():MediaMeta;
 		function set meta( value:MediaMeta ):void;
+		function get lyrics():String;
+		function set lyrics( value:String ):void;
 	}
 }

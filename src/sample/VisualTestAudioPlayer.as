@@ -8,23 +8,23 @@ package sample
 	import com.wezside.components.media.player.PlayerAutoSizePolicy;
 	import com.wezside.components.media.player.display.PlayerDisplay;
 	import com.wezside.components.media.player.element.PlayerControl;
-	import com.wezside.components.media.player.element.PlayerControlEvent;
-	import com.wezside.components.media.player.element.PlayerPlayList;
+	import com.wezside.components.media.player.element.PlayerPlaylist;
 	import com.wezside.components.media.player.element.control.MuteButton;
 	import com.wezside.components.media.player.element.control.PauseButton;
 	import com.wezside.components.media.player.element.control.PlayButton;
 	import com.wezside.components.media.player.element.control.SkipToEndButton;
 	import com.wezside.components.media.player.element.control.SkipToStartButton;
 	import com.wezside.components.media.player.element.indicator.IndicatorProgress;
+	import com.wezside.components.media.player.event.PlayerControlEvent;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
-
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+
 
 
 	/**
@@ -33,7 +33,7 @@ package sample
 	public class VisualTestAudioPlayer extends Sprite
 	{
 		private var player:Player;
-		private var playlist:PlayerPlayList;
+		private var playlist:PlayerPlaylist;
 		private var display:PlayerDisplay;
 		private var basic:PlayerControl;
 		private var indicator:PlayerControl;
@@ -57,6 +57,7 @@ package sample
 			basic.element.data = "PLAY";
 			basic.element = new PauseButton( basic.element );
 			basic.element = new SkipToStartButton( basic.element );
+			basic.element = new SkipToEndButton( basic.element );
 			basic.addEventListener( PlayerControlEvent.CLICK, click );
 			basic.build();
 			basic.setStyle();
@@ -73,7 +74,6 @@ package sample
 			indicator.element.flagForUpdate = true;
 			indicator.element = new MuteButton( indicator.element );
 			indicator.element.width = 200;
-			indicator.element = new SkipToEndButton( indicator.element );
 			indicator.addEventListener( PlayerControlEvent.CLICK, click );
 			indicator.build();
 			indicator.setStyle();
@@ -89,7 +89,7 @@ package sample
 			display.arrange();
 			
 			// The Playlist 
-			playlist = new PlayerPlayList();
+			playlist = new PlayerPlaylist();
 			playlist.background = new ShapeRectangle( playlist );
 			playlist.layout = new VerticalLayout( playlist );
 			playlist.entries = buildResources();

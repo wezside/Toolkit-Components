@@ -4,11 +4,11 @@ package com.wezside.components.media.player.element.indicator
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.element.ControlElement;
-	import com.wezside.components.media.player.element.PlayerControlEvent;
+	import com.wezside.components.media.player.event.PlayerControlEvent;
 	import com.wezside.components.media.player.media.IMedia;
-
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+
 
 	/**
 	 * @author Wesley.Swanepoel

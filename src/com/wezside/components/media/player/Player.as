@@ -8,7 +8,6 @@ package com.wezside.components.media.player
 	import com.wezside.components.media.player.element.IControlElement;
 	import com.wezside.components.media.player.element.IPlayerControl;
 	import com.wezside.components.media.player.element.IPlayerElement;
-	import com.wezside.components.media.player.element.IPlayerPlayList;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -25,8 +24,8 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
-
 	import flash.events.Event;
+
 
 
 	
