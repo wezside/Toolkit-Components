@@ -1,54 +1,51 @@
 package com.wezside.components.media.player.element
 {
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.decorators.layout.ILayout;
-	import com.wezside.data.collection.Collection;
-	import flash.text.TextFieldAutoSize;
+	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.UIElement;
+	import com.wezside.components.decorators.layout.ILayout;
+	import com.wezside.components.media.player.event.PlaylistEvent;
 	import com.wezside.components.media.player.resource.IMediaResource;
-	import com.wezside.components.text.Label;
+	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlayerPlayList extends UIElement implements IPlayerPlayList
+	public class PlayerPlaylist extends UIElement implements IPlayerPlayList
 	{
+
 		public var entries:ICollection = new Collection();
 		
-		private var label:Label;
 		private var _autoSize:Boolean;
 		private var _displayWidth:int;
 		private var _displayHeight:int;
+		private var _selectedIndex:int = 0;
 	
 	
 		override public function build():void
 		{
 			super.build();
-						
+			
+			var playlistItem:PlaylistItem;
 			var it:IIterator = entries.iterator();
 			var resource:IMediaResource;
 			while ( it.hasNext() )
 			{
 				resource = it.next() as IMediaResource;
-				label = new Label();
-				label.font = "_sans";
-				label.embedFonts = false;
-				label.autoSize = TextFieldAutoSize.LEFT; 
-				label.text = resource.title;
-				label.textColorOver = 0xFFFFFF;
-				label.build();
-				label.setStyle();
-				label.arrange();
-				label.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
-				label.activate();
-				addChild( label );				
+				playlistItem = new PlaylistItem();
+				playlistItem.layout = new HorizontalLayout( playlistItem );
+				playlistItem.index = it.index() - 1;
+				playlistItem.resource = resource;
+				playlistItem.build();
+				playlistItem.setStyle();
+				playlistItem.arrange();
+				playlistItem.activate();
+				playlistItem.addEventListener( PlaylistEvent.CLICK, click );
+				addChild( playlistItem );
 			}
 			it.purge();
 			it = null;
-			resource = null;
-			
+			resource = null;			
 		}
 	
 		override public function arrange():void
@@ -103,6 +100,16 @@ package com.wezside.components.media.player.element
 			return result;
 		}
 		
+		public function get selectedIndex():int
+		{
+			return _selectedIndex;
+		}
+		
+		public function set selectedIndex( value:int ):void
+		{
+			_selectedIndex = value;
+		}
+		
 		private function autoSizeElements( value:Boolean ):ICollection
 		{
 			var collection:ICollection = new Collection();
@@ -119,12 +126,10 @@ package com.wezside.components.media.player.element
 			return collection;
 		}		
 		
-		private function stateChange( event:UIElementEvent ):void
+		private function click( event:PlaylistEvent ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				
-			}
+			selectedIndex = int( event.data );
+			dispatchEvent( event );
 		}		
 	}
 }

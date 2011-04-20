@@ -26,6 +26,7 @@ package com.wezside.components.media.player.resource
 		private var _bufferTime:Number;
 		private var _meta:MediaMeta;
 		private var _title:String;
+		private var _lyrics:String;
 
 		public static const QUALITY_DEFAULT:int = 0;
 		public static const QUALITY_LOW:int = 1;
@@ -175,6 +176,16 @@ package com.wezside.components.media.player.resource
 		public function set title( value:String ):void
 		{
 			_title = value;
+		}
+
+		public function get lyrics():String
+		{
+			return _lyrics;
+		}
+
+		public function set lyrics( value:String ):void
+		{
+			_lyrics = value;
 		}
 	}
 }
