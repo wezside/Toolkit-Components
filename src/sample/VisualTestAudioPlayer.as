@@ -1,5 +1,6 @@
 package sample
 {
+	import com.wezside.components.media.player.PlayerAutoSizePolicy;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
@@ -18,6 +19,7 @@ package sample
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
+	import com.wezside.data.collection.ICollection;
 
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -51,6 +53,7 @@ package sample
 			basic.autoSize = false;
 			basic.layout = new HorizontalLayout( basic );
 			basic.element = new PlayButton( basic );
+			basic.element.height = 20;
 			basic.element.data = "PLAY";
 			basic.element = new PauseButton( basic.element );
 			basic.element = new SkipToStartButton( basic.element );
@@ -78,7 +81,9 @@ package sample
 			
 			// The FLV Display to use
 			display = new PlayerDisplay();
-			display.maintainAspectRatio = true;
+			display.displayWidth = 200;
+			display.displayHeight = 200;
+			display.maintainAspectRatio = false;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
 			display.build();
@@ -87,36 +92,11 @@ package sample
 			
 			// The Playlist 
 			playlist = new PlayerPlayList();
+			playlist.layout = new VerticalLayout( playlist );
+//			playlist.entries = buildResources();
 			playlist.build();
 			playlist.setStyle();
 			playlist.arrange();
-			
-			var youtube:IMediaResource = new MediaResource();
-			youtube.uri = "http://www.youtube.com/watch?v=CUPfQT4Dty0&feature=topvideos";
-			
-			var vimeo:IMediaResource = new MediaResource();
-			vimeo.uri = "http://vimeo.com/3238824";
-			vimeo.autoPlay = true;
-			
-			var audio:IMediaResource = new MediaResource();
-			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
-			
-			var video:IMediaResource = new MediaResource();
-			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
-			video.autoPlay = true;
-			video.bufferTime = 5;
-			
-			var videoMov:IMediaResource = new MediaResource();
-			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
-			videoMov.autoPlay = true;
-			
-			var video2:IMediaResource = new MediaResource();
-			video2.uri = "http://helpexamples.com/flash/video/water.flv";
-			video2.bufferTime = 5;
-			video2.autoPlay = true;			
-			
-			var image:IMediaResource = new MediaResource();
-			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";
 			
 			// Build player component
 			player = new Player();
@@ -125,16 +105,16 @@ package sample
 			player.layout.top = 10;
 			player.layout.right = 10;
 			player.layout.bottom = 10;
-			player.layout.left = 10;			
+			player.layout.left = 10;
 			player.background = new ShapeRectangle( player );
 			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
-			player.autoSizePolicy = Player.AUTOSIZE_STAGE;
-			player.resources = new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);
+			player.autoSizePolicy = PlayerAutoSizePolicy.STAGE;
+			player.resources = buildResources();
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
-			player.addChild( playlist );
+//			player.addChild( playlist );
 			player.build();
 			player.setStyle();
 			player.arrange();
@@ -154,18 +134,56 @@ package sample
 					
 				if ( event.target.id == "rewind" )
 					player.seek( 0 );
-					
+				
 				if ( event.target.id == "ff" )
 					player.seek( player.totalTime );
 					
 				if ( event.target.id == "mute" )
 					player.volume( event.data ? 0 : player.currentVolume, 1 );
 			}
-			if ( event.data && event.data.id == "progress" )
+			else if ( event.data && event.data.id == "progress" )
 			{
-				trace( "Seek to position", event.data.seconds );
 				player.seek( event.data.seconds );
 			}
 		}		
+		
+		private function buildResources():ICollection
+		{			
+			var youtube:IMediaResource = new MediaResource();
+			youtube.title = "Youtube";
+			youtube.uri = "http://www.youtube.com/watch?v=CUPfQT4Dty0&feature=topvideos";
+			
+			var vimeo:IMediaResource = new MediaResource();
+			vimeo.title = "Vimeo";
+			vimeo.uri = "http://vimeo.com/3238824";
+			vimeo.autoPlay = true;
+			
+			var audio:IMediaResource = new MediaResource();
+			audio.title = "Audio";
+			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
+			
+			var video:IMediaResource = new MediaResource();
+			video.title = "video";
+			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
+			video.autoPlay = true;
+			video.bufferTime = 5;
+			
+			var videoMov:IMediaResource = new MediaResource();
+			videoMov.title = "Video Mov";
+			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
+			videoMov.autoPlay = true;
+			
+			var video2:IMediaResource = new MediaResource();
+			video2.title = "Video 2";
+			video2.uri = "http://helpexamples.com/flash/video/water.flv";
+			video2.bufferTime = 5;
+			video2.autoPlay = true;			
+			
+			var image:IMediaResource = new MediaResource();
+			image.title = "Image";
+			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";		
+			
+			return new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);	
+		}
 	}
 }
