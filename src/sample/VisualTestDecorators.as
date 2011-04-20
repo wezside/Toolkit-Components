@@ -45,14 +45,15 @@ package sample
 			x = 20;
 			y = 20;
 						
-			layout = new VerticalLayout( this );
-			layout.verticalGap = 5;
 			
-			layout = new PaddedLayout( this.layout ); 
+			layout = new PaddedLayout( this ); 
 			layout.bottom = 5;		
 			layout.left = 5;
 			layout.right = 5;
 			layout.top = 5;
+			
+			layout = new VerticalLayout( this.layout );
+			layout.verticalGap = 5;
 			
 			scroll = new ScrollVertical( this );
 			scroll.scrollHeight = 200;
@@ -116,6 +117,15 @@ package sample
 		private function timerCompelte( event:TimerEvent ):void
 		{
 			scroll.reset();
+
+			var timer:Timer = new Timer( 3000, 1  );
+			timer.addEventListener( TimerEvent.TIMER_COMPLETE, timerCompelte2 );
+			timer.start();			
+		}
+
+		private function timerCompelte2( event:TimerEvent ):void
+		{
+//			scroll.to( 50 );
 		}
 
 		private function stageResize( event:Event ):void
