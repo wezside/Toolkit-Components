@@ -1,11 +1,11 @@
 package sample
 {
-	import com.wezside.components.media.player.PlayerAutoSizePolicy;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.components.media.player.Player;
+	import com.wezside.components.media.player.PlayerAutoSizePolicy;
 	import com.wezside.components.media.player.display.PlayerDisplay;
 	import com.wezside.components.media.player.element.PlayerControl;
 	import com.wezside.components.media.player.element.PlayerControlEvent;
@@ -81,9 +81,7 @@ package sample
 			
 			// The FLV Display to use
 			display = new PlayerDisplay();
-			display.displayWidth = 200;
-			display.displayHeight = 200;
-			display.maintainAspectRatio = false;
+			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
 			display.build();
@@ -92,12 +90,13 @@ package sample
 			
 			// The Playlist 
 			playlist = new PlayerPlayList();
+			playlist.background = new ShapeRectangle( playlist );
 			playlist.layout = new VerticalLayout( playlist );
-//			playlist.entries = buildResources();
+			playlist.entries = buildResources();
 			playlist.build();
 			playlist.setStyle();
 			playlist.arrange();
-			
+
 			// Build player component
 			player = new Player();
 			player.layout = new VerticalLayout( player );
@@ -114,11 +113,12 @@ package sample
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
-//			player.addChild( playlist );
+			player.addChild( playlist );
 			player.build();
 			player.setStyle();
 			player.arrange();
 			addChild( player );
+			
 			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
