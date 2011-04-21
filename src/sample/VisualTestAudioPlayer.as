@@ -174,11 +174,6 @@ package sample
 			audio.autoPlay = false;
 			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
 			
-			var audio2:IMediaResource = new MediaResource();
-			audio2.title = "$copie";
-			audio2.autoPlay = false;
-			audio2.uri = "resources-en-MS/audio/$copie.mp3";
-			
 			var video:IMediaResource = new MediaResource();
 			video.title = "video";
 			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
@@ -201,7 +196,7 @@ package sample
 			image.title = "Image";
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";		
 			
-			return new Collection([ youtube, vimeo, audio, video, image, video2, videoMov, audio2 ]);	
+			return new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);	
 		}
 	}
 }
