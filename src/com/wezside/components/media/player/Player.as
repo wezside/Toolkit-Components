@@ -27,6 +27,7 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
 
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 
 
@@ -40,7 +41,7 @@ package com.wezside.components.media.player
 	 *  
 	 * @author Wesley.Swanepoel
 	 */
-	public class Player extends UIElement implements IPlayerDisplay
+	public class Player extends UIElement
 	{
 
 		
@@ -50,6 +51,7 @@ package com.wezside.components.media.player
 		private var volumeTime:Number = -1;
 		private var volumeSource:Number;
 		private var volumeChange:Number;
+		private var children:Collection;
 				
 		private var _autoSizePolicy:String;
 		private var _resources:ICollection;
@@ -88,6 +90,7 @@ package com.wezside.components.media.player
 		
 		public function Player() 
 		{
+			children = new Collection();
 			_autoSizePolicy = PlayerAutoSizePolicy.NONE;
 			_resources = new Collection();
 			_typeClasses = new DictionaryCollection();
@@ -104,7 +107,7 @@ package com.wezside.components.media.player
 			_typeClasses.addElement( VIMEO, MediaVimeo );
 			_typeClasses.addElement( YOUTUBE, MediaYoutube );			
 		}
-			
+				
 		override public function build():void
 		{
 			super.build();
@@ -121,6 +124,17 @@ package com.wezside.components.media.player
 			it.purge();
 			it = null;
 			resource = null;
+			
+			var childIt:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var child:DisplayObject;
+			while ( childIt.hasNext() )
+			{
+				child = childIt.next() as DisplayObject;
+				children.addElement( child );
+			}
+			childIt.purge();
+			childIt = null;
+			child = null;
 		}
 	
 		override public function purge():void
@@ -183,7 +197,9 @@ package com.wezside.components.media.player
 					media.addEventListener( MediaEvent.META, mediaMetaData );
 					display.addChild( media as UIElement );
 					media.load( resource );
-					addEventListener( Event.ENTER_FRAME, enterFrame );										
+					
+					if ( resource.autoPlay )
+						addEventListener( Event.ENTER_FRAME, enterFrame );
 				}
 				else
 					trace( "No class was found for the resource type", resource.type );
@@ -216,6 +232,7 @@ package com.wezside.components.media.player
 					if ( !object ) continue;
 					if ( object.playing )
 					{
+						removeEventListener( Event.ENTER_FRAME, enterFrame );
 						object.pause();
 						state = STATE_PAUSE;
 					}
@@ -244,7 +261,6 @@ package com.wezside.components.media.player
 					state = STATE_SKIP_TO_END;
 										
 				media.seekTo( seconds );
-				
 				if ( media.playing ) state = STATE_PLAY;
 				else
 				{
@@ -316,17 +332,20 @@ package com.wezside.components.media.player
 			if ( !media ) return this;			
 			var mediaType:String;
 			var it:IIterator = playerElements( IPlayerDisplay ).iterator();
-
 			var playerDisplay:IPlayerDisplay;
 			var selectedDisplay:IPlayerDisplay;
 			while ( it.hasNext() )
 			{
 				playerDisplay = it.next() as IPlayerDisplay;
 				if ( !playerDisplay ) continue;
+				playerDisplay.addEventListener( PlayerDisplayEvent.HIDE_COMPLETE, displayHideComplete );
+				playerDisplay.hide();
 				mediaType = playerDisplay.find( media.resource.type );
 				if ( mediaType ) 
 				{
 					selectedDisplay = playerDisplay;
+					addChildAt( selectedDisplay as  UIElement, it.index() - 1 );
+					selectedDisplay.show();
 					break;
 				}
 			}
@@ -336,13 +355,19 @@ package com.wezside.components.media.player
 			return selectedDisplay ? selectedDisplay as UIElement : this;
 		}
 
+		private function displayHideComplete( event:PlayerDisplayEvent ):void
+		{			
+			if ( contains( event.currentTarget as UIElement ))
+				removeChild( event.currentTarget as UIElement );
+		}
+
 		/**
 		 * Return all displays added to this Player instance.
 		 */
 		public function playerElements( PlayerElementType:Class = null ):ICollection
 		{
 			var collection:ICollection = new Collection();
-			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var it:IIterator = children.iterator();
 			var object:IPlayerElement;
 			while ( it.hasNext() )
 			{
@@ -369,8 +394,7 @@ package com.wezside.components.media.player
 				var playlistItem:IPlaylistItem;
 				while ( itemIt.hasNext() )
 				{
-					playlistItem = itemIt.next() as IPlaylistItem;
-					
+					playlistItem = itemIt.next() as IPlaylistItem;					
 					if ( playlistItem.id == id  )
 					{
 						selectedIndex = playlistItem.index;
@@ -507,33 +531,37 @@ package com.wezside.components.media.player
 			var meta:MediaMeta = event.data as MediaMeta;
 			var w:int = 0;
 			var h:int = 0;			
-			if ( autoSizePolicy == PlayerAutoSizePolicy.NONE )
+			
+			if ( display is IPlayerDisplay )
 			{
-				w = IPlayerDisplay( display ).displayWidth;
-				h = IPlayerDisplay( display ).displayHeight;
-			}			
-			if ( autoSizePolicy == PlayerAutoSizePolicy.META )
-			{
-				w = meta.width;
-				h = meta.height;
-			}			
-			if ( autoSizePolicy == PlayerAutoSizePolicy.STAGE )
-			{
-				w = stage.stageWidth - layout.left - layout.right;
-				h = stage.stageHeight - layout.top - layout.bottom;
+				if ( autoSizePolicy == PlayerAutoSizePolicy.NONE )
+				{
+					w = IPlayerDisplay( display ).displayWidth;
+					h = IPlayerDisplay( display ).displayHeight;
+				}			
+				if ( autoSizePolicy == PlayerAutoSizePolicy.META )
+				{
+					w = meta.width;
+					h = meta.height;
+				}			
+				if ( autoSizePolicy == PlayerAutoSizePolicy.STAGE )
+				{
+					w = stage.stageWidth - layout.left - layout.right;
+					h = stage.stageHeight - layout.top - layout.bottom;
+				}
+				
+				var info:Object = calculate( IPlayerElement, w, h );
+				w = info.w;
+				h = info.h;
+				
+				// Set all the width and height props required to layout the display
+				// based on the policy chosen.
+				IPlayerDisplay( display ).originalWidth = meta.width;
+				IPlayerDisplay( display ).originalHeight = meta.height;
+				IPlayerDisplay( display ).displayWidth = w;
+				IPlayerDisplay( display ).displayHeight = h;
+				IPlayerDisplay( display ).arrange();
 			}
-			
-			var info:Object = calculate( IPlayerElement, w, h );
-			w = info.w;
-			h = info.h;
-			
-			// Set all the width and height props required to layout the display
-			// based on the policy chosen.
-			IPlayerDisplay( display ).originalWidth = meta.width;
-			IPlayerDisplay( display ).originalHeight = meta.height;
-			IPlayerDisplay( display ).displayWidth = w;
-			IPlayerDisplay( display ).displayHeight = h;
-			IPlayerDisplay( display ).arrange();
 			arrange();
 			
 			// Update any playlists with the selected index
@@ -567,6 +595,7 @@ package com.wezside.components.media.player
 
 		private function enterFrame( event:Event = null ):void
 		{
+			trace( "-------------")
 			if ( !media )
 			{
 				trace( "No media instance. Remove ENTER_FRAME." );
@@ -642,69 +671,6 @@ package com.wezside.components.media.player
 			media.seekTo( 0.01 );
 			media.pause();			
 			enterFrame();
-		}
-
-		public function get maintainAspectRatio():Boolean
-		{
-			return false;
-		}
-
-		public function set maintainAspectRatio( value:Boolean ):void
-		{
-		}
-
-		public function get originalWidth():int
-		{
-			return 0;
-		}
-
-		public function set originalWidth( value:int ):void
-		{
-		}
-
-		public function get originalHeight():int
-		{
-			return 0;
-		}
-
-		public function set originalHeight( value:int ):void
-		{
-		}
-
-		public function find( mediaType:String ):String
-		{
-			return "";
-		}
-
-		public function addMediaType( id:String ):void
-		{
-		}
-
-		public function get autoSize():Boolean
-		{
-			return false;
-		}
-
-		public function set autoSize( value:Boolean ):void
-		{
-		}
-
-		public function get displayWidth():int
-		{
-			return 0;
-		}
-
-		public function set displayWidth( value:int ):void
-		{
-		}
-
-		public function get displayHeight():int
-		{
-			return 0;
-		}
-
-		public function set displayHeight( value:int ):void
-		{
 		}
 	}
 }

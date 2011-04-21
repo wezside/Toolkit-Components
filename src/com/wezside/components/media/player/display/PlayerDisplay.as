@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.display
 {
+	import com.wezside.components.media.player.PlayerDisplayEvent;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.ILayout;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
@@ -96,7 +97,8 @@ package com.wezside.components.media.player.display
 		public function hide():void
 		{
 			visible = false;
-		}		
+			hideComplete();
+		}
 
 		public function find( mediaType:String ):String
 		{
@@ -210,6 +212,13 @@ package com.wezside.components.media.player.display
 		{
 			return false;
 		}
+
+		private function hideComplete():void
+		{
+			trace( "Hide complete" );
+			dispatchEvent( new PlayerDisplayEvent( PlayerDisplayEvent.HIDE_COMPLETE ));
+		}
+
 
 	}
 }

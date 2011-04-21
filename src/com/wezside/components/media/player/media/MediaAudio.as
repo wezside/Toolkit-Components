@@ -75,8 +75,7 @@ package com.wezside.components.media.player.media
 											  "You need an API key to play VIMEO videos. Make sure the " + "resource has the 'key' property set." );
 				playing = false;
 			}
-			else playing = true;
-			
+			else playing = true;			
 			return playing;
 		}
 	
