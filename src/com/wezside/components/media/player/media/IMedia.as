@@ -37,7 +37,9 @@ package com.wezside.components.media.player.media
 		function set volume( value:Number ):void;
 		
 		function get buffering():Boolean;
+		function set buffering( value:Boolean ):void;
 		function get playbackFinished():Boolean;
+		function set playbackFinished( value:Boolean ):void;		
 		
 		function seekTo( seconds:Number ):void;
 		function play():Boolean;

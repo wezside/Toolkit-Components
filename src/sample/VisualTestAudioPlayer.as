@@ -117,7 +117,7 @@ package sample
 			player.arrange();
 			addChild( player );
 			
-			player.play( "Sucker Punch - Trailer HD.flv" );
+			player.play( "unt_lame388.mp3" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
@@ -158,24 +158,26 @@ package sample
 			
 			var audio:IMediaResource = new MediaResource();
 			audio.title = "Audio";
+			audio.autoPlay = true;
 			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
 			
 			var video:IMediaResource = new MediaResource();
 			video.title = "video";
 			video.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.flv";
-			video.autoPlay = true;
+			video.autoPlay = false;
 			video.bufferTime = 5;
 			
 			var videoMov:IMediaResource = new MediaResource();
 			videoMov.title = "Video Mov";
 			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
-			videoMov.autoPlay = true;
+			videoMov.autoPlay = false;
+			videoMov.bufferTime = 5;
 			
 			var video2:IMediaResource = new MediaResource();
 			video2.title = "Video 2";
 			video2.uri = "http://helpexamples.com/flash/video/water.flv";
 			video2.bufferTime = 5;
-			video2.autoPlay = true;			
+			video2.autoPlay = true;
 			
 			var image:IMediaResource = new MediaResource();
 			image.title = "Image";

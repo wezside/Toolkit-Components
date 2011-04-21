@@ -12,6 +12,7 @@ package com.wezside.components.media.player.media
 	public class Media extends UIElement implements IMedia
 	{
 		
+		public static const ERROR_LOAD:String = "ERROR_LOAD";
 		public static const ERROR_PLAY:String = "ERROR_PLAY";
 		
 		private var _error:IDictionaryCollection;
@@ -20,6 +21,8 @@ package com.wezside.components.media.player.media
 		private var _totalTime:Number = -1;
 		private var _currentTime:Number = 0;
 		private var _progress:Number = 0;
+		private var _buffering:Boolean;
+		private var _playbackFinished:Boolean;		
 		
 		public function Media() 
 		{
@@ -149,12 +152,22 @@ package com.wezside.components.media.player.media
 
 		public function get buffering():Boolean
 		{
-			return false;
+			return _buffering;
+		}
+
+		public function set buffering( value:Boolean ):void
+		{
+			_buffering = value;
 		}
 
 		public function get playbackFinished():Boolean
 		{
-			return false;
+			return _playbackFinished;
+		}
+
+		public function set playbackFinished( value:Boolean ):void
+		{
+			_playbackFinished = value;
 		}
 	}
 }

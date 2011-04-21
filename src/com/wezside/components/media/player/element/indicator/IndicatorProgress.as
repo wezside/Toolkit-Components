@@ -93,7 +93,7 @@ package com.wezside.components.media.player.element.indicator
 		{
 			this.media = media;
 			progress.width = media.progress * width;
-			playbackBar.x = media.currentTime / media.totalTime * width;	
+			playbackBar.x = media.currentTime / media.totalTime * width;
 		}
 	
 		override public function set state( value:String ):void
