@@ -1,17 +1,21 @@
 package com.wezside.components.media.player.element
 {
-	import flash.text.TextFieldAutoSize;
 	import com.wezside.components.UIElement;
+	import com.wezside.components.UIElementState;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.text.Label;
+	import com.wezside.data.iterator.IIterator;
+
+	import flash.text.TextFieldAutoSize;
 
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlaylistItem extends UIElement
+	public class PlaylistItem extends UIElement implements IPlaylistItem
 	{
 		
-		public var index:int = -1;
+		private var _index:int = -1;
+		
 		public var resource:IMediaResource;
 			
 		override public function build():void
@@ -38,6 +42,53 @@ package com.wezside.components.media.player.element
 		{
 			super.arrange();
 		}
+	
+		override public function set state( value:String ):void
+		{
+			super.state = value;
+			switch ( value )
+			{
+				case UIElementState.STATE_VISUAL_SELECTED:
+					var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+					var label:Label;
+					while ( it.hasNext() )
+					{
+						label = it.next() as Label;
+						if ( !label ) continue;
+						label.state = value;
+					}
+					it.purge();
+					it = null;
+					label = null;
+					break;
+				default:
+			}
+		}
+
+		public function reset():void
+		{
+			state = UIElementState.STATE_VISUAL_UP;
+		}
+
+		public function get id():String
+		{
+			return resource.id;
+		}
+
+		public function set id( value:String ):void
+		{
+			resource.id = value;
+		}
+
+		public function get index():int
+		{
+			return _index;
+		}
+
+		public function set index( value:int ):void
+		{
+			_index = value;
+		}
 		
 		private function buildLabel( text:String, styleName:String, html:Boolean = false ):Label
 		{
@@ -48,6 +99,7 @@ package com.wezside.components.media.player.element
 			label.styleManager = styleManager;
 			label.styleName = styleName;
 			label.textColorOver = 0xFFFFFF;
+			label.textColorSelected = 0xFF0000;
 			if ( html ) label.htmlText = text;
 			if ( !html ) label.text = text;
 			label.build();
@@ -55,5 +107,6 @@ package com.wezside.components.media.player.element
 			label.arrange();		
 			return label;	
 		}
+
 	}
 }

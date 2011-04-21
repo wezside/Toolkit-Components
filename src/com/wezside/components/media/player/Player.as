@@ -8,6 +8,8 @@ package com.wezside.components.media.player
 	import com.wezside.components.media.player.element.IControlElement;
 	import com.wezside.components.media.player.element.IPlayerControl;
 	import com.wezside.components.media.player.element.IPlayerElement;
+	import com.wezside.components.media.player.element.IPlayerPlaylist;
+	import com.wezside.components.media.player.element.IPlaylistItem;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -24,6 +26,7 @@ package com.wezside.components.media.player
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.events.Event;
 
 
@@ -37,7 +40,7 @@ package com.wezside.components.media.player
 	 *  
 	 * @author Wesley.Swanepoel
 	 */
-	public class Player extends UIElement
+	public class Player extends UIElement implements IPlayerDisplay
 	{
 
 		
@@ -352,23 +355,42 @@ package com.wezside.components.media.player
 			object = null;
 			return collection;
 		}
-
-		/**
-		 * Get the first control 
-		 */
-		public function get control():IPlayerControl
+		
+		public function setPlaylistIndex( id:String ):void
 		{
-			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-			var object:IPlayerControl;
+			var selectedIndex:int = -1;
+			var it:IIterator = playerElements( IPlayerPlaylist ).iterator();
+			var object:IPlayerPlaylist;
 			while ( it.hasNext() )
 			{
-				object = it.next() as IPlayerControl;
+				object = it.next() as IPlayerPlaylist;
 				if ( !object ) continue;
-				if ( object ) break;
+				var itemIt:IIterator = object.iterator( UIElement.ITERATOR_CHILDREN );
+				var playlistItem:IPlaylistItem;
+				while ( itemIt.hasNext() )
+				{
+					playlistItem = itemIt.next() as IPlaylistItem;
+					
+					if ( playlistItem.id == id  )
+					{
+						selectedIndex = playlistItem.index;
+						break;
+					}
+					playlistItem.reset();
+				}
+				if ( selectedIndex != -1 )
+				{
+					object.selectedIndex = selectedIndex;
+					break;
+				}
+				object.selectedIndex = selectedIndex;
+				itemIt.purge();
+				itemIt = null;
+				playlistItem = null;
 			}
 			it.purge();
-			it = null;		
-			return object;
+			it = null;
+			object = null;
 		}
 
 		public function show():void
@@ -502,7 +524,6 @@ package com.wezside.components.media.player
 			}
 			
 			var info:Object = calculate( IPlayerElement, w, h );
-//			info = calculate( IPlayerPlayList, info.w, info.h );
 			w = info.w;
 			h = info.h;
 			
@@ -514,6 +535,9 @@ package com.wezside.components.media.player
 			IPlayerDisplay( display ).displayHeight = h;
 			IPlayerDisplay( display ).arrange();
 			arrange();
+			
+			// Update any playlists with the selected index
+			setPlaylistIndex( media.resource.id );
 		}		
 		
 		public function hasLayoutDecorator( layout:ILayout, decorator:Class ):Boolean
@@ -535,7 +559,7 @@ package com.wezside.components.media.player
 			{
 				var success:Boolean = media.play();
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
-				else state = STATE_PLAY;	
+				else state = STATE_PLAY;
 			}
 			else
 				trace( "Media is ready to be played" );
@@ -618,6 +642,69 @@ package com.wezside.components.media.player
 			media.seekTo( 0.01 );
 			media.pause();			
 			enterFrame();
+		}
+
+		public function get maintainAspectRatio():Boolean
+		{
+			return false;
+		}
+
+		public function set maintainAspectRatio( value:Boolean ):void
+		{
+		}
+
+		public function get originalWidth():int
+		{
+			return 0;
+		}
+
+		public function set originalWidth( value:int ):void
+		{
+		}
+
+		public function get originalHeight():int
+		{
+			return 0;
+		}
+
+		public function set originalHeight( value:int ):void
+		{
+		}
+
+		public function find( mediaType:String ):String
+		{
+			return "";
+		}
+
+		public function addMediaType( id:String ):void
+		{
+		}
+
+		public function get autoSize():Boolean
+		{
+			return false;
+		}
+
+		public function set autoSize( value:Boolean ):void
+		{
+		}
+
+		public function get displayWidth():int
+		{
+			return 0;
+		}
+
+		public function set displayWidth( value:int ):void
+		{
+		}
+
+		public function get displayHeight():int
+		{
+			return 0;
+		}
+
+		public function set displayHeight( value:int ):void
+		{
 		}
 	}
 }
