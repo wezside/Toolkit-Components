@@ -96,16 +96,6 @@ package sample
 			playlist.build();
 			playlist.setStyle();
 			playlist.arrange();
-			
-			// The Playlist 
-			playlist2 = new PlayerPlaylist();
-			playlist2.background = new ShapeRectangle( playlist2 );
-			playlist2.layout = new VerticalLayout( playlist2 );
-//			playlist2.itemClass = PlaylistItem;
-			playlist2.entries = buildResources();
-			playlist2.build();
-			playlist2.setStyle();
-			playlist2.arrange();
 
 			// Build player component
 			player = new Player();
@@ -124,13 +114,12 @@ package sample
 			player.addChild( basic );
 			player.addChild( indicator );
 			player.addChild( playlist );
-//			player.addChild( playlist2 );
 			player.build();
 			player.setStyle();
 			player.arrange();
 			addChild( player );
 			
-			player.play( "unt_lame388.mp3" );
+			player.play( "Sucker Punch - Trailer HD.flv" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
