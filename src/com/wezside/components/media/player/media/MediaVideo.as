@@ -22,8 +22,7 @@ package com.wezside.components.media.player.media
 		private var video:Video;
 		private var stream:NetStream;
 		private var netConnection:NetConnection;
-		private var _buffering:Boolean;
-		private var _playbackFinished:Boolean;
+
 		
 		override public function load( resource:IMediaResource ):void
 		{
@@ -32,7 +31,6 @@ package com.wezside.components.media.player.media
 			netConnection.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			netConnection.connect( null );
 		}
-
 
 		override public function play():Boolean
 		{
@@ -43,8 +41,6 @@ package com.wezside.components.media.player.media
 				playing = false;
 			}
 			else playing = true;
-			
-			if ( !resource.bufferTime ) stream.play( resource.uri );
 			return playing;
 		}
 
@@ -105,16 +101,6 @@ package com.wezside.components.media.player.media
 			stream.close();
 			stream = null;
 		}
-	
-		override public function get buffering():Boolean
-		{
-			return _buffering;
-		}
-	
-		override public function get playbackFinished():Boolean
-		{
-			return _playbackFinished;
-		}
 			
 		override public function get progress():Number
 		{
@@ -143,8 +129,10 @@ package com.wezside.components.media.player.media
 			totalTime = info.duration;
 			resource.meta = new MediaMeta();
 			for ( var a:String in info )
+			{
 				if ( resource.meta.hasOwnProperty( a ))
 					resource.meta[a] = info[a];
+			}
 			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
 		}
 		
@@ -170,7 +158,6 @@ package com.wezside.components.media.player.media
 		{
 			progress = event.bytesLoaded / event.bytesTotal;			
 			if ( progress  < stream.time / totalTime  ) progress = stream.time / totalTime;			
-			dispatchEvent( new MediaEvent( MediaEvent.PROGRESS, false, false, progress ));
 		}
 
 		private function securityErrorHandler( event:SecurityErrorEvent ):void
@@ -199,19 +186,21 @@ package com.wezside.components.media.player.media
 				case "NetStream.Play.Complete":
 					break;
 				case "NetStream.Buffer.Empty":
-					_buffering = true;					
+					buffering = true;
 					break;
 				case "NetStream.Buffer.Flush":
 				case "NetStream.Buffer.Full":
-					_buffering = false;
+					buffering = false;
 					break;
 				case "NetStream.Play.Start":
-					_playbackFinished = false;
+					playbackFinished = false;
 					break;
 				case "NetStream.Play.Stop":
-					_buffering = false;
-					_playbackFinished = true;
+					buffering = false;
+					playbackFinished = true;
 					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
+					break;
+				case "NetStream.Seek.Notify":
 					break;
 				case "NetStream.Play.StreamNotFound":
 					break;
@@ -225,8 +214,9 @@ package com.wezside.components.media.player.media
 			stream = new NetStream( netConnection );
 			stream.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			stream.client = this;
-			stream.bufferTime = 5;
-			video.attachNetStream( stream );			
+			stream.bufferTime = resource.bufferTime;
+			video.attachNetStream( stream );
+
 			if ( resource.bufferTime && autoPlay ) 
 			{
 				dispatchEvent( new Event( Event.COMPLETE ));
@@ -242,7 +232,6 @@ package com.wezside.components.media.player.media
 				stream.play( resource.uri );
 				stream.pause();				
 			}
-		}
-		
+		}		
 	}
 }
