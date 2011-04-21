@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.element
 {
+	import com.wezside.components.UIElementState;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.ILayout;
@@ -11,7 +12,7 @@ package com.wezside.components.media.player.element
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class PlayerPlaylist extends UIElement implements IPlayerPlayList
+	public class PlayerPlaylist extends UIElement implements IPlayerPlaylist
 	{
 
 		public var entries:ICollection = new Collection();
@@ -24,8 +25,7 @@ package com.wezside.components.media.player.element
 	
 		override public function build():void
 		{
-			super.build();
-			
+			super.build();			
 			var playlistItem:PlaylistItem;
 			var it:IIterator = entries.iterator();
 			var resource:IMediaResource;
@@ -108,6 +108,7 @@ package com.wezside.components.media.player.element
 		public function set selectedIndex( value:int ):void
 		{
 			_selectedIndex = value;
+			IPlaylistItem( getChildAt( _selectedIndex )).state = UIElementState.STATE_VISUAL_SELECTED;
 		}
 		
 		private function autoSizeElements( value:Boolean ):ICollection

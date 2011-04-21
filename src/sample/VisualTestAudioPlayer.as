@@ -35,6 +35,7 @@ package sample
 		private var display:PlayerDisplay;
 		private var basic:PlayerControl;
 		private var indicator:PlayerControl;
+		private var playlist2:PlayerPlaylist;
 		
 		public function VisualTestAudioPlayer() 
 		{
@@ -90,10 +91,21 @@ package sample
 			playlist = new PlayerPlaylist();
 			playlist.background = new ShapeRectangle( playlist );
 			playlist.layout = new VerticalLayout( playlist );
+//			playlist.itemClass = PlaylistItem;
 			playlist.entries = buildResources();
 			playlist.build();
 			playlist.setStyle();
 			playlist.arrange();
+			
+			// The Playlist 
+			playlist2 = new PlayerPlaylist();
+			playlist2.background = new ShapeRectangle( playlist2 );
+			playlist2.layout = new VerticalLayout( playlist2 );
+//			playlist2.itemClass = PlaylistItem;
+			playlist2.entries = buildResources();
+			playlist2.build();
+			playlist2.setStyle();
+			playlist2.arrange();
 
 			// Build player component
 			player = new Player();
@@ -107,11 +119,12 @@ package sample
 			player.background.colours = [ 0x676968, 0x676968];
 			player.background.alphas = [ 1, 1 ];
 			player.autoSizePolicy = PlayerAutoSizePolicy.STAGE;
-			player.resources = buildResources();
+			player.resources = playlist.entries;
 			player.addChild( display );
 			player.addChild( basic );
 			player.addChild( indicator );
 			player.addChild( playlist );
+//			player.addChild( playlist2 );
 			player.build();
 			player.setStyle();
 			player.arrange();
@@ -158,8 +171,13 @@ package sample
 			
 			var audio:IMediaResource = new MediaResource();
 			audio.title = "Audio";
-			audio.autoPlay = true;
+			audio.autoPlay = false;
 			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
+			
+			var audio2:IMediaResource = new MediaResource();
+			audio2.title = "$copie";
+			audio2.autoPlay = false;
+			audio2.uri = "resources-en-MS/audio/$copie.mp3";
 			
 			var video:IMediaResource = new MediaResource();
 			video.title = "video";
@@ -170,7 +188,7 @@ package sample
 			var videoMov:IMediaResource = new MediaResource();
 			videoMov.title = "Video Mov";
 			videoMov.uri = "http://stage.wezside.co.za/media/Sucker Punch - Trailer HD.mp4";
-			videoMov.autoPlay = false;
+			videoMov.autoPlay = true;
 			videoMov.bufferTime = 5;
 			
 			var video2:IMediaResource = new MediaResource();
@@ -183,7 +201,7 @@ package sample
 			image.title = "Image";
 			image.uri = "http://i.bnet.com/blogs/mona-lisa.jpg";		
 			
-			return new Collection([ youtube, vimeo, audio, video, image, video2, videoMov ]);	
+			return new Collection([ youtube, vimeo, audio, video, image, video2, videoMov, audio2 ]);	
 		}
 	}
 }

@@ -90,10 +90,12 @@ package com.wezside.components.media.player.display
 
 		public function show():void
 		{
+			visible = true;
 		}
 
 		public function hide():void
 		{
+			visible = false;
 		}		
 
 		public function find( mediaType:String ):String

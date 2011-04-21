@@ -20,6 +20,7 @@ package com.wezside.components.media.player.media
 		private var dateUtil:DateUtil;
 		private var bufferFraction:Number;
 		private var channel:SoundChannel = new SoundChannel();
+		private var id3:ID3Info;
 
 		
 		override public function load( resource:IMediaResource ):void
@@ -42,11 +43,13 @@ package com.wezside.components.media.player.media
 			if ( playing )
 			{
 				channel.stop();
+				dispatchMeta();
 				channel = sound.play( seconds );
 				channel.addEventListener( Event.SOUND_COMPLETE , soundComplete );
 			}
 			else
 			{
+				dispatchMeta();
 				var currentVolume:Number = volume;
 				channel.soundTransform.volume = 0;
 				channel = sound.play( seconds );			
@@ -63,11 +66,6 @@ package com.wezside.components.media.player.media
 		{
 			return channel.soundTransform.volume;
 		}
-
-		private function soundComplete( event:Event ):void
-		{
-			dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
-		}
 	
 		override public function play():Boolean
 		{
@@ -78,6 +76,7 @@ package com.wezside.components.media.player.media
 				playing = false;
 			}
 			else playing = true;
+			
 			return playing;
 		}
 	
@@ -101,22 +100,20 @@ package com.wezside.components.media.player.media
 
 		override public function get currentTime():Number
 		{
-//			trace( dateUtil.secondsFromMilliseconds( channel.position ));
 			return !playing ? super.currentTime : channel.position;
 		}
 
 		private function id3Handler( event:Event ):void
 		{
-			var id3:ID3Info = sound.id3;
+			id3 = sound.id3;
 			totalTime = id3.duration;
 			resource.meta = new MediaMeta();
 			for ( var a:String in id3 )
 			{
-				trace( a, id3[ a ] );
 				if ( resource.meta.hasOwnProperty( a ))
 					resource.meta[a] = id3[a];
 			}
-			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));			
+			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
 		}
 		
 		private function errorHandler( event:IOErrorEvent ):void
@@ -133,6 +130,21 @@ package com.wezside.components.media.player.media
 				channel = sound.play( 0 );
 				channel.addEventListener( Event.SOUND_COMPLETE , soundComplete );
 			}
+			dispatchMeta();
+		}
+		
+		private function dispatchMeta():void
+		{
+			if ( !id3 )
+			{
+				if ( !resource.meta ) resource.meta = new MediaMeta();
+				resource.meta.duration = totalTime;
+				resource.meta.totalduration = totalTime;
+				resource.meta.starttime = currentTime;
+				resource.meta.width = 0;					
+				resource.meta.height = 0;					
+				dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
+			}			
 		}
 
 		private function progressHandler( event:ProgressEvent ):void
@@ -140,5 +152,10 @@ package com.wezside.components.media.player.media
 			progress = event.bytesLoaded / event.bytesTotal;
 			totalTime = ( sound.bytesTotal / ( sound.bytesLoaded / sound.length ));
 		}	
+		
+		private function soundComplete( event:Event ):void
+		{
+			dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
+		}		
 	}
 }
