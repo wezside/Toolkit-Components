@@ -18,6 +18,7 @@ package com.wezside.components.media.player.display
 		function hide():void;
 		function find( mediaType:String ):String;
 		function addMediaType( id:String ):void;
+		function purgeAllChildren():void;
 		
 	}
 }

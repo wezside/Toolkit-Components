@@ -43,7 +43,6 @@ package com.wezside.components.media.player
 	 */
 	public class Player extends UIElement
 	{
-
 		
 		private var media:IMedia;	
 		private var time:Number = 0;
@@ -73,6 +72,8 @@ package com.wezside.components.media.player
 		public static const STATE_SKIP_TO_START:String = "STATE_SKIP_TO_START";
 		// Used for fast forward to end	
 		public static const STATE_SKIP_TO_END:String = "STATE_SKIP_TO_END";
+		public static const STATE_MEDIA_COMPLETE:String = "STATE_MEDIA_COMPLETE";
+		public static const STATE_RESET:String = "STATE_RESET";
 		
 		public static const SWF:String = "SWF";
 		public static const BMP:String = "BMP";
@@ -90,6 +91,17 @@ package com.wezside.components.media.player
 		
 		public function Player() 
 		{
+			
+			stateManager.addState( STATE_RESET );
+			stateManager.addState( STATE_PAUSE );
+			stateManager.addState( STATE_PLAY );
+			stateManager.addState( STATE_PAUSE );
+			stateManager.addState( STATE_SEEK );
+			stateManager.addState( STATE_PROGRESS );
+			stateManager.addState( STATE_VOLUME );
+			stateManager.addState( STATE_SKIP_TO_START );
+			stateManager.addState( STATE_SKIP_TO_END );
+			
 			children = new Collection();
 			_autoSizePolicy = PlayerAutoSizePolicy.NONE;
 			_resources = new Collection();
@@ -137,20 +149,22 @@ package com.wezside.components.media.player
 			child = null;
 		}
 	
-		override public function purge():void
+		public function purgeMedia():void
 		{
-			super.purge();					
 			var it:IIterator = display.iterator( UIElement.ITERATOR_CHILDREN );
 			var object:IMedia;
+			trace( it.length(), "items to purge from display." );
 			while ( it.hasNext() )
 			{
 				object = it.next() as IMedia;
+				if ( !object ) continue;
+				trace( "purging", object.resource.id );
+				display.removeChild( object as DisplayObject );
 				object.purge();
 				object = null;
 			}
 			it.purge();
-			it = null;
-			display.purge();
+			it = null;				
 		}
 			
 		override public function set state( value:String ):void
@@ -178,11 +192,22 @@ package com.wezside.components.media.player
 		 * <p>This method will effectively do the same thing as if a user has 
 		 * selected an item from the playlist should it exist.</p> 
 		 */
-		public function play( id:String = "" ):void
+		public function play( id:String = "", index:int = -1 ):void
 		{
 			var resource:IMediaResource = resources.find( "id", id );
+			if ( index != -1 ) resource = resources.getElementAt( index );
 			if ( resource )
 			{
+				if ( media )
+				{
+					media.removeEventListener( Event.COMPLETE, mediaComplete );
+					media.removeEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
+					media.removeEventListener( MediaEvent.META, mediaMetaData );
+					purgeMedia();					
+					reset();
+					media = null;
+				}
+				
 				var MediaClazz:Class = typeClasses.getElement( resource.type ) as Class;
 				if ( MediaClazz )
 				{
@@ -232,6 +257,7 @@ package com.wezside.components.media.player
 					if ( !object ) continue;
 					if ( object.playing )
 					{
+						trace( "object.buffering", object.buffering );
 						if ( !object.buffering )
 							removeEventListener( Event.ENTER_FRAME, enterFrame );
 						object.pause();
@@ -303,6 +329,12 @@ package com.wezside.components.media.player
 			}
 		}
 		
+		public function reset():void
+		{
+			state = STATE_RESET;
+			trace( "RESET state", state );
+		}
+		
 		public function get currentVolume():Number
 		{
 			return media ? media.volume : -1;
@@ -359,7 +391,10 @@ package com.wezside.components.media.player
 		private function displayHideComplete( event:PlayerDisplayEvent ):void
 		{			
 			if ( contains( event.currentTarget as UIElement ))
+			{
+//				display.purgeElements();			
 				removeChild( event.currentTarget as UIElement );
+			}
 		}
 
 		/**
@@ -588,10 +623,17 @@ package com.wezside.components.media.player
 			{
 				var success:Boolean = media.play();
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
-				else state = STATE_PLAY;
+				else
+				{
+					if ( media.autoPlay )
+						state = STATE_PLAY;	
+				}
 			}
 			else
+			{
+				reset();
 				trace( "Media is ready to be played" );
+			}
 		}
 
 		private function enterFrame( event:Event = null ):void
@@ -606,7 +648,7 @@ package com.wezside.components.media.player
 			var it:IIterator = playerElements( IPlayerControl ).iterator();
 			while ( it.hasNext() )
 			{
-				control = it.next() as IPlayerControl;				
+				control = it.next() as IPlayerControl;
 				var element:IControlElement;				
 				var controlIt:IIterator = control.iterator( UIElement.ITERATOR_CHILDREN );
 				while ( controlIt.hasNext() )

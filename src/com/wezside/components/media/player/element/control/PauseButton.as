@@ -60,6 +60,7 @@ package com.wezside.components.media.player.element.control
 				case Player.STATE_SKIP_TO_END:
 				case Player.STATE_SKIP_TO_START:
 				case Player.STATE_PLAY:
+				case Player.STATE_RESET:
 				default:
 					button.activate();
 					button.state = "";
