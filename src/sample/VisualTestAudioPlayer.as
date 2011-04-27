@@ -20,6 +20,7 @@ package sample
 	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -83,6 +84,7 @@ package sample
 			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
+			display.addMediaType( Player.MP3 );
 			display.build();
 			display.setStyle();
 			display.arrange();
@@ -119,7 +121,7 @@ package sample
 			player.arrange();
 			addChild( player );
 			
-			player.play( "Sucker Punch - Trailer HD.flv" );
+			player.play( "9.mp3" );
 		}
 
 		private function click( event:PlayerControlEvent  ):void
@@ -159,9 +161,11 @@ package sample
 			vimeo.autoPlay = true;
 			
 			var audio:IMediaResource = new MediaResource();
+			audio.bufferTime = 3000;
+			audio.uri = "http://stage.wezside.co.za/dieantwoord/archive/music/9.mp3";
+			audio.artwork = "http://ecx.images-amazon.com/images/I/51Xy0lo%2BmEL._SS500_.jpg";
 			audio.title = "Audio";
-			audio.autoPlay = false;
-			audio.uri = "http://ff123.net/samples/unt_lame388.mp3";
+			audio.autoPlay = true;
 			
 			var video:IMediaResource = new MediaResource();
 			video.title = "video";

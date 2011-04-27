@@ -1,14 +1,17 @@
 package com.wezside.components.media.player.media
 {
-	import com.wezside.utilities.date.DateUtil;
-	import flash.media.SoundChannel;
+	import flash.display.Bitmap;
 	import com.wezside.components.media.player.resource.IMediaResource;
+	import com.wezside.utilities.date.DateUtil;
 
+	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.media.ID3Info;
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
+	import flash.media.SoundLoaderContext;
 	import flash.net.URLRequest;
 
 	/**
@@ -21,6 +24,8 @@ package com.wezside.components.media.player.media
 		private var bufferFraction:Number;
 		private var channel:SoundChannel = new SoundChannel();
 		private var id3:ID3Info;
+		private var loader:Loader;
+		private var artworkBmp:Bitmap;
 
 		
 		override public function load( resource:IMediaResource ):void
@@ -33,7 +38,24 @@ package com.wezside.components.media.player.media
 		    sound.addEventListener( Event.COMPLETE, complete );
 			sound.addEventListener( IOErrorEvent.IO_ERROR, errorHandler );
 			sound.addEventListener( ProgressEvent.PROGRESS, progressHandler );			
-			sound.load( new URLRequest( resource.uri ));
+			sound.load( new URLRequest( resource.uri ), new SoundLoaderContext( resource.bufferTime ));
+			
+			if ( resource.bufferTime && resource.autoPlay ) 
+			{
+				buffering = true;
+				channel = sound.play( 0 );
+				channel.addEventListener( Event.SOUND_COMPLETE , soundComplete );
+				dispatchEvent( new Event( Event.COMPLETE ));
+				dispatchMeta();
+			}
+			
+			if ( resource.artwork )
+			{
+				loader = new Loader();
+				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, artworkLoaded );
+				loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, errorHandler );
+				loader.load( new URLRequest( resource.artwork ));
+			}
 		}
 		
 		override public function seekTo( seconds:Number ):void
@@ -102,6 +124,14 @@ package com.wezside.components.media.player.media
 			return !playing ? super.currentTime : channel.position;
 		}
 
+		private function artworkLoaded( event:Event ):void
+		{
+			trace( "ART WORK LOADED" );
+			artworkBmp = event.currentTarget.content;
+			artworkBmp.smoothing = true;
+			addChild( artworkBmp );
+		}
+
 		private function id3Handler( event:Event ):void
 		{
 			id3 = sound.id3;
@@ -118,10 +148,12 @@ package com.wezside.components.media.player.media
 		private function errorHandler( event:IOErrorEvent ):void
 		{
 			error.addElement( ERROR_LOAD, event.text );
+			trace( event.text );
 		}
 
 		private function complete( event:Event ):void
 		{
+			trace( "MEDIA COMPLETE." );
 			dispatchEvent( event );
 			if ( resource.autoPlay && !resource.bufferTime )
 			{
@@ -140,8 +172,8 @@ package com.wezside.components.media.player.media
 				resource.meta.duration = totalTime;
 				resource.meta.totalduration = totalTime;
 				resource.meta.starttime = currentTime;
-				resource.meta.width = 0;					
-				resource.meta.height = 0;					
+				resource.meta.width = artworkBmp ? artworkBmp.width : 0;					
+				resource.meta.height = artworkBmp ? artworkBmp.height : 0;					
 				dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
 			}			
 		}

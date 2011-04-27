@@ -32,6 +32,7 @@ package com.wezside.components.media.player.resource
 		public static const QUALITY_LOW:int = 1;
 		public static const QUALITY_MEDIUM:int = 2;
 		public static const QUALITY_HIGH:int = 3;
+		private var _artwork:String;
 
 		public function MediaResource() 
 		{
@@ -186,6 +187,16 @@ package com.wezside.components.media.player.resource
 		public function set lyrics( value:String ):void
 		{
 			_lyrics = value;
+		}
+
+		public function get artwork():String
+		{
+			return _artwork;
+		}
+
+		public function set artwork( value:String ):void
+		{
+			_artwork = value;
 		}
 	}
 }
