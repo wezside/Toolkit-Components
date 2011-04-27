@@ -83,6 +83,37 @@ package com.wezside.components.media.player.media
 				dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 			}
 		}
+			
+		override public function purge():void
+		{			
+			if ( artworkBmp )
+			{
+				artworkBmp.bitmapData.dispose();
+				artworkBmp = null;
+			}
+			
+			id3 = null;
+			dateUtil = null;
+			
+			if ( channel )
+			{
+				channel.stop();
+				channel.removeEventListener( Event.SOUND_COMPLETE , soundComplete );
+				channel = null;
+			}
+			
+			resource.meta = null;
+			
+			if ( sound )
+			{
+				sound.removeEventListener( Event.ID3, id3Handler );
+			    sound.removeEventListener( Event.COMPLETE, complete );
+				sound.removeEventListener( IOErrorEvent.IO_ERROR, errorHandler );
+				sound.removeEventListener( ProgressEvent.PROGRESS, progressHandler );	
+				sound = null;
+			}					
+			super.purge();
+		}
 
 		override public function get volume():Number
 		{
@@ -121,7 +152,7 @@ package com.wezside.components.media.player.media
 
 		override public function get currentTime():Number
 		{
-			return !playing ? super.currentTime : channel.position;
+			return !playing && !buffering ? super.currentTime : channel.position;
 		}
 
 		private function artworkLoaded( event:Event ):void
@@ -155,6 +186,7 @@ package com.wezside.components.media.player.media
 		{
 			trace( "MEDIA COMPLETE." );
 			dispatchEvent( event );
+			if ( progress == 1 ) buffering = false;
 			if ( resource.autoPlay && !resource.bufferTime )
 			{
 				trace( "MEDIA AUDIO PLAY " );

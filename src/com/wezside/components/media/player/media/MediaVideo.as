@@ -6,7 +6,6 @@ package com.wezside.components.media.player.media
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
-	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.media.SoundTransform;
 	import flash.media.Video;
@@ -46,7 +45,7 @@ package com.wezside.components.media.player.media
 
 		override public function get currentTime():Number
 		{
-			return !playing ? super.currentTime : stream.time;
+			return !playing && !buffering ? super.currentTime : stream.time;
 		}
 
 		/**
@@ -92,14 +91,21 @@ package com.wezside.components.media.player.media
 		}
 
 		override public function purge():void
-		{
-			super.purge();
-			netConnection.close();
+		{			
 			netConnection = null;
-			video.clear();
-			video = null;
-			stream.close();
-			stream = null;
+			if ( video )
+			{
+				removeChild( video );
+				video.clear();			
+				video = null;
+			}
+			if ( stream )
+			{
+				stream.removeEventListener( NetStatusEvent.NET_STATUS, statusHandler );
+				stream.close();
+				stream = null;
+			}
+			super.purge();
 		}
 			
 		override public function get progress():Number
@@ -138,6 +144,7 @@ package com.wezside.components.media.player.media
 		
 		private function completeHandler( event:Event ):void
 		{
+			buffering = false;
 			dispatchEvent( event );
 			if ( resource.autoPlay && !resource.bufferTime )
 				stream.play( resource.uri );
@@ -153,12 +160,13 @@ package com.wezside.components.media.player.media
 		 * this will then draw the playback indicator in front of the progress bar which is visually incorrect. 
 		 * To fix this behaviour we check if this is happening and then set the progress value to the stream 
 		 * currentTime and totalTime ration instead. 
-		 */
 		private function progressHandler( event:ProgressEvent ):void
 		{
-			progress = event.bytesLoaded / event.bytesTotal;			
+			buffering = true;
+			progress = event.bytesLoaded / event.bytesTotal;		
 			if ( progress  < stream.time / totalTime  ) progress = stream.time / totalTime;			
 		}
+		 */
 
 		private function securityErrorHandler( event:SecurityErrorEvent ):void
 		{
@@ -190,13 +198,16 @@ package com.wezside.components.media.player.media
 					break;
 				case "NetStream.Buffer.Flush":
 				case "NetStream.Buffer.Full":
-					buffering = false;
+					if ( stream.bytesLoaded < stream.bytesTotal )
+						buffering = true;
+					else
+						buffering = false;					
 					break;
 				case "NetStream.Play.Start":
 					playbackFinished = false;
 					break;
 				case "NetStream.Play.Stop":
-					buffering = false;
+					if ( stream.bytesLoaded >= stream.bytesTotal ) buffering = false;
 					playbackFinished = true;
 					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 					break;

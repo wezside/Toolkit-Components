@@ -17,7 +17,7 @@ package com.wezside.components.media.player.media
 		
 		private var _error:IDictionaryCollection;
 		private var _resource:IMediaResource;
-		private var _playing:Boolean;
+		private var _playing:Boolean = false;
 		private var _totalTime:Number = -1;
 		private var _currentTime:Number = 0;
 		private var _progress:Number = 0;
@@ -31,9 +31,13 @@ package com.wezside.components.media.player.media
 			
 		override public function purge():void
 		{
+			trace( resource.id, "_error", _error );
+			if ( _error )
+			{
+				_error.purge();
+				_error = null;
+			}
 			super.purge();
-			_error.purge();
-			_error = null;
 		}
 		
 		public function load( resource:IMediaResource ):void

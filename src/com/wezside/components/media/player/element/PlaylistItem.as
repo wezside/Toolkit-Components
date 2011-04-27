@@ -1,7 +1,9 @@
 package com.wezside.components.media.player.element
 {
 	import com.wezside.components.UIElement;
+	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
+	import com.wezside.components.media.player.event.PlaylistEvent;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.components.text.Label;
 	import com.wezside.data.iterator.IIterator;
@@ -46,23 +48,33 @@ package com.wezside.components.media.player.element
 		override public function set state( value:String ):void
 		{
 			super.state = value;
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var label:Label;
 			switch ( value )
 			{
 				case UIElementState.STATE_VISUAL_SELECTED:
-					var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
-					var label:Label;
 					while ( it.hasNext() )
 					{
 						label = it.next() as Label;
 						if ( !label ) continue;
 						label.state = value;
+						label.deactivate();
 					}
-					it.purge();
-					it = null;
-					label = null;
+					break;
+				case UIElementState.STATE_VISUAL_UP:
+					while ( it.hasNext() )
+					{
+						label = it.next() as Label;
+						if ( !label ) continue;
+						label.state = value;
+						label.activate();
+					}
 					break;
 				default:
 			}
+			it.purge();
+			it = null;
+			label = null;
 		}
 
 		public function reset():void
@@ -104,8 +116,18 @@ package com.wezside.components.media.player.element
 			if ( !html ) label.text = text;
 			label.build();
 			label.setStyle();
-			label.arrange();		
+			label.arrange();
+			label.activate();
+			label.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );		
 			return label;	
+		}
+
+		private function stateChange( event:UIElementEvent ):void
+		{
+			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
+			{
+				dispatchEvent( new PlaylistEvent( PlaylistEvent.CLICK, false, false, _index ));
+			}
 		}
 
 	}

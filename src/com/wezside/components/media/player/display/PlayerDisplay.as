@@ -100,6 +100,21 @@ package com.wezside.components.media.player.display
 			hideComplete();
 		}
 
+		public function purgeAllChildren():void
+		{			
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var media:IMedia;
+			while ( it.hasNext() )
+			{
+				media = it.next() as IMedia;
+				if ( !media ) continue;
+				removeChild( media as DisplayObject );
+			}
+			it.purge();
+			it = null;
+			media = null;
+		}
+
 		public function find( mediaType:String ):String
 		{
 			return types.getElement( mediaType );
@@ -215,10 +230,7 @@ package com.wezside.components.media.player.display
 
 		private function hideComplete():void
 		{
-			trace( "Hide complete" );
 			dispatchEvent( new PlayerDisplayEvent( PlayerDisplayEvent.HIDE_COMPLETE ));
 		}
-
-
 	}
 }

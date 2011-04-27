@@ -1,8 +1,8 @@
 package com.wezside.components.media.player.element
 {
+	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementState;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
-	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.ILayout;
 	import com.wezside.components.media.player.event.PlaylistEvent;
 	import com.wezside.components.media.player.resource.IMediaResource;
@@ -39,7 +39,6 @@ package com.wezside.components.media.player.element
 				playlistItem.build();
 				playlistItem.setStyle();
 				playlistItem.arrange();
-				playlistItem.activate();
 				playlistItem.addEventListener( PlaylistEvent.CLICK, click );
 				addChild( playlistItem );
 			}
@@ -108,6 +107,16 @@ package com.wezside.components.media.player.element
 		public function set selectedIndex( value:int ):void
 		{
 			_selectedIndex = value;
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
+			var playlistItem:IPlaylistItem;
+			while ( it.hasNext() )
+			{
+				playlistItem = it.next() as IPlaylistItem;
+				playlistItem.reset();
+			}
+			it.purge();
+			it = null;
+			playlistItem = null;
 			IPlaylistItem( getChildAt( _selectedIndex )).state = UIElementState.STATE_VISUAL_SELECTED;
 		}
 		
