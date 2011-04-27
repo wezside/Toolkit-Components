@@ -232,7 +232,8 @@ package com.wezside.components.media.player
 					if ( !object ) continue;
 					if ( object.playing )
 					{
-						removeEventListener( Event.ENTER_FRAME, enterFrame );
+						if ( !object.buffering )
+							removeEventListener( Event.ENTER_FRAME, enterFrame );
 						object.pause();
 						state = STATE_PAUSE;
 					}
@@ -595,7 +596,6 @@ package com.wezside.components.media.player
 
 		private function enterFrame( event:Event = null ):void
 		{
-			trace( "-------------")
 			if ( !media )
 			{
 				trace( "No media instance. Remove ENTER_FRAME." );
