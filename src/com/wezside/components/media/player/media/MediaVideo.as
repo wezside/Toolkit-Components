@@ -82,6 +82,7 @@ package com.wezside.components.media.player.media
 			
 		override public function set volume( level:Number ):void
 		{
+			trace( "volume", level );
 			stream.soundTransform = new SoundTransform( level );
 		}
 			
@@ -209,6 +210,7 @@ package com.wezside.components.media.player.media
 				case "NetStream.Play.Stop":
 					if ( stream.bytesLoaded >= stream.bytesTotal ) buffering = false;
 					playbackFinished = true;
+					trace( "----------------- MEDIA FINISHED." );
 					dispatchEvent( new MediaEvent( MediaEvent.COMPLETE ));
 					break;
 				case "NetStream.Seek.Notify":

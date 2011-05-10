@@ -20,8 +20,6 @@ package com.wezside.components.media.player.element
 		private var _element:IControlElement;
 		private var _displayHeight:int;
 		private var _autoSize:Boolean;
-		
-		
 				
 		public function PlayerControl() 
 		{
@@ -33,7 +31,7 @@ package com.wezside.components.media.player.element
 			super.build();
 			_element.build();
 		}
-			
+		
 		override public function arrange():void
 		{
 			super.arrange();

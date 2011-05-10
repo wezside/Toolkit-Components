@@ -8,6 +8,7 @@ package com.wezside.components.media.player.event
 	public class PlaylistEvent extends Event
 	{
 		public static const CLICK:String = "PLAYLIST_CLICK";
+		public static const LYRIC_CLICK:String = "LYRIC_CLICK";
 		public var data:*;
 		
 		public function PlaylistEvent( type:String, bubbles:Boolean = false, cancelable:Boolean = false, data:* = null )
