@@ -10,6 +10,7 @@ package com.wezside.components.media.player
 	import com.wezside.components.media.player.element.IPlayerElement;
 	import com.wezside.components.media.player.element.IPlayerPlaylist;
 	import com.wezside.components.media.player.element.IPlaylistItem;
+	import com.wezside.components.media.player.event.PlayerEvent;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.components.media.player.media.Media;
 	import com.wezside.components.media.player.media.MediaAudio;
@@ -48,7 +49,7 @@ package com.wezside.components.media.player
 		private var time:Number = 0;
 		private var volumeLevel:Number = -1;
 		private var volumeTime:Number = -1;
-		private var volumeSource:Number;
+		private var volumeSource:Number = 1;
 		private var volumeChange:Number;
 		private var children:Collection;
 				
@@ -123,7 +124,7 @@ package com.wezside.components.media.player
 		override public function build():void
 		{
 			super.build();
-			trace( "Player.build()" );
+
 			var it:IIterator = _resources.iterator();
 			var resource:IMediaResource;
 			while ( it.hasNext() )
@@ -151,14 +152,13 @@ package com.wezside.components.media.player
 	
 		public function purgeMedia():void
 		{
+			if ( hasEventListener( Event.ENTER_FRAME )) removeEventListener( Event.ENTER_FRAME, enterFrame );
 			var it:IIterator = display.iterator( UIElement.ITERATOR_CHILDREN );
 			var object:IMedia;
-			trace( it.length(), "items to purge from display." );
 			while ( it.hasNext() )
 			{
 				object = it.next() as IMedia;
 				if ( !object ) continue;
-				trace( "purging", object.resource.id );
 				display.removeChild( object as DisplayObject );
 				object.purge();
 				object = null;
@@ -203,7 +203,7 @@ package com.wezside.components.media.player
 					media.removeEventListener( Event.COMPLETE, mediaComplete );
 					media.removeEventListener( MediaEvent.COMPLETE, mediaPlayBackComplete );
 					media.removeEventListener( MediaEvent.META, mediaMetaData );
-					purgeMedia();					
+					purgeMedia();				
 					reset();
 					media = null;
 				}
@@ -244,8 +244,13 @@ package com.wezside.components.media.player
 	
 		public function pause( id:String = "" ):void
 		{
+			trace( "Player.pause", id );
 			var media:IMedia = getChildByName( id ) as IMedia;
-			if ( media ) media.pause();
+			if ( media )
+			{
+				state = STATE_PAUSE;
+				media.pause();
+			}
 			else
 			{
 				// Pause all playing media
@@ -337,7 +342,7 @@ package com.wezside.components.media.player
 		
 		public function get currentVolume():Number
 		{
-			return media ? media.volume : -1;
+			return volumeSource;
 		}
 
 		private function volumeEnterFrame( event:Event ):void
@@ -349,6 +354,7 @@ package com.wezside.components.media.player
 			}
 			else
 			{
+				dispatchEvent( new PlayerEvent( PlayerEvent.VOLUME_FADE_COMPLETE ));
 				removeEventListener( Event.ENTER_FRAME, volumeEnterFrame );	
 			}
 		}
@@ -461,6 +467,9 @@ package com.wezside.components.media.player
 		public function hide():void
 		{
 			visible = false;
+			if ( media && media.playing ) media.pause();
+			if ( hasEventListener( Event.ENTER_FRAME )) removeEventListener( Event.ENTER_FRAME, enterFrame );
+			dispatchEvent( new PlayerEvent( PlayerEvent.HIDE_COMPLETE ));
 		}		
 
 		public function get resources():ICollection
@@ -602,6 +611,8 @@ package com.wezside.components.media.player
 			
 			// Update any playlists with the selected index
 			setPlaylistIndex( media.resource.id );
+			
+			dispatchEvent( new PlayerEvent( PlayerEvent.META_ARRANGE_COMPLETE ));
 		}		
 		
 		public function hasLayoutDecorator( layout:ILayout, decorator:Class ):Boolean

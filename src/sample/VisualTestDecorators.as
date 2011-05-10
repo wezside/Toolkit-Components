@@ -81,8 +81,8 @@ package sample
  			label.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu nunc non risus cursus pellentesque dapibus eget elit. Duis venenatis libero tempus sapien eleifend vel placerat augue feugiat. ";
  			label.build();
  			label.setStyle();
-// 			label.arrange();
-//			addChild( label );
+ 			label.arrange();
+			addChild( label );
 
 			addEventListener( Event.ENTER_FRAME, enterFrame );
 		}
@@ -110,7 +110,7 @@ package sample
 
 
 			var timer:Timer = new Timer( 3000, 1  );
-			timer.addEventListener( TimerEvent.TIMER_COMPLETE, timerCompelte );
+			timer.addEventListener( TimerEvent.TIMER_COMPLETE, timerCompelte2 );
 			timer.start();
 		}
 
@@ -125,7 +125,7 @@ package sample
 
 		private function timerCompelte2( event:TimerEvent ):void
 		{
-//			scroll.to( 50 );
+			scroll.to( 0.5 );
 		}
 
 		private function stageResize( event:Event ):void

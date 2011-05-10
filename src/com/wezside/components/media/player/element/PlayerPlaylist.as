@@ -21,6 +21,7 @@ package com.wezside.components.media.player.element
 		private var _displayWidth:int;
 		private var _displayHeight:int;
 		private var _selectedIndex:int = 0;
+		private var _lyricLabel:String;
 	
 	
 		override public function build():void
@@ -33,6 +34,9 @@ package com.wezside.components.media.player.element
 			{
 				resource = it.next() as IMediaResource;
 				playlistItem = new PlaylistItem();
+				playlistItem.lyricLabel = _lyricLabel;
+				playlistItem.styleName = "playlistItem";
+				playlistItem.styleManager = styleManager;
 				playlistItem.layout = new HorizontalLayout( playlistItem );
 				playlistItem.index = it.index() - 1;
 				playlistItem.resource = resource;
@@ -40,12 +44,14 @@ package com.wezside.components.media.player.element
 				playlistItem.setStyle();
 				playlistItem.arrange();
 				playlistItem.addEventListener( PlaylistEvent.CLICK, click );
+				playlistItem.addEventListener( PlaylistEvent.LYRIC_CLICK, lyricClick );
 				addChild( playlistItem );
 			}
 			it.purge();
 			it = null;
 			resource = null;			
 		}
+
 	
 		override public function arrange():void
 		{
@@ -120,6 +126,16 @@ package com.wezside.components.media.player.element
 			IPlaylistItem( getChildAt( _selectedIndex )).state = UIElementState.STATE_VISUAL_SELECTED;
 		}
 		
+		public function get lyricLabel():String
+		{
+			return _lyricLabel;
+		}
+		
+		public function set lyricLabel( value:String ):void
+		{
+			_lyricLabel = value;
+		}
+		
 		private function autoSizeElements( value:Boolean ):ICollection
 		{
 			var collection:ICollection = new Collection();
@@ -139,6 +155,11 @@ package com.wezside.components.media.player.element
 		private function click( event:PlaylistEvent ):void
 		{
 			selectedIndex = int( event.data );
+			dispatchEvent( event );
+		}		
+		
+		private function lyricClick( event:PlaylistEvent ):void
+		{
 			dispatchEvent( event );
 		}		
 	}

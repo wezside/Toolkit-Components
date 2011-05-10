@@ -33,7 +33,8 @@ package com.wezside.components.media.player.element.control
 			button.id = "mute";
 			button.text = "MUTE";
 			button.autoSize = "left";
-			button.textColorSelected = 0xff0000;
+			button.styleName = styleName;
+			button.styleManager = styleManager;
 			button.build();
 			button.setStyle();
 			button.arrange();
@@ -42,9 +43,8 @@ package com.wezside.components.media.player.element.control
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			addChild( button );
 			
-			width = button.width;
+			width = button.width + 20;
 			height = button.height;			
-			
 		}
 		
 		override public function set state( value:String ):void

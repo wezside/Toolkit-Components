@@ -84,7 +84,6 @@ package sample
 			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
-//			display.addMediaType( Player.MP3 );
 			display.build();
 			display.setStyle();
 			display.arrange();
@@ -145,7 +144,7 @@ package sample
 					player.seek( player.totalTime );
 					
 				if ( event.target.id == "mute" )
-					player.volume( event.data ? 0 : player.currentVolume, 1 );
+					player.volume( event.data ? 0 : player.currentVolume, 0 );
 			}
 			else if ( event.data && event.data.id == "progress" )
 			{

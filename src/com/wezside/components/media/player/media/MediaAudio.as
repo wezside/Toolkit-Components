@@ -1,5 +1,7 @@
 package com.wezside.components.media.player.media
 {
+	import flash.events.MouseEvent;
+	import flash.media.SoundTransform;
 	import flash.display.Bitmap;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.utilities.date.DateUtil;
@@ -33,6 +35,8 @@ package com.wezside.components.media.player.media
 			resource.key = "mp3";
 			dateUtil = new DateUtil();
 			bufferFraction = resource.bufferTime / 100;
+			
+			soundTransform = new SoundTransform();
 			sound = new Sound();
 			sound.addEventListener( Event.ID3, id3Handler );
 		    sound.addEventListener( Event.COMPLETE, complete );
@@ -60,7 +64,6 @@ package com.wezside.components.media.player.media
 		
 		override public function seekTo( seconds:Number ):void
 		{
-			trace( "seekTo", seconds, playing );
 			currentTime = seconds;
 			if ( playing )
 			{
@@ -73,10 +76,10 @@ package com.wezside.components.media.player.media
 			{
 				dispatchMeta();
 				var currentVolume:Number = volume;
-				channel.soundTransform.volume = 0;
+				channel.soundTransform = new SoundTransform( 0 );
 				channel = sound.play( seconds );			
 				channel.stop();
-				channel.soundTransform.volume = currentVolume;
+				channel.soundTransform = new SoundTransform( currentVolume );
 			}
 			if ( seconds == totalTime )
 			{
@@ -119,6 +122,11 @@ package com.wezside.components.media.player.media
 		{
 			return channel.soundTransform.volume;
 		}
+			
+		override public function set volume( level:Number ):void
+		{
+			channel.soundTransform = new SoundTransform( level );
+		}
 	
 		override public function play():Boolean
 		{
@@ -155,9 +163,13 @@ package com.wezside.components.media.player.media
 			return !playing && !buffering ? super.currentTime : channel.position;
 		}
 
+		private function click( event:MouseEvent ):void
+		{
+			dispatchEvent( new MediaEvent( MediaEvent.CLICK, false, false ));
+		}
+
 		private function artworkLoaded( event:Event ):void
 		{
-			trace( "ART WORK LOADED" );
 			artworkBmp = event.currentTarget.content;
 			artworkBmp.smoothing = true;
 			addChild( artworkBmp );

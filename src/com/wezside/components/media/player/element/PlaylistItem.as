@@ -18,6 +18,7 @@ package com.wezside.components.media.player.element
 		
 		private var _index:int = -1;
 		
+		public var lyricLabel:String;
 		public var resource:IMediaResource;
 			
 		override public function build():void
@@ -25,14 +26,17 @@ package com.wezside.components.media.player.element
 			super.build();
 			
 			if ( index > -1 )
-				addChild( buildLabel( ( index + 1 ).toString(), "playlist-item-index" ));
+			{
+				var indexStr:String = ( index + 1 ).toString().length == 1 ? "0" + ( index + 1 ).toString() : ( index + 1 ).toString();
+				addChild( buildLabel( indexStr, "playlist-item-index", false, false ));
+			}
 					
 			if ( resource.title )
 				addChild( buildLabel( resource.title, "playlist-item-title" ));				
 				
 			if ( resource.lyrics )
-				addChild( buildLabel( resource.lyrics, "playlist-item-lyrics" ));				
-				
+				addChild( buildLabel( lyricLabel, "playlist-item-lyrics" ));
+								
 			if ( resource.meta )
 			{
 				if ( resource.meta.duration )
@@ -102,7 +106,7 @@ package com.wezside.components.media.player.element
 			_index = value;
 		}
 		
-		private function buildLabel( text:String, styleName:String, html:Boolean = false ):Label
+		private function buildLabel( text:String, styleName:String, html:Boolean = false, active:Boolean = true ):Label
 		{
 			var label:Label = new Label();
 			label.autoSize = TextFieldAutoSize.LEFT;
@@ -117,8 +121,8 @@ package com.wezside.components.media.player.element
 			label.build();
 			label.setStyle();
 			label.arrange();
-			label.activate();
-			label.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );		
+			active ? label.activate() : label.deactivate();
+			if ( active ) label.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );		
 			return label;	
 		}
 
@@ -126,7 +130,10 @@ package com.wezside.components.media.player.element
 		{
 			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
 			{
-				dispatchEvent( new PlaylistEvent( PlaylistEvent.CLICK, false, false, _index ));
+				if ( event.currentTarget.text == lyricLabel )
+					dispatchEvent( new PlaylistEvent( PlaylistEvent.LYRIC_CLICK, false, false, resource.lyrics ));
+				else				
+					dispatchEvent( new PlaylistEvent( PlaylistEvent.CLICK, false, false, _index ));
 			}
 		}
 

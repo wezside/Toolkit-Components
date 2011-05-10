@@ -28,7 +28,8 @@ package com.wezside.components.media.player.element.control
 			button.id = "pause";
 			button.text = "PAUSED";
 			button.autoSize = "left";
-			button.textColorSelected = 0xff0000;
+			button.styleName = styleName;
+			button.styleManager = styleManager;
 			button.build();
 			button.setStyle();
 			button.arrange();

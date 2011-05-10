@@ -22,6 +22,17 @@ package com.wezside.components.media.player.element
 		private var _styleManager:IStyleManager;
 		private var _flagForUpdate:Boolean;
 		private var _autoSize:Boolean;
+		private var _styleName:String;
+		private var _barColors:Array = [ 0x333333, 0x333333 ];
+		private var _barAlphas:Array = [ 1, 1 ];
+		private var _progressFillColor:uint = 0x73141B;
+		private var _progressFillAlpha:Number = 1;
+		private var _playbackBarColor:uint = 0xFFFFFF;
+		private var _playbackBarAlpha:Number = 1;
+		private var _handleWidth:Number = 2;
+		private var _handleColors:Array = [ 0x676968, 0x676968 ];
+		private var _handleAlphas:Array = [ 1, 1 ];
+		private var _padding:Array = [ 0, 0, 0, 0 ];
 		
 		public function ControlElement( decorated:IUIDecorator ) 
 		{
@@ -50,11 +61,12 @@ package com.wezside.components.media.player.element
 
 		public function get styleName():String
 		{
-			return "";
+			return _styleName;
 		}
 
 		public function set styleName( value:String ):void
 		{
+			_styleName = value;
 		}
 
 		public function iterator( type:String = null ):IIterator
@@ -134,5 +146,104 @@ package com.wezside.components.media.player.element
 			_autoSize = value;
 		}
 
+		public function get barColors():Array
+		{
+			return _barColors;
+		}
+
+		public function set barColors( value:Array ):void
+		{
+			_barColors = value;
+		}
+
+		public function get barAlphas():Array
+		{
+			return _barAlphas;
+		}
+
+		public function set barAlphas( value:Array ):void
+		{
+			_barAlphas = value;
+		}
+
+		public function get progressFillColor():uint
+		{
+			return _progressFillColor;
+		}
+
+		public function set progressFillColor( value:uint ):void
+		{
+			_progressFillColor = value;
+		}
+
+		public function get progressFillAlpha():Number
+		{
+			return _progressFillAlpha;
+		}
+
+		public function set progressFillAlpha( value:Number ):void
+		{
+			_progressFillAlpha = value;
+		}
+
+		public function get playbackBarColor():uint
+		{
+			return _playbackBarColor;
+		}
+
+		public function set playbackBarColor( value:uint ):void
+		{
+			_playbackBarColor = value;
+		}
+
+		public function get playbackBarAlpha():Number
+		{
+			return _playbackBarAlpha; 
+		}
+
+		public function set playbackBarAlpha( value:Number ):void
+		{
+			_playbackBarAlpha = value;
+		}
+
+		public function get handleWidth():Number
+		{
+			return _handleWidth;
+		}
+
+		public function set handleWidth( value:Number ):void
+		{
+			_handleWidth = value;
+		}
+
+		public function get handleColors():Array
+		{
+			return _handleColors;
+		}
+
+		public function set handleColors( value:Array ):void
+		{
+			_handleColors = value;
+		}
+
+		public function get handleAlphas():Array
+		{
+			return _handleAlphas;
+		}
+
+		public function set handleAlphas( value:Array ):void
+		{
+			_handleAlphas = value;
+		}
+
+		public function get padding():Array
+		{
+			return _padding;
+		}
+
+		public function set padding( value:Array ):void
+		{
+			_padding = value;
+		}
 	}
 }

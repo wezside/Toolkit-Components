@@ -28,7 +28,6 @@ package com.wezside.components.media.player.element.control
 			button.styleName = styleName;
 			button.styleManager = styleManager;
 			button.autoSize = "left";
-			button.textColorSelected = 0xff0000;
 			button.text = data;
 			button.id = "play";
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
@@ -36,6 +35,7 @@ package com.wezside.components.media.player.element.control
 			button.setStyle();
 			button.arrange();
 			button.activate();
+			
 			if ( super.state == Player.STATE_PLAY )
 			{
 				button.deactivate();
@@ -61,24 +61,23 @@ package com.wezside.components.media.player.element.control
 			{
 				case Player.STATE_VOLUME: break;
 				case Player.STATE_PLAY:
-					button.deactivate();
+//					button.deactivate();
 					button.state = UIElementState.STATE_VISUAL_SELECTED;
 					break;
 				case Player.STATE_SKIP_TO_END:
 				case Player.STATE_SKIP_TO_START:					
 				case Player.STATE_PAUSE:
 				case Player.STATE_RESET:
-				default:
-					
+				default:					
+					button.state = UIElementState.STATE_VISUAL_SELECTED;
 					button.activate();
-					button.state = "";
-					button.state = UIElementState.STATE_VISUAL_UP;
 					break;
 			}
 		}
 
 		private function click( event:UIElementEvent ):void
 		{
+			trace( event.state.key );
 			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
 			{
 				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));

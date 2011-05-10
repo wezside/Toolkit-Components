@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.element.indicator
 {
+	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
@@ -22,6 +23,7 @@ package com.wezside.components.media.player.element.indicator
 		private var media:IMedia;
 		private var seconds:Number;
 		private var playbackBar:Sprite;
+		private var container:UIElement;
 		
 		
 		public function IndicatorProgress( decorated:IUIDecorator )
@@ -31,48 +33,61 @@ package com.wezside.components.media.player.element.indicator
 			
 		override public function build():void
 		{									
+			
+			container = new UIElement();
+			container.layout = new PaddedLayout( container );
+			container.layout.top = padding[0];
+			container.layout.right = padding[1];
+			container.layout.bottom = padding[2];
+			container.layout.left = padding[3];
+			
 			bar = new UIElement();
 			bar.background = new ShapeRectangle( bar );
 			bar.background.width = width;
-			bar.background.height = 20;
-			bar.background.colours = [ 0x1c1c1c, 0x1c1c1c ];
+			bar.background.height = height;
+			bar.background.colours = barColors;
 			bar.background.alphas = [ 1, 1 ];
 			bar.build();
 			bar.setStyle();
 			bar.arrange();
 			bar.mouseEnabled = false;
 			bar.mouseChildren = false;
-			addChild( bar );
+			container.addChild( bar );
 						
 			progress = new Sprite();
-			progress.graphics.beginFill( 0x73141B, 1 );
-			progress.graphics.drawRect( 0, 0, width, 20 );
+			progress.graphics.beginFill( progressFillColor, progressFillAlpha );
+			progress.graphics.drawRect( 0, 0, width, height );
 			progress.graphics.endFill();
 			progress.addEventListener( MouseEvent.CLICK, click );
 			progress.addEventListener( MouseEvent.ROLL_OVER, rollOver );
 			progress.addEventListener( MouseEvent.ROLL_OUT, rollOut );
-			addChild( progress );
+			container.addChild( progress );
 						
 			handle = new UIElement();
 			handle.background = new ShapeRectangle( handle );
-			handle.background.width = 2;
-			handle.background.height = 20;
-			handle.background.colours = [ 0x676968, 0x676968];
-			handle.background.alphas = [ 1, 1 ];
+			handle.background.width = handleWidth;
+			handle.background.height = height;
+			handle.background.colours =handleColors;
+			handle.background.alphas = handleAlphas;
 			handle.build();
 			handle.setStyle();
 			handle.arrange();
 			handle.visible = false;
 			handle.mouseEnabled = false;
 			handle.mouseChildren = false;
-			addChild( handle );			
+			container.addChild( handle );			
 			
 			playbackBar = new Sprite();
-			playbackBar.graphics.beginFill( 0xFFFFFF );
-			playbackBar.graphics.drawRect(0, 0, 2, 20 );
+			playbackBar.graphics.beginFill( playbackBarColor, playbackBarAlpha );
+			playbackBar.graphics.drawRect(0, 0, handleWidth, height );
 			playbackBar.graphics.endFill();
-			addChild( playbackBar );			
+			container.addChild( playbackBar );			
 						
+			container.build();
+			container.setStyle();
+			container.arrange();
+			addChild( container );			
+			
 			super.build();
 		}
 	
@@ -118,6 +133,7 @@ package com.wezside.components.media.player.element.indicator
 		private function mouseMove( event:MouseEvent ):void
 		{
 			handle.x = int( event.localX * progress.scaleX );
+			trace( handle.x );
 		}
 
 		private function click( event:MouseEvent ):void
