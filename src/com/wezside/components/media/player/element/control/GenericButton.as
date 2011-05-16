@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.element.control
 {
+	import flash.text.TextFieldAutoSize;
 	import com.wezside.components.IUIDecorator;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
@@ -12,13 +13,13 @@ package com.wezside.components.media.player.element.control
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class MuteButton extends ControlElement
+	public class GenericButton extends ControlElement
 	{
 		
 		private var button:Button;
 		private var selected:Boolean;
 		
-		public function MuteButton( decorated:IUIDecorator )
+		public function GenericButton( decorated:IUIDecorator )
 		{
 			super( decorated );
 		}
@@ -30,16 +31,16 @@ package com.wezside.components.media.player.element.control
 			
 			button = new Button();
 			button.interactive = new InteractiveSelectable( button );
-			button.id = "mute";
-			button.text = "MUTE";
-			button.autoSize = "left";
+			button.id = data;
+			button.autoSize = TextFieldAutoSize.LEFT;
+			button.text = data;
 			button.styleName = styleName;
 			button.styleManager = styleManager;
 			button.build();
 			button.setStyle();
 			button.arrange();
-			button.deactivate();
-			button.state = UIElementState.STATE_VISUAL_DISABLED;
+			button.activate();
+			button.state = defaultState;
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			addChild( button );
 			
@@ -53,8 +54,17 @@ package com.wezside.components.media.player.element.control
 			switch ( value )
 			{
 				case Player.STATE_PLAY:
-					button.activate();
+					selected = false;
+					break;
+				case Player.STATE_RESET:
+					if ( !selected )
+					{
+					button.state = ""; 
 					button.state = UIElementState.STATE_VISUAL_UP;
+					}
+					break;
+				case UIElementState.STATE_VISUAL_DISABLED:
+					button.deactivate();
 					break;
 			}
 		}		

@@ -1,11 +1,9 @@
 package com.wezside.components.media.player.media
 {
-	import flash.events.MouseEvent;
-	import flash.media.SoundTransform;
-	import flash.display.Bitmap;
 	import com.wezside.components.media.player.resource.IMediaResource;
 	import com.wezside.utilities.date.DateUtil;
 
+	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -14,6 +12,7 @@ package com.wezside.components.media.player.media
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;
+	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 
 	/**
@@ -162,10 +161,10 @@ package com.wezside.components.media.player.media
 		{
 			return !playing && !buffering ? super.currentTime : channel.position;
 		}
-
-		private function click( event:MouseEvent ):void
+	
+		override public function get buffering():Boolean
 		{
-			dispatchEvent( new MediaEvent( MediaEvent.CLICK, false, false ));
+			return sound ? sound.isBuffering : false;
 		}
 
 		private function artworkLoaded( event:Event ):void

@@ -58,7 +58,14 @@ package com.wezside.components.gallery.item
 			loader.contentLoaderInfo.addEventListener( IOErrorEvent.NETWORK_ERROR, error );
 			loader.load( new URLRequest( url ));				
 		}		
-
+	
+		override public function purge():void
+		{
+			var bmp:Bitmap = getChildAt( 0 ) as Bitmap;
+			bmp.bitmapData.dispose();
+			trace( "Purge ImageGalleryItem" );
+			super.purge();			
+		}
 		
 		protected function progress( event:ProgressEvent ):void
 		{

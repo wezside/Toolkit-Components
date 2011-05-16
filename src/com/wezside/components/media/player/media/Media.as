@@ -31,7 +31,6 @@ package com.wezside.components.media.player.media
 			
 		override public function purge():void
 		{
-			trace( resource.id, "_error", _error );
 			if ( _error )
 			{
 				_error.purge();
