@@ -3,10 +3,7 @@ package com.wezside.components.media.player.media
 	import com.wezside.components.media.player.resource.IMediaResource;
 
 	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
-	import flash.events.NetStatusEvent;
-	import flash.events.SecurityErrorEvent;
+	import flash.events.NetStatusEvent; 
 	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetConnection;
@@ -142,51 +139,10 @@ package com.wezside.components.media.player.media
 			}
 			dispatchEvent( new  MediaEvent( MediaEvent.META, false, false, resource.meta ));
 		}
-		
-		private function completeHandler( event:Event ):void
-		{
-			buffering = false;
-			dispatchEvent( event );
-			if ( resource.autoPlay && !resource.bufferTime )
-				stream.play( resource.uri );
-		}
-
-		private function openHandler( event:Event ):void
-		{
-			trace( "openHandler: " + event );
-		}
-
-		/**
-		 * Sometimes stream.time indicates a position greater than the bytes that were downloaded. So 
-		 * this will then draw the playback indicator in front of the progress bar which is visually incorrect. 
-		 * To fix this behaviour we check if this is happening and then set the progress value to the stream 
-		 * currentTime and totalTime ration instead. 
-		private function progressHandler( event:ProgressEvent ):void
-		{
-			buffering = true;
-			progress = event.bytesLoaded / event.bytesTotal;		
-			if ( progress  < stream.time / totalTime  ) progress = stream.time / totalTime;			
-		}
-		 */
-
-		private function securityErrorHandler( event:SecurityErrorEvent ):void
-		{
-			trace( "securityErrorHandler: " + event );
-		}
-
-		private function httpStatusHandler( event:HTTPStatusEvent ):void
-		{
-			trace( "httpStatusHandler: " + event );
-		}
-
-		private function ioErrorHandler( event:IOErrorEvent ):void
-		{
-			trace( "ioErrorHandler: " + event );
-		}		
 
 		private function statusHandler( event:NetStatusEvent ):void
 		{
-			trace( "statusHandler", event.info.code );
+//			trace( "statusHandler", event.info.code );
 			switch ( event.info.code )
 			{
 				case "NetConnection.Connect.Success":
@@ -216,6 +172,7 @@ package com.wezside.components.media.player.media
 				case "NetStream.Seek.Notify":
 					break;
 				case "NetStream.Play.StreamNotFound":
+					trace( "NetStream.Play.StreamNotFound", resource.uri );
 					break;
 			}
 		}
@@ -227,7 +184,7 @@ package com.wezside.components.media.player.media
 			stream = new NetStream( netConnection );
 			stream.addEventListener( NetStatusEvent.NET_STATUS, statusHandler );
 			stream.client = this;
-			stream.bufferTime = resource.bufferTime;
+			stream.bufferTime = 0.3;
 			video.attachNetStream( stream );
 
 			if ( resource.bufferTime && autoPlay ) 

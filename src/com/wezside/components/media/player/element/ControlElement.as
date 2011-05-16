@@ -1,5 +1,6 @@
 package com.wezside.components.media.player.element
 {
+	import com.wezside.components.UIElementState;
 	import com.wezside.components.media.player.media.IMedia;
 	import com.wezside.utilities.manager.style.IStyleManager;
 	import com.wezside.components.IUIDecorator;
@@ -33,10 +34,12 @@ package com.wezside.components.media.player.element
 		private var _handleColors:Array = [ 0x676968, 0x676968 ];
 		private var _handleAlphas:Array = [ 1, 1 ];
 		private var _padding:Array = [ 0, 0, 0, 0 ];
+		private var _defaultState:String;
 		
 		public function ControlElement( decorated:IUIDecorator ) 
 		{
 			this.decorated = decorated;
+			_defaultState = UIElementState.STATE_VISUAL_UP;
 		}
 
 		public function build():void
@@ -244,6 +247,16 @@ package com.wezside.components.media.player.element
 		public function set padding( value:Array ):void
 		{
 			_padding = value;
+		}
+
+		public function get defaultState():String
+		{
+			return _defaultState;
+		}
+
+		public function set defaultState( value:String ):void
+		{
+			_defaultState = value;
 		}
 	}
 }

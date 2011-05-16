@@ -84,6 +84,7 @@ package sample
 			display.maintainAspectRatio = true;
 			display.addMediaType( Player.FLV );
 			display.addMediaType( Player.MP4 );
+			display.addMediaType( Player.YOUTUBE );
 			display.build();
 			display.setStyle();
 			display.arrange();
@@ -156,7 +157,8 @@ package sample
 		{			
 			var youtube:IMediaResource = new MediaResource();
 			youtube.title = "Youtube";
-			youtube.uri = "http://www.youtube.com/watch?v=CUPfQT4Dty0&feature=topvideos";
+			youtube.uri = "http://www.youtube.com/watch?v=hbLgszfXTAY";
+			youtube.autoPlay = false;
 			
 			var vimeo:IMediaResource = new MediaResource();
 			vimeo.title = "Vimeo";
