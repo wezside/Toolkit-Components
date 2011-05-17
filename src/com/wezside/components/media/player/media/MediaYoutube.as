@@ -43,6 +43,8 @@ package com.wezside.components.media.player.media
 			super.purge();
 		}
 		
+		
+		
 		override public function get currentTime():Number
 		{
 			return !playing && !buffering ? super.currentTime : player ? player.getCurrentTime() : 0;
@@ -163,17 +165,22 @@ package com.wezside.components.media.player.media
 		/**
 		 * <p>Pause will only pause if the current media item is playing. Resume will only occur if 
 		 * the state was paused and the play() returns success as true.</p>  
-		 */						
+		 */
 		override public function pause():void
 		{
-			if ( playing ) trace( resource.id, "paused." );
+			if ( playing )
+			{
+				trace( resource.id, "paused." );
+				player.pauseVideo();
+				playing = false;
+			}
 			else
 			{
 				// Only resume if possible, i.e. super.play(); is true
-				var success:Boolean = play();
-				if ( success ) trace( resource.id, "resumed." );	
+				trace( resource.id, "resumed." );
+				player.playVideo();
+				playing = true;
 			}
-			playing = !playing;
-		}		
+		}	
 	}
 }
