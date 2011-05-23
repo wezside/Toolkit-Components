@@ -71,3 +71,4 @@ package com.wezside.components.media.player.element.control
 		}	
 	}
 }
+

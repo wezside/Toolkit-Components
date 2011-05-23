@@ -611,7 +611,6 @@ package com.wezside.components.media.player
 			
 			// Update any playlists with the selected index
 			setPlaylistIndex( media.resource.id );
-			
 			dispatchEvent( new PlayerEvent( PlayerEvent.META_ARRANGE_COMPLETE ));
 		}		
 		
@@ -633,17 +632,19 @@ package com.wezside.components.media.player
 			if ( media.autoPlay )
 			{
 				var success:Boolean = media.play();
+				trace( "Auto playing", media.resource.id, "was a success", success );
 				if ( !success ) trace( media.error.getElement( Media.ERROR_PLAY ));
 				else
 				{
-					if ( media.autoPlay )
-						state = STATE_PLAY;	
+					state = STATE_PLAY;	
 				}
 			}
 			else
 			{
 				reset();
 				trace( "Media is ready to be played" );
+				if ( !hasEventListener( Event.ENTER_FRAME ))
+					addEventListener( Event.ENTER_FRAME, enterFrame );
 			}
 		}
 
@@ -674,14 +675,17 @@ package com.wezside.components.media.player
 			}
 			it.purge();
 			it = null;
-			element = null;	
+			element = null;
+			
+			if ( media.playing && !media.buffering )
+				dispatchEvent( new PlayerEvent( PlayerEvent.PLAYING ));
 		}
 		
 		/**
 		 * This method will adjust the height and width based on the autoSize policy setting 
 		 * taken into consideration all IPlayerElements present. It also determines what layout
 		 * decorator has been applied to the Player class. This will dictate which property 
-		 * should be adjusted, i.e. VerticalLayout will be width.
+		 * should be adjusted, i.e. VerticalLayout will be height and the HorizontalLayout will be width.
 		 */
 		private function calculate( ElementClass:Class, w:int, h:int ):Object
 		{
@@ -718,11 +722,11 @@ package com.wezside.components.media.player
 			trace( "Media instance playback finished. Remove ENTER_FRAME." );
 			removeEventListener( Event.ENTER_FRAME, enterFrame );
 			dispatchEvent( new MediaEvent( MediaEvent.PLAYBACK_COMPLETE ));
-			state = STATE_PAUSE;
+//			state = STATE_PAUSE;
 			event.stopImmediatePropagation();
 			dispatchEvent( event );
-			media.seekTo( 0.01 );
-			media.pause();			
+//			media.seekTo( 0.01 );
+//			media.pause();
 			enterFrame();
 		}
 	}

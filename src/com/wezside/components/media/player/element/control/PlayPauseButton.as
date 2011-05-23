@@ -1,3 +1,4 @@
+
 package com.wezside.components.media.player.element.control
 {
 	import com.wezside.components.IUIDecorator;

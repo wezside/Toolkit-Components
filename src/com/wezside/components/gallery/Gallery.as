@@ -163,9 +163,13 @@ package com.wezside.components.gallery
 		override public function purge():void
 		{
 			super.purge();
+			
 			for each ( var item:IGalleryItem in this )
 			{
 				item.purge();
+				item.removeEventListener( MouseEvent.ROLL_OUT, itemRollOut );		
+				item.removeEventListener( MouseEvent.ROLL_OVER, itemRollOver );		
+				item.removeEventListener( MouseEvent.CLICK, itemClick );				
 				item.removeEventListener( Event.ENTER_FRAME, enterFrame );
 				item.removeEventListener( GalleryEvent.ITEM_ERROR, itemError );
 				item.removeEventListener( GalleryEvent.ITEM_LOAD_COMPLETE, itemLoaded );
@@ -398,9 +402,23 @@ package com.wezside.components.gallery
 			{
 				var data:* = original.getElementAt( int( total - items.length )).data;
 				var date:Date = original.getElementAt( int( total - items.length )).livedate;
-				var extension:String = FileUtil.getFileExtension( items.getElementAt( 0 ).url );
+				var pattern:RegExp = /\.[^\/]+[a-zA-Z0-9]+/gi;
+				var ext:Array = items.getElementAt( 0 ).url.match( pattern );
+				var extension:String = String( ext[ ext.length - 1 ] ).substr( 1 );
 				dateUtils.testLiveDate( date ) ? createItem( extension, data ) : createItem( "countdown", data );
 			}
+		}
+		
+		public function reset():void
+		{
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );			
+			while( it.hasNext())
+			{
+				var item:IGalleryItem = it.next() as IGalleryItem;
+				item.state = "";
+			}
+			it.purge();
+			it = null;
 		}
 		
 		override protected function arrangeComplete( event:UIElementEvent ):void 
@@ -518,14 +536,15 @@ package com.wezside.components.gallery
 		
 		protected function itemClick( event:MouseEvent ):void
 		{
-			var iterator:IIterator = iterator( UIElement.ITERATOR_CHILDREN );			
-			while( iterator.hasNext())
+			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );			
+			while( it.hasNext())
 			{
-				var item:IGalleryItem = iterator.next() as IGalleryItem;
+				var item:IGalleryItem = it.next() as IGalleryItem;
 				if ( event.currentTarget.name != item.name.toString() )
 					item.reset();
 			}
-
+			it.purge();
+			it = null;
 			IGalleryItem( event.currentTarget ).state = "";
 			IGalleryItem( event.currentTarget ).state = STATE_SELECTED;
 			
@@ -589,7 +608,8 @@ package com.wezside.components.gallery
 					reflection = getChildByName( "reflection_" + item.name.toString() ) as IGalleryItem;
 					reflection.state = STATE_ROLLOUT;
 				}
-			}			
+			}
+			dispatchEvent( new GalleryEvent( GalleryEvent.ITEM_ROLLOUT, false, false ));
 		}
 
 		

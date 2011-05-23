@@ -1,3 +1,4 @@
+
 package com.wezside.components.media.player.element.control
 {
 	import flash.text.TextFieldAutoSize;
@@ -79,3 +80,4 @@ package com.wezside.components.media.player.element.control
 		}
 	}
 }
+
