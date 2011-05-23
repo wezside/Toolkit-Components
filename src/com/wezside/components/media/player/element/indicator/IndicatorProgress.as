@@ -133,7 +133,6 @@ package com.wezside.components.media.player.element.indicator
 		private function mouseMove( event:MouseEvent ):void
 		{
 			handle.x = int( event.localX * progress.scaleX );
-			trace( handle.x );
 		}
 
 		private function click( event:MouseEvent ):void

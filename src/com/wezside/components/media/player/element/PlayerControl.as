@@ -93,6 +93,7 @@ package com.wezside.components.media.player.element
 				{
 					element = it.next() as IControlElement;
 					w += element.width;
+					w += layout.horizontalGap;
 				}
 				it.purge();
 				it = null;

@@ -43,7 +43,7 @@ package com.wezside.components.media.player.element.control
 			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
 			addChild( button );
 			
-			width = button.width + 20;
+			width = button.width;
 			height = button.height;			
 		}
 		
