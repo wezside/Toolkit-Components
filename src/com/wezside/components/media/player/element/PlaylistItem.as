@@ -60,7 +60,7 @@ package com.wezside.components.media.player.element
 					while ( it.hasNext() )
 					{
 						label = it.next() as Label;
-						if ( !label ) continue;
+						if ( !label || label.styleName == "playlist-item-lyrics" ) continue;
 						label.state = value;
 						label.deactivate();
 					}

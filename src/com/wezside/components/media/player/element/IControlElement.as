@@ -42,6 +42,9 @@ package com.wezside.components.media.player.element
 		function get filters():Array
 		function set filters( value:Array ):void
 		
+		function get defaultState():String;
+		function set defaultState( value:String ):void;
+		
 		function get handleWidth():Number;
 		function set handleWidth( value:Number ):void;
 		

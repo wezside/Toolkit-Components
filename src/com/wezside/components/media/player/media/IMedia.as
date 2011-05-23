@@ -7,7 +7,7 @@ package com.wezside.components.media.player.media
 	 * @author Wesley.Swanepoel
 	 */
 	public interface IMedia extends IUIElement
-	{
+	{ 
 		
 		function get resource():IMediaResource;
 		function set resource( value:IMediaResource ):void;
