@@ -105,14 +105,7 @@ package com.wezside.components.survey.command
 			var Styles:Class = event.target.applicationDomain.getDefinition( qName ) as Class;
 			debug(" styleManager.ready" );
 			var styleManager : IStyleManager = new Styles() as IStyleManager;
-			if ( styleManager.ready ) {
-				debug(" styleManager.ready" );
-				setupStyleManaqer( styleManager );
-			}
-			else {
-				debug(" styleManager.not ready" );
-				styleManager.addEventListener( Event.COMPLETE, styleInitComplete );
-			}
+			styleManager.addEventListener( Event.COMPLETE, styleInitComplete );
 		}
 		
 		private function onIOError( event : IOErrorEvent ):void 
@@ -139,16 +132,10 @@ package com.wezside.components.survey.command
 		
 		private function error():void 
 		{
-			purgeLoader();
-			
+			purgeLoader();			
 			var stlyeClass:Class = getDefinitionByName( styleNS + "::" + styleID ) as Class;
 			var styleManager:IStyleManager = new stlyeClass();
-			if ( styleManager.ready ) {
-				setupStyleManaqer( styleManager );
-			}
-			else {
-				styleManager.addEventListener( Event.COMPLETE, styleInitComplete );
-			}
+			styleManager.addEventListener( Event.COMPLETE, styleInitComplete );
 		}
 		
 		private function styleInitComplete( event : Event ): void {
