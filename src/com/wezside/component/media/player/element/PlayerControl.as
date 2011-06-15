@@ -56,7 +56,7 @@ package com.wezside.component.media.player.element
 		 * <br>
 		 * @param value The flag value indicating if auto sizing should occur for the decorator 
 		 * IControlElements applied to this PlayerControl instance
-		 * @see com.wezside.components.media.player.Player Player Class
+		 * @see com.wezside.component.media.player.Player Player Class
 		 */
 		public function set autoSize( value:Boolean ):void
 		{

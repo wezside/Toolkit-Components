@@ -48,7 +48,7 @@ package sample
 			addChild( label );		
 				
 			var packageLabel:Label = new Label();
-			packageLabel.text = "com.wezside.components.control.Button";
+			packageLabel.text = "com.wezside.component.control.Button";
 			packageLabel.styleName = "packageLabelButton";
 			packageLabel.styleManager = styleManager;
 			packageLabel.width = 400;
