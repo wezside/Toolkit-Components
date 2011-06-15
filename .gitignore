@@ -4,3 +4,9 @@
 bin/
 bin-debug/
 bin-release/
+*.jpg
+*.gif
+*.psd
+*.tif
+*.ai
+
