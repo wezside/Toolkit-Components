@@ -21,7 +21,7 @@ package com.wezside.component.survey.form
 			// does nothing
 		}
 
-		override public function arrange():void
+		public function resize():void
 		{
 			if ( !stage ) return;
 	

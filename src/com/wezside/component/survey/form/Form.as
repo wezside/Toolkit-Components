@@ -205,7 +205,7 @@ package com.wezside.component.survey.form
 					formGroup.layout.height = decoratorData.height;
 					formGroup.layout.rows = decoratorData.rows;
 					formGroup.layout.columns = decoratorData.columns;
-									
+					
 					if ( formGroup.layout is FillLayout )
 					{
 						FillLayout( formGroup.layout ).horizontalFill = decoratorData.horizontalFill;
