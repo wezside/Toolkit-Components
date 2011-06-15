@@ -1,6 +1,6 @@
 package test.com.wezside.components.control
 {
-	import com.wezside.components.control.Button;
+	import com.wezside.component.control.Button;
 	import com.wezside.components.decorators.interactive.InteractiveSelectable;
 	import com.wezside.components.decorators.layout.Layout;
 	import com.wezside.components.decorators.layout.PaddedLayout;

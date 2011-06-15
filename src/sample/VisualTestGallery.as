@@ -1,16 +1,16 @@
 package sample 
 {
-	import com.wezside.components.gallery.Gallery;
-	import com.wezside.components.gallery.GalleryEvent;
+	import com.wezside.component.gallery.Gallery;
+	import com.wezside.component.gallery.GalleryEvent;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.utilities.logging.Tracer;
-
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
+
 
 	/**
 	 * @author Wesley.Swanepoel
