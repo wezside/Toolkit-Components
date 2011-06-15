@@ -6,7 +6,7 @@ package com.wezside.component.survey.data.config.grouping
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class ResponseGrouping implements IDeserializable
+	public class ResponseGroupingData implements IDeserializable
 	{
 		
 		public var groups:ICollection;
