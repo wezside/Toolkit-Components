@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data.config 
+package com.wezside.component.survey.data.config 
 {
 	import com.wezside.data.IDeserializable;
 
@@ -20,5 +20,7 @@ package com.wezside.components.survey.data.config
 		public var heightRatio:Number;
 		public var baseWidth:Number;
 		public var baseHeight:Number;
+		public var rows:Number;
+		public var columns:Number;
 	}
 }

@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data.config.grouping
+package com.wezside.component.survey.data.config.grouping
 {
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.IDeserializable;
@@ -6,7 +6,7 @@ package com.wezside.components.survey.data.config.grouping
 	/**
 	 * @author Wesley.Swanepoel
 	 */
-	public class ResponseGroupingData implements IDeserializable
+	public class ResponseGrouping implements IDeserializable
 	{
 		
 		public var groups:ICollection;

@@ -1,36 +1,34 @@
-package com.wezside.components.survey.form
+package com.wezside.component.survey.form
 {
-	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import com.wezside.data.collection.ICollection;
+	import com.wezside.component.survey.data.IFormData;
+	import com.wezside.component.survey.data.IFormGroupData;
+	import com.wezside.component.survey.data.config.CSSDataItem;
+	import com.wezside.component.survey.data.config.LayoutDecoratorData;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.FillLayout;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.ILayout;
+	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.survey.data.IFormData;
-	import com.wezside.components.survey.data.IFormGroupData;
-	import com.wezside.components.survey.data.config.CSSDataItem;
-	import com.wezside.components.survey.data.config.LayoutDecoratorData;
-	import com.wezside.components.text.Label;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.iterator.IIterator;
 
 	import flash.events.Event;
-	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
+
 
 	/**
 	 * @author Wesley.Swanepoel
 	 */
 	public class Form extends UIElement implements IForm
 	{
-		public var heading:Label;
-		public var subheading:Label;
-		public var body:Label;
+	
+		protected var groupCollection:Collection;
 		
 		private var _data:IFormData;
 		private var _questions:FormQuestions;
-		private var _groupCollection:ICollection;
+		private var _questionVerticalGap:int = 0;
+		private var _questionPaddingTop:int;
 		
 
 		public function Form()
@@ -46,15 +44,6 @@ package com.wezside.components.survey.form
 			if ( !styleManager ) styleManager = _data.styleManager;
 			styleName = getStyleName( _data.id );
 
-			// Create Form Elements
-			if ( _data.heading )
-				heading = createFormElement( _data.heading, "heading" );
-			if ( _data.subheading )
-				subheading = createFormElement( _data.subheading, "subheading" );
-
-			if ( _data.body )
-				body = createFormElement( _data.body, "body" );
-
 			// Create Group UI elements
 			createGroups();
 
@@ -63,28 +52,18 @@ package com.wezside.components.survey.form
 
 		override public function arrange():void
 		{
-			if ( heading ) heading.arrange();
-			if ( subheading ) subheading.arrange();
-			if ( body ) body.arrange();
 			if ( questions ) questions.arrange();
-
 			super.arrange();
 		}
 
 		override public function purge():void
 		{
-			if ( heading ) heading.purge();
-			if ( subheading ) subheading.purge();
-			if ( body ) body.purge();
 			if ( _questions ) _questions.purge();
 
 			super.purge();
 
 			_data = null;
 			_questions = null;
-			heading = null;
-			subheading = null;
-			body = null;
 		}
 
 		public function getFormGroupByID( id:String ):IFormGroup
@@ -93,7 +72,6 @@ package com.wezside.components.survey.form
 			while ( iterator.hasNext())
 			{
 				var item:* = iterator.next();
-//				trace(IFormGroup( item ).data.id,id);
 				if ( item is IFormGroup && IFormGroup( item ).data.id == id )
 					return item as IFormGroup;
 			}
@@ -121,16 +99,8 @@ package com.wezside.components.survey.form
 			if ( questions )
 			{
 				_questions.formPadding = [ layout.top, layout.right, layout.bottom, layout.left ];
-				_questions.resize();
+				_questions.arrange();
 			}
-
-			// TODO look at this logic again, would these Labels always be the Questions width?
-			if ( heading )
-				heading.width = questions.width;
-			if ( subheading )
-				subheading.width = questions.width;
-			if ( body )
-				body.width = questions.width;
 		}
 
 		public function get data():IFormData
@@ -151,6 +121,26 @@ package com.wezside.components.survey.form
 		public function set questions( value:FormQuestions ):void
 		{
 			_questions = value;
+		}
+		
+		public function get questionVerticalGap():int
+		{
+			return _questionVerticalGap;
+		}
+		
+		public function set questionVerticalGap( value:int ):void
+		{
+			_questionVerticalGap = value;
+		}
+		
+		public function get questionPaddingTop():int
+		{
+			return _questionPaddingTop;
+		}
+		
+		public function set questionPaddingTop( value:int ):void
+		{
+			_questionPaddingTop = value;
 		}
 
 		public function getUIItem( id:String ):IFormItem
@@ -182,25 +172,9 @@ package com.wezside.components.survey.form
 			return null;
 		}
 
-		protected function createFormElement( text:String, styleName:String ):Label
-		{
-			var sn:String = getStyleName( styleName );
-			var element:Label = new Label();
-			element.autoSize = TextFieldAutoSize.LEFT;
-			element.styleName = sn != "" ? sn : styleName;
-			element.styleManager = styleManager;
-			element.text = text;
-			element.width = stage ? stage.stageWidth : 100;
-			element.build();
-			element.setStyle();
-			element.arrange();
-			addChild( element );
-			return element;
-		}
-
 		protected function getStyleName( id:String ):String
 		{
-			var cssID:String;
+			var cssID:String = id;
 			if ( _data && _data.styleNameCollection )
 			{
 				var cssDataItem:CSSDataItem = data.styleNameCollection.find( "id", id ) as CSSDataItem;
@@ -228,7 +202,9 @@ package com.wezside.components.survey.form
 					formGroup.layout.verticalGap = decoratorData.verticalGap;
 					formGroup.layout.width = decoratorData.width;
 					formGroup.layout.height = decoratorData.height;
-
+					formGroup.layout.rows = decoratorData.rows;
+					formGroup.layout.columns = decoratorData.columns;
+									
 					if ( formGroup.layout is FillLayout )
 					{
 						FillLayout( formGroup.layout ).horizontalFill = decoratorData.horizontalFill;
@@ -253,9 +229,12 @@ package com.wezside.components.survey.form
 				_questions = new FormQuestions();
 			addChild( _questions );
 
+			_questions.layout = new PaddedLayout( _questions.layout );
+			_questions.layout.top = _questionPaddingTop;
 			_questions.layout = new VerticalLayout( _questions.layout );
+			_questions.layout.verticalGap = _questionVerticalGap;
 			_questions.styleManager = styleManager;
-			_questions.styleName = getStyleName( data.id + "_questions" );
+			_questions.styleName = getStyleName( data.id.toLowerCase() + "_questions" );
 
 			// Loop through all the groupData objects and create new FormGroup container
 			var groupIterator:IIterator = _data.iterator;
@@ -263,12 +242,6 @@ package com.wezside.components.survey.form
 			{
 				var groupData:IFormGroupData = groupIterator.next() as IFormGroupData;
 				var formGroup:FormGroup = new FormGroup();
-//				formGroup.background = new ShapeRectangle( formGroup );
-//				formGroup.background.alphas = [ 0.4, 0.4 ];
-//				formGroup.background.colours = [ 0, 0 ];
-//				formGroup.background.borderColor = 0xffffff;
-//				formGroup.background.borderThickness = 1;
-				
 				formGroup.parentForm = this;
 				formGroup.debug = debug;
 				formGroup.data = groupData;
@@ -295,32 +268,22 @@ package com.wezside.components.survey.form
 		{
 			alpha = 1;
 			visible = true;
-			dispatchEvent( new FormEvent( FormEvent.SHOW_FORM_COMPLETE ));
+			dispatchEvent( new FormEvent( FormEvent.SHOW_FORM_COMPLETE ) );
 		}
 
 		protected function hideComplete( event:Event = null ):void
 		{
 			alpha = 0;
 			visible = false;
-			dispatchEvent( new FormEvent( FormEvent.HIDE_FORM_COMPLETE ));
+			dispatchEvent( new FormEvent( FormEvent.HIDE_FORM_COMPLETE ) );
 		}
 
-		public function showGroups( item:IFormItem ):void
+		public function showGroups():void
 		{
 		}
 		
-		public function hideGroups( item:IFormItem ):void
-		{	
-		}
-
-		public function get groupCollection():ICollection
+		public function hideGroups():void
 		{
-			return _groupCollection;
-		}
-
-		public function set groupCollection( value:ICollection ):void
-		{
-			_groupCollection = value;
 		}
 	}
 }
