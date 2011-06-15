@@ -1,6 +1,6 @@
 package com.wezside.component.survey.data 
 {
-	import com.wezside.component.survey.data.config.grouping.ResponseGroup;
+	import com.wezside.component.survey.data.config.grouping.ResponseGroupData;
 	import com.wezside.data.ItemData;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
@@ -75,11 +75,11 @@ package com.wezside.component.survey.data
 		{
 			var hasGrouping:Boolean = false;
 			var it:IIterator = responseGroupings.iterator();
-			var group:ResponseGroup;
+			var group:ResponseGroupData;
 			while ( it.hasNext() )
 			{
-				group = it.next() as ResponseGroup;
-				var itemsIt:IIterator = group.items.iterator();
+				group = it.next() as ResponseGroupData;
+				var itemsIt:IIterator = group.responses.iterator();
 				var item:ItemData;
 				while ( itemsIt.hasNext() )
 				{
@@ -291,6 +291,11 @@ package com.wezside.component.survey.data
 			it.purge();
 			it = null;
 			groupData = null;
+		}
+
+		public function getResponseItemIds( groupID:String, id:String ):Number
+		{
+			return 0;
 		}
 	}
 }

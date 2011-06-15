@@ -41,5 +41,7 @@ package com.wezside.component.survey.data
 				
 		function debug():void;		
 		function purge():void;
+
+		function getResponseItemIds( groupID:String, id:String ):Number;
 	}
 }
