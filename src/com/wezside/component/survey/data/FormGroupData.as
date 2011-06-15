@@ -20,7 +20,7 @@ package com.wezside.component.survey.data
 		private var _isInteractive:Boolean;
 		private var _styleManager:IStyleManager;
 		private var _styleNameCollection:ICollection;
-		private var _formItemsNS:Namespace = new Namespace( "", "com.wezside.components.survey.form.item" );
+		private var _formItemsNS:Namespace = new Namespace( "", "com.wezside.component.survey.form.item" );
 		private var _layoutDecorators:ICollection;
 		private var _ignoreList:ICollection;
 

@@ -16,7 +16,7 @@ package com.wezside.component.survey.form
 	{
 		private var _valid:Boolean;
 		private var _formData:IFormData;
-		private var _validateNS:Namespace = new Namespace( "", "com.wezside.components.survey.validate" );
+		private var _validateNS:Namespace = new Namespace( "", "com.wezside.component.survey.validate" );
 		private var _configState:StateManager;
 
 		public function validate( formItem:IFormItem, formGroup:IFormGroup, form:IForm ):Boolean
