@@ -1,7 +1,7 @@
 package com.wezside.component.media.player.media
 {
+	import com.wezside.component.IUIElement;
 	import com.wezside.component.media.player.resource.IMediaResource;
-	import com.wezside.components.IUIElement;
 	import com.wezside.data.collection.IDictionaryCollection;
 	/**
 	 * @author Wesley.Swanepoel

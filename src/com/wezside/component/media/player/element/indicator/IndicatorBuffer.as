@@ -1,9 +1,9 @@
 package com.wezside.component.media.player.element.indicator
 {
+	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.media.IMedia;
 	import com.wezside.component.text.Label;
-	import com.wezside.components.IUIDecorator;
 
 	/**
 	 * @author Wesley.Swanepoel

@@ -1,7 +1,7 @@
 package com.wezside.component.media.player.element
 {
+	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.media.player.media.IMedia;
-	import com.wezside.components.IUIDecorator;
 	import com.wezside.utilities.manager.style.IStyleManager;
 	/**
 	 * @author Wesley.Swanepoel

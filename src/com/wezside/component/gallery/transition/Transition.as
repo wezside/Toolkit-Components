@@ -23,9 +23,9 @@
  */
 package com.wezside.component.gallery.transition 
 {
+	import com.wezside.component.IUIDecorator;
+	import com.wezside.component.UIElement;
 	import com.wezside.component.gallery.GalleryEvent;
-	import com.wezside.components.IUIDecorator;
-	import com.wezside.components.UIElement;
 	import com.wezside.data.iterator.ChildIterator;
 	import com.wezside.data.iterator.IIterator;
 

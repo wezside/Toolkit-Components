@@ -1,5 +1,9 @@
 package com.wezside.component.media.player
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.decorators.layout.HorizontalLayout;
+	import com.wezside.component.decorators.layout.ILayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
 	import com.wezside.component.media.player.display.IPlayerDisplay;
 	import com.wezside.component.media.player.element.IControlElement;
 	import com.wezside.component.media.player.element.IPlayerControl;
@@ -18,22 +22,16 @@ package com.wezside.component.media.player
 	import com.wezside.component.media.player.media.MediaVimeo;
 	import com.wezside.component.media.player.media.MediaYoutube;
 	import com.wezside.component.media.player.resource.IMediaResource;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.decorators.layout.HorizontalLayout;
-	import com.wezside.components.decorators.layout.ILayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 
 
-
-
-	
 	/**
 	 * <p>A media player that will play almost all media types. Easy expand this 
 	 * component to suit your own needs.</p> 

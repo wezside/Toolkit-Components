@@ -23,7 +23,7 @@
  */
 package com.wezside.component.gallery.transition 
 {
-	import com.wezside.components.IUIDecorator;
+	import com.wezside.component.IUIDecorator;
 
 	/**
 	 * @author Wesley.Swanepoel

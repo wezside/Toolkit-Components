@@ -1,5 +1,9 @@
 package sample
 {
+	import com.wezside.component.decorators.layout.HorizontalLayout;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorators.shape.ShapeRectangle;
 	import com.wezside.component.media.player.Player;
 	import com.wezside.component.media.player.PlayerAutoSizePolicy;
 	import com.wezside.component.media.player.display.PlayerDisplay;
@@ -15,12 +19,9 @@ package sample
 	import com.wezside.component.media.player.event.PlaylistEvent;
 	import com.wezside.component.media.player.resource.IMediaResource;
 	import com.wezside.component.media.player.resource.MediaResource;
-	import com.wezside.components.decorators.layout.HorizontalLayout;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;

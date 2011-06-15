@@ -19,7 +19,7 @@
  */
 package com.wezside.component.control 
 {
-	import com.wezside.components.UIElement;
+	import com.wezside.component.UIElement;
 
 	/**
 	 * @author Wesley.Swanepoel

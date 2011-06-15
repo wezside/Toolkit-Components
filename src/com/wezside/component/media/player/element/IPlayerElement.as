@@ -1,7 +1,7 @@
 package com.wezside.component.media.player.element
 {
-	import com.wezside.components.IUIElement;
-	import com.wezside.components.decorators.layout.ILayout;
+	import com.wezside.component.IUIElement;
+	import com.wezside.component.decorators.layout.ILayout;
 	/**
 	 * @author Wesley.Swanepoel
 	 */

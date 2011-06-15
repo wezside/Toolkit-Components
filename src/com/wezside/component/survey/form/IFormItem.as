@@ -1,7 +1,7 @@
 package com.wezside.component.survey.form 
 {
+	import com.wezside.component.IUIElement;
 	import com.wezside.component.survey.data.IFormItemData;
-	import com.wezside.components.IUIElement;
 
 	/**
 	 * @author DaSmith

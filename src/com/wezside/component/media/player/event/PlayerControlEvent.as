@@ -1,6 +1,7 @@
 package com.wezside.component.media.player.event
 {
-	import com.wezside.components.UIElementEvent;
+	import com.wezside.component.UIElementEvent;
+
 	import flash.events.Event;
 
 	/**

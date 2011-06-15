@@ -1,11 +1,12 @@
 package com.wezside.component.media.player.element
 {
+	import com.wezside.component.IUIDecorator;
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementState;
 	import com.wezside.component.media.player.media.IMedia;
-	import com.wezside.components.IUIDecorator;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementState;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.manager.style.IStyleManager;
+
 	import flash.display.Sprite;
 
 	/**

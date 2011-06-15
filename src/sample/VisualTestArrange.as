@@ -1,14 +1,16 @@
 package sample 
 {
+	import sample.style.LatinStyle;
+
+	import com.wezside.component.UIElement;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorators.shape.ShapeRectangle;
 	import com.wezside.component.text.Label;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
+
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-	import sample.style.LatinStyle;
 
 
 
