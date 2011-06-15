@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data 
+package com.wezside.component.survey.data 
 {
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.utilities.manager.style.IStyleManager;
@@ -19,6 +19,9 @@ package com.wezside.components.survey.data
 		
 		function get value():String;
 		function set value( value:String ):void;	
+		
+		function get defaultValue():String;
+		function set defaultValue( value:String ):void;
 		
 		function get label():String
 		function set label( value:String ):void
@@ -47,9 +50,6 @@ package com.wezside.components.survey.data
 		function get styleNameCollection():ICollection;
 		function set styleNameCollection( value:ICollection ):void;
 		
-		function get customCollection():ICollection;
-		function set customCollection( value:ICollection ):void;
-		
 		function get ignoreList():ICollection;
 		function set ignoreList( value:ICollection ):void;
 		
@@ -58,16 +58,8 @@ package com.wezside.components.survey.data
 		
 		function get parent():IFormGroupData;
 		function set parent( value:IFormGroupData ):void;
-
-		function get maxLength():String;
-		function set maxLength( value:String ):void;
 		
-		function get formItemNS():Namespace;
-		function set formItemNS( value:Namespace ):void;
-		
-		function get className() : String;
-		function set className(value : String):void;
-		
+		function reset():void 
 		function debug():void 
 		function purge():void 
 	}

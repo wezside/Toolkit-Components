@@ -1,8 +1,7 @@
-package com.wezside.components.survey.data 
+package com.wezside.component.survey.data 
 {
-	import com.wezside.components.survey.data.config.ItemData;
-	import com.wezside.components.survey.data.config.grouping.ResponseData;
-	import com.wezside.components.survey.data.config.grouping.ResponseGroupData;
+	import com.wezside.component.survey.data.config.grouping.ResponseGroup;
+	import com.wezside.data.ItemData;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
@@ -27,20 +26,6 @@ package com.wezside.components.survey.data
 		private var _ignoreList:ICollection;
 		private var _responseGroupings:ICollection;
 
-		public function addMetaData( meta:IFormMetaData ):void
-		{
-			_metaData.addElement( meta );
-		}
-
-		public function getMetaData( id:String ):IFormMetaData
-		{
-			return _metaData.find( "id", id ) as IFormMetaData;
-		}
-
-		public function getMetaDataByIndex( index:uint ):IFormMetaData
-		{
-			return null;
-		}
 
 		public function addFormGroupData( group:IFormGroupData ):void
 		{
@@ -63,174 +48,57 @@ package com.wezside.components.survey.data
 		 * the form ID in order to page to this new form.
 		 */
 		public function get lastGroupID():String 
-		{			
+		{
+			
 			var groupData:IFormGroupData = getLastItem( _groupsData.length - 1 );
 			return groupData ? groupData.id : null;
+			return null;
 		}		
 		
 		private function getLastItem( indx:int ):IFormGroupData
 		{
-			var groupData:IFormGroupData = _groupsData.getElementAt( indx );
-			if ( !groupData.hasOnlyMetaData())
-			{				
-				return groupData;
+			if (_groupsData.getElementAt( indx ).hasOnlyMetaData() ==false )
+			{
+				
+				return _groupsData.getElementAt( indx );
 			}
 			else
 			{
 				if ( indx > 0 )
 					getLastItem( --indx );
-			}			
+			}
+			
 			return _groupsData.getElementAt( indx );
 		}
 
-		public function hasResponseGrouping( id:String ):Boolean
-		{
-			var group:ResponseGroupData = responseGroupings.find( "id", id );
-			return group ? true : false;
-		}
-		
-		public function isResponseGrouping( id:String ):Boolean
+		public function hasResponseGroupings( id:String ):Boolean
 		{
 			var hasGrouping:Boolean = false;
 			var it:IIterator = responseGroupings.iterator();
-			var group:ResponseGroupData;
+			var group:ResponseGroup;
 			while ( it.hasNext() )
 			{
-				group = it.next() as ResponseGroupData;
-				var responseIt:IIterator = group.responses.iterator();
-				var response:ResponseData;
-				while ( responseIt.hasNext() )
+				group = it.next() as ResponseGroup;
+				var itemsIt:IIterator = group.items.iterator();
+				var item:ItemData;
+				while ( itemsIt.hasNext() )
 				{
-					response = responseIt.next() as ResponseData;
-					var item:ItemData = response.items.find( "id", id ) as ItemData;
-					if ( item )
+					item = itemsIt.next() as ItemData;
+					if ( id == item.id )
 					{
 						hasGrouping = true;
 						break;
 					}
-					item = null;
 				}
-				responseIt.purge();
-				responseIt = null;
-				response = null;
-				
+				itemsIt.purge();
+				itemsIt = null;
+				item = null;
 				if ( hasGrouping ) break;
 			}
 			it.purge();
 			it = null;
 			group = null;
 			return hasGrouping;
-		}
-		public function getResponseParentId(id:String):String{
-			var it:IIterator = responseGroupings.iterator();
-			var group:ResponseGroupData;
-			while ( it.hasNext() )
-			{
-				group = it.next() as ResponseGroupData;
-				var responseIt:IIterator = group.responses.iterator();
-				var response:ResponseData;
-				while ( responseIt.hasNext() )
-				{
-					response = responseIt.next() as ResponseData;
-					var item:ItemData = response.items.find( "id", id ) as ItemData;
-					if ( item)
-					{
-						it.purge();
-						it = null;
-						return group.id;
-					}
-				}
-			}
-			return null;
-		}
-		public function getResponseItemIds(groupId:String,responseId:String,otherItems:Boolean=false):ICollection{
-			var it:IIterator = responseGroupings.iterator();
-			var group:ResponseGroupData;
-			var itemIdArray:ICollection=new Collection();
-			while ( it.hasNext() )
-			{
-				group = it.next() as ResponseGroupData;
-				if(group.id ==groupId)
-				{
-				
-					var responseIt:IIterator = group.responses.iterator();
-					var response:ResponseData;
-					while ( responseIt.hasNext() )
-					{
-						response = responseIt.next() as ResponseData;
-						if(response.id == responseId && otherItems==false||response.id != responseId && otherItems==true)
-						{
-							var itemIt:IIterator = response.items.iterator();
-							var item:ItemData;
-							while ( itemIt.hasNext() )
-							{
-								item = itemIt.next() as ItemData;
-								itemIdArray.addElement(item.id);
-//								if(otherItems==true)getNestedGroupItems(item.id,itemIdArray);
-							}
-						}
-					}
-				}
-			}
-			return itemIdArray;
-		}
-		public function getNestedGroupItems(groupid:String,itemCollection:ICollection):ICollection{
-			getItemsByGroupId(groupid,itemCollection);
-			return null;
-		}
-
-		public function getItemsByGroupId(groupid : String, itemCollection : ICollection) : void {
-
-			var group:ResponseGroupData = responseGroupings.find("id",groupid);
-				if(group && group.id ==groupid)
-				{
-					var responseIt:IIterator = group.responses.iterator();
-					var response:ResponseData;
-					while ( responseIt.hasNext() )
-					{
-						response = responseIt.next() as ResponseData;
-						
-						var itemIt:IIterator = response.items.iterator();
-						var item:ItemData;
-						while ( itemIt.hasNext() )
-						{
-							item = itemIt.next() as ItemData;
-							itemCollection.addElement(item.id);
-							getItemsByGroupId(item.id,itemCollection);
-						}
-					}
-				}
-		}
-		public function hasAssociatedGrouping( id:String, formItemID:String ):Boolean
-		{
-			var hasGrouping:Boolean = false;
-			var it:IIterator = responseGroupings.iterator();
-			var group:ResponseGroupData;
-			while ( it.hasNext() )
-			{
-				group = it.next() as ResponseGroupData;
-				var responseIt:IIterator = group.responses.iterator();
-				var response:ResponseData;
-				while ( responseIt.hasNext() )
-				{
-					response = responseIt.next() as ResponseData;
-					var item:ItemData = response.items.find( "id", id ) as ItemData;
-					if ( item && response.id == formItemID  )
-					{
-						hasGrouping = true;
-						break;
-					}
-					item = null;
-				}
-				responseIt.purge();
-				responseIt = null;
-				response = null;				
-				if ( hasGrouping ) break;
-			}
-			it.purge();
-			it = null;
-			group = null;
-			return hasGrouping;			
 		}
 
 		public function purge():void
@@ -321,22 +189,15 @@ package com.wezside.components.survey.data
 			trace("\r");
 			Tracer.output( true, "\tFORM ID : " + _id + " | Group #" + _groupsData.length + " | Styles [" + styleNameCollection + "]" + " | Ignore [" + ignoreList + "]", "");
 			var formData:IFormGroupData;
-			var iterator:IIterator = _groupsData.iterator();
-			while ( iterator.hasNext())
+			var it:IIterator = _groupsData.iterator();
+			while ( it.hasNext())
 			{
-				formData = iterator.next() as IFormGroupData;
+				formData = it.next() as IFormGroupData;
 				formData.debug();
 			}		
-			iterator.purge();
-			
-			var metaData:IFormMetaData;
-			iterator = _metaData.iterator();
-			while ( iterator.hasNext())
-			{
-				metaData = iterator.next() as IFormMetaData;
-				metaData.debug();
-			}		
-			iterator.purge( );
+			it.purge();
+			it = null;
+			formData = null;
 		}
 		
 		public function get styleManager():IStyleManager
@@ -362,6 +223,16 @@ package com.wezside.components.survey.data
 		public function get iterator():IIterator
 		{
 			return _groupsData.iterator( );
+		}
+		
+		public function get groupsData():Collection
+		{
+			return _groupsData;
+		}
+		
+		public function set groupsData( value:Collection ):void
+		{
+			_groupsData = value;
 		}
 		
 		public function get metaIterator():IIterator
@@ -408,5 +279,18 @@ package com.wezside.components.survey.data
 			_responseGroupings = value;
 		}
 
+		public function reset():void
+		{
+			var it:IIterator = _groupsData.iterator();
+			var groupData:IFormGroupData;
+			while ( it.hasNext() )
+			{
+				groupData = it.next() as IFormGroupData;
+				groupData.reset();
+			}
+			it.purge();
+			it = null;
+			groupData = null;
+		}
 	}
 }

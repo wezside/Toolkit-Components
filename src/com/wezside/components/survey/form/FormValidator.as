@@ -1,11 +1,10 @@
-package com.wezside.components.survey.form
+package com.wezside.component.survey.form
 {
+	import com.wezside.component.survey.data.IFormData;
+	import com.wezside.component.survey.validate.IValidate;
 	import com.wezside.components.UIElement;
-	import com.wezside.components.survey.data.IFormData;
-	import com.wezside.components.survey.validate.IValidate;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.manager.state.StateManager;
-
 	import flash.utils.getDefinitionByName;
 
 
@@ -23,19 +22,13 @@ package com.wezside.components.survey.form
 		{
 			_valid = validateItem( formItem, formGroup, form );
 //			 trace( "Item validation", _valid );
-//			trace(formItem.id,formItem.data.groupID,formGroup);
-			customValidateItem( formItem, _validateNS, "ValidateLinkedItems", form, formGroup, UIElement( formGroup ).iterator( UIElement.ITERATOR_CHILDREN ) );
-			if ( !_valid )
-			{
-				return false;
-			}
 
 			_valid = validateGroup( formItem, formGroup, form );
-//			trace( "Group validation", _valid );
+//			 trace( "Group validation", _valid );
 			if ( !_valid ) return false;
 
 			_valid = validateForm( form );
-//			trace( "Form validation", _valid );
+//			 trace( "Form validation", _valid );
 			return _valid;
 		}
 
@@ -65,45 +58,43 @@ package com.wezside.components.survey.form
 			var it:IIterator = UIElement( formGroup ).iterator( UIElement.ITERATOR_CHILDREN );
 
 			// Update Radio button selected state in same group
-			if ( formItem.type == FormItem.ITEM_RADIO_BUTTON )
+			if ( formItem.type == FormItem.ITEM_RADIO_BUTTON ||  formItem.type == "FormButton" )
+			{
 				customValidateItem( formItem, _validateNS, "ValidateRadioButton", form, formGroup, it );
-
-			// Custom Linked Validation Updates
-			// TODO: Look at recycling this object - maybe an object pool or some reflection library?
-			// customValidateItem( formItem, _validateNS, "ValidateLinkedItems", form, formGroup, it );
+			}
 
 			// Reset and loop through collection looking for at least 1 item to be valid
 			it.reset();
-
 			while ( it.hasNext() )
 			{
 				var item:IFormItem = it.next() as IFormItem;
 
 				// Validate for Input Field
-				if ( 	item.type != FormItem.ITEM_TYPE_STATIC_TEXT && item.type != FormItem.ITEM_CALL_TO_ACTION && item.type != FormItem.ITEM_RADIO_BUTTON && item.type != FormItem.ITEM_DO_NOT_KNOW && item.type != FormItem.ITEM_SLIDER )
+				if ( 	item.type != FormItem.ITEM_TYPE_STATIC_TEXT && 
+						item.type != FormItem.ITEM_CALL_TO_ACTION && 
+						item.type != FormItem.ITEM_RADIO_BUTTON && 
+						item.type != FormItem.ITEM_DO_NOT_KNOW && 
+						item.type != FormItem.ITEM_SLIDER && 
+						item.type != "FormButton" )
 				{
 					hasOnlyNonInteractiveItems = false;
-
 					if ( !item.valid )
 					{
 						formGroup.data.valid = false;
 						break;
 					}
-
 					formGroup.data.valid = item.valid;
 				}
 				// Validate for Radio + Checkboxes
-				if ( item.type == FormItem.ITEM_RADIO_BUTTON )
+				if ( item.type == FormItem.ITEM_RADIO_BUTTON || item.type == "FormButton" )
 				{
 					hasOnlyNonInteractiveItems = false;
 					if ( item.valid ) formGroup.data.valid = true;
 				}
 			}
-
 			if ( hasOnlyNonInteractiveItems ) formGroup.data.valid = true;
 			it.purge();
 			it = null;
-
 			return formGroup.data.valid;
 		}
 
@@ -111,12 +102,14 @@ package com.wezside.components.survey.form
 		{
 			switch( formItem.data.type )
 			{
+				case "FormInputField" :
 				case FormItem.ITEM_TEXT_INPUT :
-					formItem.data.valid = customValidateItem( formItem, _validateNS, "ValidateInputField", form, formGroup );
+					formItem.data.valid = customValidateItem( formItem, _validateNS, "InputValidator", form, formGroup );
 					break;
 				case FormItem.ITEM_DO_NOT_KNOW :
 				// trace("FormItem.ITEM_DO_NOT_KNOW true");
 				// formItem.data.valid = formItem.selected;
+				case "FormButton" :
 				case FormItem.ITEM_RADIO_BUTTON :
 					formItem.data.valid = formItem.selected;
 					break;
@@ -125,7 +118,6 @@ package com.wezside.components.survey.form
 				case FormItem.ITEM_SLIDER :
 					break;
 			}
-			if(!formItem.data.valid)formGroup.data.valid=formItem.data.valid;
 			return formItem.data.valid;
 		}
 

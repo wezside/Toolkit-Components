@@ -1,6 +1,6 @@
-package com.wezside.components.survey.data 
+package com.wezside.component.survey.data 
 {
-	import com.wezside.components.survey.form.FormItem;
+	import com.wezside.component.survey.form.FormItem;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
@@ -20,10 +20,9 @@ package com.wezside.components.survey.data
 		private var _isInteractive:Boolean;
 		private var _styleManager:IStyleManager;
 		private var _styleNameCollection:ICollection;
-		
+		private var _formItemsNS:Namespace = new Namespace( "", "com.wezside.components.survey.form.item" );
 		private var _layoutDecorators:ICollection;
 		private var _ignoreList:ICollection;
-		private var _state:String;
 
 		public function addItemData( item:IFormItemData ):void
 		{
@@ -81,6 +80,20 @@ package com.wezside.components.survey.data
 			it = null;		
 			return hasOnlyMeta;
 		}		
+		
+		public function reset():void
+		{
+			var it:IIterator = _items.iterator();
+			var item:IFormItemData;
+			while ( it.hasNext() )
+			{
+				item = it.next() as IFormItemData;
+				item.reset();
+			}
+			it.purge();
+			it = null;
+			item = null;
+		}
 		
 		public function get id():String
 		{
@@ -143,6 +156,16 @@ package com.wezside.components.survey.data
 			return _items.iterator( );
 		}
 		
+		public function get items():Collection
+		{
+			return _items;
+		}
+		
+		public function set items( value:Collection ):void
+		{
+			_items = value;
+		}
+		
 		public function get styleManager():IStyleManager
 		{
 			return _styleManager;
@@ -163,7 +186,15 @@ package com.wezside.components.survey.data
 			_styleNameCollection = value;
 		}
 		
-
+		public function get formItemNS():Namespace
+		{
+			return _formItemsNS;
+		}
+		
+		public function set formItemNS( value:Namespace ):void
+		{
+			_formItemsNS = value;
+		}
 		
 		public function get layoutDecorators():ICollection
 		{
@@ -184,16 +215,7 @@ package com.wezside.components.survey.data
 		{
 			_ignoreList = value;
 		}
-
-		public function get state():String
-		{
-			return _state;
-		}
-
-		public function set state( value:String ):void
-		{
-			_state = value
-		}
+		
 
 	}
 }

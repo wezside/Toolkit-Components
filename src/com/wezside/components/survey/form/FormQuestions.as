@@ -1,4 +1,4 @@
-package com.wezside.components.survey.form
+package com.wezside.component.survey.form
 {
 	import com.wezside.components.UIElement;
 	import com.wezside.components.decorators.layout.FillLayout;
@@ -21,22 +21,19 @@ package com.wezside.components.survey.form
 			// does nothing
 		}
 
-		public function resize():void
+		override public function arrange():void
 		{
 			if ( !stage ) return;
-
+	
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var child:*;
 			var formGroup:IFormGroup;
-
 			while ( it.hasNext() )
 			{
 				child = it.next();
-
 				if ( child is IFormGroup )
 				{
 					formGroup = IFormGroup( child );
-
 					if ( formGroup.layout is FillLayout )
 					{
 						if ( FillLayout( formGroup.layout ).widthRatio > 0 )
@@ -57,8 +54,6 @@ package com.wezside.components.survey.form
 			it = null;
 			child = null;
 			formGroup = null;
-			
-			arrange();
 		}
 
 		public function get formPadding():Array

@@ -1,6 +1,7 @@
-package com.wezside.components.survey.data.config
+package com.wezside.component.survey.data.config
 {
 	import com.wezside.data.IDeserializable;
+	import com.wezside.data.ItemData;
 	import com.wezside.data.collection.ICollection;
 
 	/**

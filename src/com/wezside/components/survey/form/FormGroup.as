@@ -1,11 +1,10 @@
-package com.wezside.components.survey.form
+package com.wezside.component.survey.form
 {
+	import com.wezside.component.survey.data.IFormGroupData;
+	import com.wezside.component.survey.data.IFormItemData;
+	import com.wezside.component.survey.data.config.CSSDataItem;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementState;
-	import com.wezside.components.survey.data.IFormGroupData;
-	import com.wezside.components.survey.data.IFormItemData;
-	import com.wezside.components.survey.data.config.CSSDataItem;
-	import com.wezside.components.survey.form.item.Slider;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.iterator.IIterator;
 
@@ -19,11 +18,9 @@ package com.wezside.components.survey.form
 	{
 		
 		public static const STATE_IGNORED:String = "STATE_IGNORED";
-		public static const STATE_HIDDEN:String = "STATE_HIDDEN";
 		public static const STATE_NORMAL:String = "STATE_NORMAL";
+		public static const STATE_HIDDEN:String = "STATE_HIDDEN";
 		public static const STATE_VISIBLE:String = "STATE_VISIBLE";
-		public static const STATE_RESPONSE_LEVEL_VISIBLE:String = "STATE_RESPONSE_LEVEL_VISIBLE";
-		public static const STATE_RESPONSE_LEVEL_NESTED:String = "STATE_RESPONSE_LEVEL_NESTED";
 				
 		private var _data:IFormGroupData;
 		
@@ -31,11 +28,9 @@ package com.wezside.components.survey.form
 		{
 			super();
 			stateManager.addState( STATE_IGNORED );	
-			stateManager.addState( STATE_NORMAL );
+			stateManager.addState( STATE_NORMAL );	
 			stateManager.addState( STATE_HIDDEN );	
 			stateManager.addState( STATE_VISIBLE );	
-			stateManager.addState( STATE_RESPONSE_LEVEL_VISIBLE );	
-			stateManager.addState( STATE_RESPONSE_LEVEL_NESTED,true );	
 		}
 
 		override public function build():void
@@ -49,14 +44,12 @@ package com.wezside.components.survey.form
 		override public function set state( value:String ):void
 		{
 			super.state = value;
-			data.state = value;
-//			trace( "Set form group state", data.id, value );
 			switch ( value )
 			{
 				case STATE_IGNORED: data.valid = true; break;
 				case STATE_HIDDEN: visible = false; break;
-				case STATE_RESPONSE_LEVEL_VISIBLE: 
 				case STATE_VISIBLE: visible = true; break;
+				case STATE_NORMAL:
 				default: break; 
 			}
 		}
@@ -106,7 +99,7 @@ package com.wezside.components.survey.form
 
 		protected function getStyleName( id:String ):String
 		{
-			var cssID:String;
+			var cssID:String = id;
 			if ( _data && _data.styleNameCollection )
 			{
 				var cssDataItem:CSSDataItem = _data.styleNameCollection.find( "id", id ) as CSSDataItem;
@@ -135,29 +128,27 @@ package com.wezside.components.survey.form
 			while ( groupIterator.hasNext())
 			{
 				itemData = IFormItemData( groupIterator.next() );
-				
-					
+
 				if ( itemData.type == FormItem.ITEM_SLIDER )
 				{
-					
 					// found a slider item, so add it to the
 					// sliderData and make sure all is valid
 					_data.valid = true;
 					itemData.valid = sliderData.length == 0;
+
 					sliderData.addElement( itemData );
 					hasSliderData = true;
 				}
 				else
 				{
-					formItem = getFormItem( itemData.type,itemData );
+					formItem = getFormItem( itemData.type );
 					formItem.data = itemData;
 					formItem.debug = false;
-
 					formItem.styleManager = styleManager;
 					formItem.build();
 					formItem.setStyle();
 					formItem.arrange();
-
+					
 					// Static text and CTAs have no data to submit so do not need a validation check
 					if ( formItem.type == FormItem.ITEM_TYPE_STATIC_TEXT || formItem.type == FormItem.ITEM_CALL_TO_ACTION )
 						formItem.valid = true;
@@ -176,18 +167,21 @@ package com.wezside.components.survey.form
 						formItem.data.valid = true;
 					}
 					else
+					{						
 						addChild( formItem as UIElement );
+					}
 				}
 			}
 			groupIterator.purge();
 			groupIterator = null;
 
+			// TODO: Need another way of allowing for custom form items to be added.
+			/*
 			if ( hasSliderData > 0 )
 			{
 				// add a slider
-				var slider:Slider = Slider( getFormItem( FormItem.ITEM_SLIDER,itemData ) );
+				var slider:Slider = Slider( getFormItem( FormItem.ITEM_SLIDER ) );
 				slider.sliderData = sliderData;
-				slider.data = itemData;
 				slider.debug = false;
 				slider.valid = true;
 				slider.styleManager = styleManager;
@@ -195,23 +189,24 @@ package com.wezside.components.survey.form
 				slider.setStyle();
 				slider.arrange();
 				addChild( slider as UIElement );
+
 				slider = null;
 			}
 			sliderData = null;
+			 * 
+			 */
 		}
 
-		private function getFormItem( type:String, formItem:IFormItemData ):IFormItem
+		private function getFormItem( type:String ):IFormItem
 		{
-			
-			var clazz:Class = getFormClass( type,formItem  );
+			var clazz:Class = getFormClass( type );
 			var item:IFormItem = new clazz() as IFormItem;
 			return item;
 		}
 
-		private function getFormClass( className:String,formItem:IFormItemData ):Class
+		private function getFormClass( className:String ):Class
 		{
-//			trace("className",className,formItem.formItemNS,formItem.type,formItem.groupID );
-			return getDefinitionByName( formItem.formItemNS + "::" + (formItem.className?formItem.className:className) ) as Class;
+			return getDefinitionByName( _data.formItemNS + "::" + className ) as Class;
 		}
 	}
 }

@@ -1,6 +1,6 @@
-package com.wezside.components.survey.form 
+package com.wezside.component.survey.form 
 {	
-	import com.wezside.components.survey.data.IFormGroupData;
+	import com.wezside.component.survey.data.IFormGroupData;
 	import com.wezside.components.IUIElement;
 
 	/**

@@ -1,4 +1,4 @@
-package com.wezside.components.survey 
+package com.wezside.component.survey 
 {
 	import flash.events.Event;
 
@@ -24,7 +24,6 @@ package com.wezside.components.survey
 		public static const CUSTOM_DATA:String = "CUSTOM_DATA";
 		public static const PARSER_COMPLETE:String = "PARSER_COMPLETE";
 		public static const PARSE_IGNORE:String = "PARSE_IGNORE";
-		public static const UPDATE_NAVIGATION_STATE:String = "UPDATE_NAVIGATION_STATE";
 
 		public var data:*;
 

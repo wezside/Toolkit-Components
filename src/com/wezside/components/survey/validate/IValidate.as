@@ -1,8 +1,8 @@
-package com.wezside.components.survey.validate 
+package com.wezside.component.survey.validate 
 {
-	import com.wezside.components.survey.form.IForm;
-	import com.wezside.components.survey.form.IFormGroup;
-	import com.wezside.components.survey.form.IFormItem;
+	import com.wezside.component.survey.form.IForm;
+	import com.wezside.component.survey.form.IFormGroup;
+	import com.wezside.component.survey.form.IFormItem;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.manager.state.StateManager;
 

@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data 
+package com.wezside.component.survey.data 
 {
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
@@ -33,10 +33,9 @@ package com.wezside.components.survey.data
 		function get ignoreList():ICollection;
 		function set ignoreList( value:ICollection ):void;
 		
-		function get state():String;
-		function set state( value:String ):void;
-				
 		
+		function get formItemNS():Namespace;
+		function set formItemNS( value:Namespace ):void;
 		
 		function get iterator():IIterator;
 				
@@ -48,6 +47,7 @@ package com.wezside.components.survey.data
 		function getItemAnswerData():ICollection;
 		function hasOnlyMetaData():Boolean;
 
+		function reset():void;
 		function purge():void;
 
 

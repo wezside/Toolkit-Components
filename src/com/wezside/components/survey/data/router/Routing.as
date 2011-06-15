@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data.router 
+package com.wezside.component.survey.data.router 
 {
 	import com.wezside.data.IDeserializable;
 	import com.wezside.data.collection.ICollection;

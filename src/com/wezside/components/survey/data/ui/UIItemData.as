@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data.ui 
+package com.wezside.component.survey.data.ui 
 {
 	import com.wezside.data.IDeserializable;
 	import com.wezside.data.collection.Collection;

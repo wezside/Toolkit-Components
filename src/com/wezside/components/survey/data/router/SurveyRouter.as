@@ -1,4 +1,4 @@
-package com.wezside.components.survey.data.router 
+package com.wezside.component.survey.data.router 
 {
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.iterator.IIterator;
@@ -60,7 +60,6 @@ package com.wezside.components.survey.data.router
 
 		public function next( value:String = "" ) : Route
 		{				
-
 			if ( value != "" && _targetRoute && _targetRoute.routes )
 			{
 				var child:Route = _targetRoute.routes.find( "id", value ) as Route;
