@@ -1,14 +1,14 @@
 package test.com.wezside.components.gallery 
 {
-	import flexunit.framework.Assert;
-
-	import com.wezside.components.gallery.Gallery;
-	import com.wezside.components.gallery.GalleryEvent;
+	import com.wezside.component.gallery.Gallery;
+	import com.wezside.component.gallery.GalleryEvent;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
-
+	import flexunit.framework.Assert;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
+
+
 
 	/**
 	 * @author Wesley.Swanepoel

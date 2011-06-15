@@ -1,8 +1,8 @@
 package sample 
 {
-	import com.wezside.components.combo.Combo;
-	import com.wezside.components.combo.ComboEvent;
-	import com.wezside.components.combo.ComboItem;
+	import com.wezside.component.combo.Combo;
+	import com.wezside.component.combo.ComboEvent;
+	import com.wezside.component.combo.ComboItem;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.utilities.manager.style.IStyleManager;
 	import flash.display.Sprite;

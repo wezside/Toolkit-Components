@@ -1,31 +1,31 @@
 package sample
 {
-	import com.wezside.components.media.player.event.PlaylistEvent;
+	import com.wezside.component.media.player.Player;
+	import com.wezside.component.media.player.PlayerAutoSizePolicy;
+	import com.wezside.component.media.player.display.PlayerDisplay;
+	import com.wezside.component.media.player.element.PlayerControl;
+	import com.wezside.component.media.player.element.PlayerPlaylist;
+	import com.wezside.component.media.player.element.control.MuteButton;
+	import com.wezside.component.media.player.element.control.PauseButton;
+	import com.wezside.component.media.player.element.control.PlayButton;
+	import com.wezside.component.media.player.element.control.SkipToEndButton;
+	import com.wezside.component.media.player.element.control.SkipToStartButton;
+	import com.wezside.component.media.player.element.indicator.IndicatorProgress;
+	import com.wezside.component.media.player.event.PlayerControlEvent;
+	import com.wezside.component.media.player.event.PlaylistEvent;
+	import com.wezside.component.media.player.resource.IMediaResource;
+	import com.wezside.component.media.player.resource.MediaResource;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
 	import com.wezside.components.decorators.shape.ShapeRectangle;
-	import com.wezside.components.media.player.Player;
-	import com.wezside.components.media.player.PlayerAutoSizePolicy;
-	import com.wezside.components.media.player.display.PlayerDisplay;
-	import com.wezside.components.media.player.element.PlayerControl;
-	import com.wezside.components.media.player.element.PlayerPlaylist;
-	import com.wezside.components.media.player.element.control.MuteButton;
-	import com.wezside.components.media.player.element.control.PauseButton;
-	import com.wezside.components.media.player.element.control.PlayButton;
-	import com.wezside.components.media.player.element.control.SkipToEndButton;
-	import com.wezside.components.media.player.element.control.SkipToStartButton;
-	import com.wezside.components.media.player.element.indicator.IndicatorProgress;
-	import com.wezside.components.media.player.event.PlayerControlEvent;
-	import com.wezside.components.media.player.resource.IMediaResource;
-	import com.wezside.components.media.player.resource.MediaResource;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
-
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+
 
 	/**
 	 * @author Wesley.Swanepoel

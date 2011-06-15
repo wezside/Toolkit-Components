@@ -1,15 +1,15 @@
 package sample 
 {
+	import com.wezside.component.control.Button;
+	import com.wezside.component.text.Label;
 	import com.wezside.components.UIElement;
 	import com.wezside.components.UIElementEvent;
 	import com.wezside.components.UIElementState;
-	import com.wezside.components.control.Button;
 	import com.wezside.components.decorators.interactive.InteractiveSelectable;
 	import com.wezside.components.decorators.layout.HorizontalLayout;
 	import com.wezside.components.decorators.layout.Layout;
 	import com.wezside.components.decorators.layout.PaddedLayout;
 	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.text.Label;
 	import flash.events.Event;
 	import sample.style.LatinStyle;
 
