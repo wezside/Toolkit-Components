@@ -1,17 +1,19 @@
 package sample 
 {
-	import com.wezside.component.control.Button;
-	import com.wezside.component.text.Label;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.decorators.interactive.InteractiveSelectable;
-	import com.wezside.components.decorators.layout.HorizontalLayout;
-	import com.wezside.components.decorators.layout.Layout;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
-	import flash.events.Event;
 	import sample.style.LatinStyle;
+
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementEvent;
+	import com.wezside.component.UIElementState;
+	import com.wezside.component.control.Button;
+	import com.wezside.component.decorators.interactive.InteractiveSelectable;
+	import com.wezside.component.decorators.layout.HorizontalLayout;
+	import com.wezside.component.decorators.layout.Layout;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.text.Label;
+
+	import flash.events.Event;
 
 
 

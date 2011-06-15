@@ -1,15 +1,16 @@
 package com.wezside.component.combo 
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementEvent;
+	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.decorators.scroll.ScrollVertical;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorators.scroll.ScrollVertical;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.Sprite;
 	import flash.text.TextFieldAutoSize;
 

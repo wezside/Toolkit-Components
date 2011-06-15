@@ -19,11 +19,11 @@
  */
 package com.wezside.component.control 
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.decorators.layout.Layout;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.RelativeLayout;
 	import com.wezside.component.text.Label;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.decorators.layout.Layout;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.RelativeLayout;
 
 	/**
 	 * @author Wesley.Swanepoel

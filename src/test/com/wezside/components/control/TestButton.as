@@ -1,14 +1,18 @@
 package test.com.wezside.components.control
 {
-	import com.wezside.component.control.Button;
-	import com.wezside.components.decorators.interactive.InteractiveSelectable;
-	import com.wezside.components.decorators.layout.Layout;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import flash.events.Event;
 	import flexunit.framework.Assert;
+
+	import sample.style.LatinStyle;
+
+	import com.wezside.component.control.Button;
+	import com.wezside.component.decorators.interactive.InteractiveSelectable;
+	import com.wezside.component.decorators.layout.Layout;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
-	import sample.style.LatinStyle;
+
+	import flash.events.Event;
 
 
 

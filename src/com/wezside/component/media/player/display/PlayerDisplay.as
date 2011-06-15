@@ -1,14 +1,15 @@
 package com.wezside.component.media.player.display
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.decorators.layout.ILayout;
+	import com.wezside.component.decorators.shape.ShapeRectangle;
 	import com.wezside.component.media.player.PlayerDisplayEvent;
 	import com.wezside.component.media.player.media.IMedia;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.decorators.layout.ILayout;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.imaging.Resizer;
+
 	import flash.display.DisplayObject;
 
 	

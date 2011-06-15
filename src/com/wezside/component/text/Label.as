@@ -19,9 +19,9 @@
  */
 package com.wezside.component.text
 {
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.decorators.layout.PaddedLayout;
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementState;
+	import com.wezside.component.decorators.layout.PaddedLayout;
 
 	import flash.text.TextField;
 	import flash.text.TextFormat;

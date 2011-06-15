@@ -23,6 +23,10 @@
  */
 package com.wezside.component.gallery 
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementEvent;
+	import com.wezside.component.decorators.layout.DistributeLayout;
+	import com.wezside.component.decorators.layout.GridReflectionLayout;
 	import com.wezside.component.gallery.item.BlankGalleryItem;
 	import com.wezside.component.gallery.item.CountdownGalleryItem;
 	import com.wezside.component.gallery.item.FLVGalleryItem;
@@ -32,19 +36,15 @@ package com.wezside.component.gallery
 	import com.wezside.component.gallery.item.MovieClipGalleryItem;
 	import com.wezside.component.gallery.item.ReflectionItem;
 	import com.wezside.component.gallery.transition.IGalleryTransition;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.decorators.layout.DistributeLayout;
-	import com.wezside.components.decorators.layout.GridReflectionLayout;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.DictionaryCollection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.collection.IDictionaryCollection;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.date.DateUtil;
-	import com.wezside.utilities.file.FileUtil;
 	import com.wezside.utilities.imaging.Resizer;
 	import com.wezside.utilities.logging.Tracer;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;

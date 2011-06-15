@@ -1,6 +1,6 @@
 package com.wezside.component.survey.data
 {
-	import com.wezside.components.UIElementState;
+	import com.wezside.component.UIElementState;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.utilities.logging.Tracer;
 	import com.wezside.utilities.manager.style.IStyleManager;

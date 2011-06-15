@@ -1,14 +1,15 @@
 package sample 
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementEvent;
+	import com.wezside.component.UIElementState;
+	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorators.scroll.ScrollVertical;
+	import com.wezside.component.decorators.shape.ShapeRectangle;
 	import com.wezside.component.text.Label;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.UIElementState;
-	import com.wezside.components.decorators.layout.PaddedLayout;
-	import com.wezside.components.decorators.layout.VerticalLayout;
-	import com.wezside.components.decorators.scroll.ScrollVertical;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;

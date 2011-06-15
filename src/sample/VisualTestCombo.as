@@ -1,15 +1,17 @@
 package sample 
 {
+	import sample.style.LatinStyle;
+
 	import com.wezside.component.combo.Combo;
 	import com.wezside.component.combo.ComboEvent;
 	import com.wezside.component.combo.ComboItem;
-	import com.wezside.components.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorators.shape.ShapeRectangle;
 	import com.wezside.utilities.manager.style.IStyleManager;
+
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import sample.style.LatinStyle;
 
 
 

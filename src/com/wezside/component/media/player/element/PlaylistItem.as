@@ -1,12 +1,13 @@
 package com.wezside.component.media.player.element
 {
+	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementEvent;
+	import com.wezside.component.UIElementState;
 	import com.wezside.component.media.player.event.PlaylistEvent;
 	import com.wezside.component.media.player.resource.IMediaResource;
 	import com.wezside.component.text.Label;
-	import com.wezside.components.UIElement;
-	import com.wezside.components.UIElementEvent;
-	import com.wezside.components.UIElementState;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.text.TextFieldAutoSize;
 
 

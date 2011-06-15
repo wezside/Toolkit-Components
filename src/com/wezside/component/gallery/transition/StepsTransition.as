@@ -7,6 +7,7 @@ package com.wezside.component.gallery.transition
 	import com.wezside.component.gallery.item.IGalleryItem;
 	import com.wezside.component.gallery.item.ReflectionItem;
 	import com.wezside.data.iterator.IIterator;
+
 	import flash.display.DisplayObject;
 
 
