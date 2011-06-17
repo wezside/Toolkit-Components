@@ -1,5 +1,6 @@
 package test.com.wezside.component.survey.form
 {
+	import com.wezside.component.survey.form.item.GroupedFormItem;
 	import com.wezside.data.collection.Collection;
 	import mockolate.mock;
 	import mockolate.prepare;
@@ -109,7 +110,7 @@ package test.com.wezside.component.survey.form
 			GroupedFormItem;
 			var formGroupData:IFormGroupData = new FormGroupData();
 			formGroupData.items = data.getFormData( "EntryForm-2" ).getFormGroupData( "intensity" ).items;
-			formGroupData.formItemNS = new Namespace( "formItem", "test.com.wezside.component.survey.form" );
+			formGroupData.formItemNS = new Namespace( "formItem", "com.wezside.component.survey.form.item" );
 	
 			// Set up SUT
 			var group:IFormGroup = new FormGroup();
