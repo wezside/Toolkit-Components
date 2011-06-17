@@ -125,7 +125,7 @@ package com.wezside.component.survey.form
 			var hasSliderData:Boolean = false;
 
 			// Loop through all the itemData objects
-			groupIterator = _data.iterator;
+			groupIterator = _data.items.iterator();
 			while ( groupIterator.hasNext())
 			{
 				itemData = IFormItemData( groupIterator.next() );
@@ -154,6 +154,9 @@ package com.wezside.component.survey.form
 					if ( formItem.type == FormItem.ITEM_TYPE_STATIC_TEXT || formItem.type == FormItem.ITEM_CALL_TO_ACTION )
 						formItem.valid = true;
 
+					// TODO: Need to do a state test here as dictated by the data and maybe the 
+					// 		 activate deactive should be handled by the form item itself rather
+					// 		 So actually this can be removed - should add it to the "law of life" for IFormItems
 					if ( itemData.state == UIElementState.STATE_VISUAL_DISABLED )
 						formItem.deactivate();
 					else

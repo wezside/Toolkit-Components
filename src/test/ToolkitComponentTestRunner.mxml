@@ -15,7 +15,7 @@
 		    	TestRunnerBase;
 		    	core = new FlexUnitCore();
 				core.addListener( uiListener );
-				core.run( TestSuite );
+				core.run( ToolkitComponentTestSuite );
 		    }
 
     ]]>
