@@ -13,29 +13,30 @@ package com.wezside.component.survey.data
 	 */
 	public class SurveyData implements ISurveyData, IDeserializable
 	{
+		
+		private var _layout:ICollection;
+		private var _progress:ICollection;
 		private var _component:ICollection;
 		private var _customCSS:ICollection;
 		private var _customForm:ICollection;
-		private var _layout:ICollection;
-		private var _metaData:ICollection;
-		private var _progress:ICollection;
-		private var _forms:Collection = new Collection();
 		private var _ignoreList:ICollection;
 		private var _responseGroupings:ICollection;
+		private var _formData:ICollection = new Collection();
 
+		
 		public function getFormData( id:String ):IFormData
 		{
-			return _forms.find( "id", id ) as IFormData;
+			return _formData.find( "id", id ) as IFormData;
 		}
 
 		public function removeFormData( id:String ):void
 		{
-			_forms.removeElement( "id", id );
+			_formData.removeElement( "id", id );
 		}
 
 		public function getFormGroupData( id:String ):IFormGroupData
 		{
-			var formIterator:IIterator = _forms.iterator();
+			var formIterator:IIterator = _formData.iterator();
 			while ( formIterator.hasNext() )
 			{
 				var formData:IFormData = formIterator.next() as IFormData;
@@ -62,35 +63,33 @@ package com.wezside.component.survey.data
 			if ( _customCSS ) _customCSS.purge();
 			if ( _customForm ) _customForm.purge();
 			if ( _layout ) _layout.purge();
-			if ( _metaData ) _metaData.purge();
 			if ( _progress ) _progress.purge();
-			if ( _forms ) _forms.purge();
+			if ( _formData ) _formData.purge();
 			if ( _ignoreList ) _ignoreList.purge();
 
 			_component = null;
 			_customCSS = null;
 			_customForm = null;
 			_layout = null;
-			_metaData = null;
 			_progress = null;
-			_forms = null;
+			_formData = null;
 			_ignoreList = null;
 		}
 
 		public function addFormData( formData:IFormData ):void
 		{
-			_forms.addElement( formData );
+			_formData.addElement( formData );
 		}
 
 		public function get iterator():IIterator
 		{
-			return _forms.iterator();
+			return _formData.iterator();
 		}
 
 		public function debug():void
 		{
 			Tracer.output( true, " --------------------- SURVEY DATA ----------------------", getQualifiedClassName( this ) );
-			var iterator:IIterator = _forms.iterator();
+			var iterator:IIterator = _formData.iterator();
 			while ( iterator.hasNext())
 			{
 				var formData:IFormData = iterator.next() as IFormData;
@@ -141,16 +140,6 @@ package com.wezside.component.survey.data
 			_layout = value;
 		}
 
-		public function get metaData():ICollection
-		{
-			return _metaData;
-		}
-
-		public function set metaData( value:ICollection ):void
-		{
-			_metaData = value;
-		}
-
 		public function get progress():ICollection
 		{
 			return _progress;
@@ -171,10 +160,9 @@ package com.wezside.component.survey.data
 			_ignoreList = value;
 		}
 
-		// Need to account for default values
 		public function reset():void
 		{
-			var it:IIterator = _forms.iterator();
+			var it:IIterator = _formData.iterator();
 			var formData:IFormData;
 			while ( it.hasNext() )
 			{
@@ -186,7 +174,7 @@ package com.wezside.component.survey.data
 				{
 					formGroupData = itFormGroup.next() as IFormGroupData;
 					formGroupData.valid = false;
-					var formItemIt:IIterator = formGroupData.iterator;
+					var formItemIt:IIterator = formGroupData.items.iterator();
 					var formItemData:IFormItemData;
 					while ( formItemIt.hasNext() )
 					{
@@ -216,6 +204,16 @@ package com.wezside.component.survey.data
 		public function set responseGroupings( value:ICollection ):void
 		{
 			_responseGroupings = value;
+		}
+
+		public function get formData():ICollection
+		{
+			return _formData;
+		}
+
+		public function set formData( value:ICollection ):void
+		{
+			_formData = value;
 		}
 	}
 }

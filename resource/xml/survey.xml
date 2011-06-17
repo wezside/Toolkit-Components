@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns:formItem="com.wezside.xrunner.component.form">
+	<form id="EntryForm-1">
+		
+		<response id="workoutType">
+			<formItem:item id="run" type="FormButton" />
+			<formItem:item id="walk" type="FormButton" />
+			<formItem:item id="cross" type="FormButton" />
+			<formItem:item id="cycle" type="FormButton" />
+		</response>
+		
+		<response id="distance">		
+			<formItem:item id="durationHH" type="FormInputField" />			
+			<formItem:item id="durationMM" type="FormInputField" />			
+			<formItem:item id="durationSS" type="FormInputField" />			
+			<formItem:item id="distance" type="FormInputField" />			
+			<formItem:item id="km" type="FormButton" />			
+			<formItem:item id="miles" type="FormButton" />			
+		</response>
+		
+		<response id="startTime">
+			<formItem:item id="date" type="StaticFormInputField" />			
+			<formItem:item id="hh" type="FormInputField" />			
+			<formItem:item id="mm" type="FormInputField" />			
+			<formItem:item id="ss" type="FormInputField" />			
+		</response>
+
+		<response id="name">	
+			<formItem:item id="name" type="FormInputField" />
+		</response>
+		
+		<response id="howFelt">
+			<formItem:item id="awesome" type="FormButton" />					
+			<formItem:item id="good" type="FormButton" />					
+			<formItem:item id="average" type="FormButton" />					
+			<formItem:item id="difficult" type="FormButton" />					
+			<formItem:item id="struggle" type="FormButton" />					
+		</response>
+		
+		<response id="weather">			
+			<formItem:item id="cloudy" type="FormButton" />				
+			<formItem:item id="rain" type="FormButton" />				
+			<formItem:item id="snow" type="FormButton" />				
+			<formItem:item id="sun" type="FormButton" />				
+		</response>
+
+	</form>
+	
+	<form id="EntryForm-2">
+	
+		<response id="description">
+			<formItem:item id="description" type="FormInputField" />
+		</response>							
+					
+		<response id="calories">
+			<formItem:item id="calories" type="FormInputField" />				
+		</response>
+			
+		<response id="terrain">						
+			<formItem:item id="circuit" type="FormButton" />				
+			<formItem:item id="tarmac-flat" type="FormButton" />				
+			<formItem:item id="tarmac-slopes" type="FormButton" />				
+			<formItem:item id="tarmac-hills" type="FormButton" />				
+			<formItem:item id="treadmill-flat" type="FormButton" />				
+			<formItem:item id="treadmill-slopes" type="FormButton" />				
+			<formItem:item id="treadmill-hills" type="FormButton" />				
+		</response>
+		
+		<response id="intensity">						
+			<formItem:item id="low-intermittent" type="FormButton" />				
+			<formItem:item id="low-consistent" type="FormButton" />				
+			<formItem:item id="medium-intermittent" type="FormButton" />				
+			<formItem:item id="medium-consistent" type="FormButton" />				
+			<formItem:item id="high-intermittent" type="FormButton" />				
+			<formItem:item id="high-consistent" type="FormButton" />				
+		</response>
+		
+		<response id="equipmentType">						
+			<formItem:item id="nikeplus-sportsband" type="FormButton" />	
+			<formItem:item id="nikeplus-ipod" type="FormButton" />				
+			<formItem:item id="nikeplus-polar-wearlink" type="FormButton" />				
+			<formItem:item id="nikeplus-standalone-sensor" type="FormButton" />				
+			<formItem:item id="garmin-forerunner" type="FormButton" />				
+		</response>
+	</form>
+
+	<customCSS id="EntryForm">
+		<css id="hh" cssID="hh" />
+		<css id="mm" cssID="mm" />
+		<css id="ss" cssID="ss" />
+		<css id="durationHH" cssID="hh" />
+		<css id="durationMM" cssID="mm" />
+		<css id="durationSS" cssID="ss" />
+		<css id="date" cssID="form-date" />
+		<css id="duration" cssID="distance" />
+		<css id="distance" cssID="distance" />
+		<css id="cloudy" cssID="cloudy" />
+		<css id="sun" cssID="sun" />
+		<css id="rain" cssID="rain" />
+		<css id="snow" cssID="snow" />
+		<css id="description" cssID="description" />
+		<css id="circuit" cssID="terrain" />
+		<css id="tarmac-flat" cssID="terrain" />
+		<css id="tarmac-slopes" cssID="terrain" />
+		<css id="tarmac-hills" cssID="terrain" />
+		<css id="treadmill-flat" cssID="terrain" />
+		<css id="treadmill-slopes" cssID="terrain" />
+		<css id="treadmill-hills" cssID="terrain" />
+		<css id="calories" cssID="form-calories" />
+		<css id="low-intermittent" cssID="typeButtonSingleLine" />
+		<css id="low-consistent" cssID="typeButtonSingleLine" />
+		<css id="medium-intermittent" cssID="typeButton" />
+		<css id="medium-consistent" cssID="typeButton" />
+		<css id="high-intermittent" cssID="typeButtonSingleLine" />
+		<css id="high-consistent" cssID="typeButtonSingleLine" />
+		<css id="nikeplus-sportsband" cssID="typeButtonSingleLine" />
+		<css id="nikeplus-ipod" cssID="typeButton" />
+		<css id="nikeplus-polar-wearlink" cssID="typeButton" />
+		<css id="nikeplus-standalone-sensor" cssID="typeButton" />
+		<css id="garmin-forerunner" cssID="typeButton" />
+	</customCSS>	
+	
+	<layout id="terrain">
+		<decorator id="GridReflectionLayout" rows="4" columns="3" horizontalGap="2" verticalGap="2" />
+	</layout>			
+	<layout id="intensity">
+		<decorator id="GridReflectionLayout" rows="4" columns="3" horizontalGap="2" verticalGap="2"/>
+	</layout>			
+	<layout id="equipmentType">
+		<decorator id="GridReflectionLayout" rows="4" columns="3" horizontalGap="2" verticalGap="2"/>
+	</layout>			
+	<layout id="startTime">
+		<decorator id="HorizontalLayout" horizontalGap="5" />
+	</layout>		
+	<layout id="workoutType">
+		<decorator id="HorizontalLayout" horizontalGap="5" />
+	</layout>		
+	<layout id="description">
+		<decorator id="FillLayout" width="100%" />
+	</layout>		
+	<layout id="weather">
+		<decorator id="HorizontalLayout" horizontalGap="10" />
+	</layout>		
+	<layout id="distance">
+		<decorator id="HorizontalLayout" horizontalGap="5" />
+	</layout>		
+	<layout id="howFelt">
+		<decorator id="HorizontalLayout" horizontalGap="5" />
+	</layout>		
+</data>

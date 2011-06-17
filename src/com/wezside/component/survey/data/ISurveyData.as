@@ -19,6 +19,9 @@ package com.wezside.component.survey.data
 		function reset():void;
 		function purgeData():void;
 
+		function get formData():ICollection;
+		function set formData( value:ICollection ):void;
+
 		function get component():ICollection;
 		function set component( value:ICollection ):void
 

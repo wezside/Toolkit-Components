@@ -1,7 +1,6 @@
 package com.wezside.component.survey.data 
 {
 	import com.wezside.data.collection.ICollection;
-	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.manager.style.IStyleManager;
 
 	/**
@@ -12,14 +11,14 @@ package com.wezside.component.survey.data
 		function get id():String;
 		function set id( value:String ):void;
 
-		function get parent():IFormData;
-		function set parent( value:IFormData ):void;		
+		function get items():ICollection;
+		function set items( value:ICollection ):void;
+
+		function get formData():IFormData;
+		function set formData( value:IFormData ):void;		
 
 		function get valid():Boolean;
 		function set valid( value:Boolean ):void;
-		
-		function get isInteractive():Boolean;
-		function set isInteractive( value:Boolean ):void;
 		
 		function get styleManager():IStyleManager;
 		function set styleManager( value:IStyleManager ):void;
@@ -31,13 +30,10 @@ package com.wezside.component.survey.data
 		function set layoutDecorators( value:ICollection ):void;
 		
 		function get ignoreList():ICollection;
-		function set ignoreList( value:ICollection ):void;
-		
+		function set ignoreList( value:ICollection ):void;		
 		
 		function get formItemNS():Namespace;
 		function set formItemNS( value:Namespace ):void;
-		
-		function get iterator():IIterator;
 				
 		function debug():void;
 		function addItemData( item:IFormItemData ):void;
@@ -45,7 +41,6 @@ package com.wezside.component.survey.data
 		function getItemData( id:String ):IFormItemData;
 		function getItemDataByIndex( index:uint ):IFormItemData;
 		function getItemAnswerData():ICollection;
-		function hasOnlyMetaData():Boolean;
 
 		function reset():void;
 		function purge():void;
