@@ -97,6 +97,31 @@ package test.com.wezside.component.survey.form
 		}
 				
 		/**
+		 * State verification test.
+		 */ 
+		[Test]
+		public function testIFormGroupedItems():void
+		{
+			mapper.deserialize( xml );			
+			data = mapper.data as SurveyData;
+			
+			// Set up Collaborators
+			GroupedFormItem;
+			var formGroupData:IFormGroupData = new FormGroupData();
+			formGroupData.items = data.getFormData( "EntryForm-2" ).getFormGroupData( "intensity" ).items;
+			formGroupData.formItemNS = new Namespace( "formItem", "test.com.wezside.component.survey.form" );
+	
+			// Set up SUT
+			var group:IFormGroup = new FormGroup();
+			group.data = formGroupData;
+			group.build();
+			group.setStyle();
+			group.arrange();
+			
+			assertEquals( 1, group.iterator( UIElement.ITERATOR_CHILDREN ).length() );
+		}
+				
+		/**
 		 * Behaviour verification test.
 		 */ 
 		[Test]
