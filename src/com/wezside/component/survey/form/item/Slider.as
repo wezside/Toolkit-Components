@@ -1,5 +1,6 @@
 package com.wezside.component.survey.form.item
 {
+	import com.wezside.data.collection.ICollection;
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Circ;
 	import com.greensock.easing.Elastic;
@@ -343,11 +344,11 @@ package com.wezside.component.survey.form.item
 			TweenLite.killTweensOf( handle );
 			if ( bounce )
 			{
-				TweenLite.to( handle, .5, { x:xPos, ease:Elastic.easeOut } );
+				TweenLite.to( handle, .5, {x:xPos, ease:Elastic.easeOut} );
 			}
 			else
 			{
-				TweenLite.to( handle, .2, { x:xPos, ease:Circ.easeInOut } );
+				TweenLite.to( handle, .2, {x:xPos, ease:Circ.easeInOut} );
 			}
 		}
 
@@ -442,6 +443,10 @@ package com.wezside.component.survey.form.item
 			{
 				Label( labels.getChildAt( (overValue - 1) ) ).state = UIElementState.STATE_VISUAL_OVER;
 			}
+		}
+
+		public function setDataCollection( collection:ICollection ):void
+		{
 		}
 	}
 }
