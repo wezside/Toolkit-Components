@@ -10,12 +10,13 @@ package com.wezside.component.survey.form
 	 */
 	public class FormItem extends UIElement implements IFormItem
 	{
-		public static const ITEM_DO_NOT_KNOW:String = "CheckBox";
-		public static const ITEM_TYPE_STATIC_TEXT:String = "FormLabel";
-		public static const ITEM_RADIO_BUTTON:String = "RadioButton";
-		public static const ITEM_TEXT_INPUT:String = "CustomInputField";
-		public static const ITEM_CALL_TO_ACTION:String = "CallToAction";
-		public static const ITEM_SLIDER:String = "Slider";
+		public static const ITEM_DO_NOT_KNOW:String 		= "CheckBox";
+		public static const ITEM_TYPE_STATIC_TEXT:String 	= "FormLabel";
+		public static const ITEM_RADIO_BUTTON:String 		= "RadioButton";
+		public static const ITEM_TEXT_INPUT:String 			= "CustomInputField";
+		public static const ITEM_CALL_TO_ACTION:String 		= "CallToAction";
+		public static const ITEM_SLIDER:String 				= "Slider";
+		public static const ITEM_GROUP:String 				= "GroupedFormItem";
 		
 		private var _valid:Boolean;
 		private var _data:IFormItemData;

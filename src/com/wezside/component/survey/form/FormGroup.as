@@ -48,7 +48,7 @@ package com.wezside.component.survey.form
 			switch ( value )
 			{
 				case STATE_IGNORED: data.valid = true; break;
-				case STATE_HIDDEN: visible = false; break;
+				case STATE_HIDDEN:  visible = false; break;
 				case STATE_VISIBLE: visible = true; break;
 				case STATE_NORMAL:
 				default: break; 
@@ -110,19 +110,24 @@ package com.wezside.component.survey.form
 		}
 
 		/**
-		 *  Note on valid
-		 *  this determines whether data within a group is valid for form submission
-		 * Therefore the if the group does not contain any data to submit (it contains static text) 
-		 * then it's valid state should be true
+		 * The Law of Life for form items are shown below in the switch statement. Validation settings 
+		 * are important to take note of as it will only be set if of specific type. The activation or 
+		 * deactivation of form items are solely the responsibility of the form item and dictated by 
+		 * the item's data state value. Thus no activate() or deactivate() is called upon creation but 
+		 * rather the state is set from the data object.
+		 *
+		 * Grouped data here refers to a form item which requires multiple IFormItemData objects in order
+		 * to function correctly. A prime example of this is a slider component which has different data 
+		 * intervals.  
 		 */
 		private function createItems():void
 		{
 			var groupIterator:IIterator;
 			var itemData:IFormItemData;
 			var formItem:IFormItem;
-
-			var sliderData:Collection = new Collection();
-			var hasSliderData:Boolean = false;
+			
+			var groupedIndex:int = -1;
+			var groupedData:Collection = new Collection();
 
 			// Loop through all the itemData objects
 			if ( !_data.items ) return;
@@ -131,75 +136,50 @@ package com.wezside.component.survey.form
 			{
 				itemData = IFormItemData( groupIterator.next() );
 
-				if ( itemData.type == FormItem.ITEM_SLIDER )
+				switch ( itemData.type )
 				{
-					// found a slider item, so add it to the
-					// sliderData and make sure all is valid
-					_data.valid = true;
-					itemData.valid = sliderData.length == 0;
-
-					sliderData.addElement( itemData );
-					hasSliderData = true;
-				}
-				else
-				{
-					formItem = getFormItem( itemData.type );
-					formItem.data = itemData;
-					formItem.debug = false;
-					formItem.styleManager = styleManager;
-					formItem.build();
-					formItem.setStyle();
-					formItem.arrange();
+					case FormItem.ITEM_GROUP:
+					case FormItem.ITEM_SLIDER: 	groupedData.addElement( itemData );
+												groupedIndex = groupIterator.index() - 1;
+												break;
+												
+					case FormItem.ITEM_CALL_TO_ACTION:												
+					case FormItem.ITEM_TYPE_STATIC_TEXT: formItem.valid = true; 
+														 break;
 					
-					// Static text and CTAs have no data to submit so do not need a validation check
-					if ( formItem.type == FormItem.ITEM_TYPE_STATIC_TEXT || formItem.type == FormItem.ITEM_CALL_TO_ACTION )
-						formItem.valid = true;
-
-					// TODO: Need to do a state test here as dictated by the data and maybe the 
-					// 		 activate deactive should be handled by the form item itself rather
-					// 		 So actually this can be removed - should add it to the "law of life" for IFormItems
-					if ( itemData.state == UIElementState.STATE_VISUAL_DISABLED )
-						formItem.deactivate();
-					else
-						formItem.activate();
-
-					itemData.state = ( itemData.state == null ) ? UIElementState.STATE_VISUAL_UP : itemData.state;
-					formItem.state = itemData.state;
-
-					if ( _data.ignoreList && _data.ignoreList.find( "id", formItem.id ))
-					{
-						formItem.valid = true;
-						formItem.data.valid = true;
-					}
-					else
-					{						
-						addChild( formItem as UIElement );
-					}
+																
+					default: 	buildFormItem( formItem, itemData.type, itemData );
+								break;								
 				}
 			}
 			groupIterator.purge();
 			groupIterator = null;
 
-			// TODO: Need another way of allowing for custom form items to be added.
-			/*
-			if ( hasSliderData > 0 )
+			if ( groupedData.length > 0 ) buildFormItem( formItem, itemData.type, itemData, groupedIndex );
+			groupedData.purge();
+			groupedData = null;
+		}
+		
+		private function buildFormItem( formItem:IFormItem, type:String, itemData:IFormItemData, index:int = -1 ):void
+		{
+			formItem = getFormItem( type );
+			formItem.data = itemData;
+			formItem.debug = false;
+			formItem.styleManager = styleManager;
+			formItem.build();
+			formItem.setStyle();
+			formItem.arrange();		
+			itemData.state = ( itemData.state == null ) ? UIElementState.STATE_VISUAL_UP : itemData.state;
+			formItem.state = itemData.state;
+			if ( _data.ignoreList && _data.ignoreList.find( "id", formItem.id ))
 			{
-				// add a slider
-				var slider:Slider = Slider( getFormItem( FormItem.ITEM_SLIDER ) );
-				slider.sliderData = sliderData;
-				slider.debug = false;
-				slider.valid = true;
-				slider.styleManager = styleManager;
-				slider.build();
-				slider.setStyle();
-				slider.arrange();
-				addChild( slider as UIElement );
-
-				slider = null;
+				formItem.valid = true;
+				formItem.data.valid = true;
 			}
-			sliderData = null;
-			 * 
-			 */
+			else
+			{						
+				index != -1 ? addChildAt( formItem as UIElement, index ) : addChild( formItem as UIElement );
+			}			
 		}
 
 		private function getFormItem( type:String ):IFormItem
@@ -211,7 +191,6 @@ package com.wezside.component.survey.form
 
 		private function getFormClass( className:String ):Class
 		{
-			trace( _data.formItemNS + "::" + className );
 			return getDefinitionByName( _data.formItemNS + "::" + className ) as Class;
 		}
 	}
