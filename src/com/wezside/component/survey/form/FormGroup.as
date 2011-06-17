@@ -155,12 +155,16 @@ package com.wezside.component.survey.form
 			groupIterator.purge();
 			groupIterator = null;
 
-			if ( groupedData.length > 0 ) buildFormItem( formItem, itemData.type, itemData, groupedIndex );
+			if ( groupedData.length > 0 )
+			{
+				formItem = buildFormItem( formItem, itemData.type, itemData, groupedIndex );
+				formItem.setDataCollection( groupedData );
+			}
 			groupedData.purge();
 			groupedData = null;
 		}
 		
-		private function buildFormItem( formItem:IFormItem, type:String, itemData:IFormItemData, index:int = -1 ):void
+		private function buildFormItem( formItem:IFormItem, type:String, itemData:IFormItemData, index:int = -1 ):IFormItem
 		{
 			formItem = getFormItem( type );
 			formItem.data = itemData;
@@ -181,6 +185,7 @@ package com.wezside.component.survey.form
 				if ( index > numChildren ) index = numChildren - 1;
 				index != -1 ? addChildAt( formItem as UIElement, index ) : addChild( formItem as UIElement );
 			}			
+			return formItem;
 		}
 
 		private function getFormItem( type:String ):IFormItem
