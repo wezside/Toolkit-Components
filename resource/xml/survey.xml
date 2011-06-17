@@ -57,30 +57,30 @@
 		</response>
 			
 		<response id="terrain">						
-			<formItem:item id="circuit" type="FormButton" />				
-			<formItem:item id="tarmac-flat" type="FormButton" />				
-			<formItem:item id="tarmac-slopes" type="FormButton" />				
-			<formItem:item id="tarmac-hills" type="FormButton" />				
-			<formItem:item id="treadmill-flat" type="FormButton" />				
-			<formItem:item id="treadmill-slopes" type="FormButton" />				
-			<formItem:item id="treadmill-hills" type="FormButton" />				
+			<formItem:item id="circuit" 			type="FormButton" />				
+			<formItem:item id="tarmac-flat" 		type="FormButton" />				
+			<formItem:item id="tarmac-slopes" 		type="FormButton" />				
+			<formItem:item id="tarmac-hills" 		type="FormButton" />				
+			<formItem:item id="treadmill-flat" 		type="FormButton" />				
+			<formItem:item id="treadmill-slopes" 	type="FormButton" />				
+			<formItem:item id="treadmill-hills" 	type="FormButton" />				
 		</response>
 		
-		<response id="intensity">						
-			<formItem:item id="low-intermittent" type="FormButton" />				
-			<formItem:item id="low-consistent" type="FormButton" />				
-			<formItem:item id="medium-intermittent" type="FormButton" />				
-			<formItem:item id="medium-consistent" type="FormButton" />				
-			<formItem:item id="high-intermittent" type="FormButton" />				
-			<formItem:item id="high-consistent" type="FormButton" />				
+		<response id="intensity">							
+			<formItem:item id="low-intermittent" 	type="GroupedFormItem" />				
+			<formItem:item id="low-consistent" 		type="GroupedFormItem" />				
+			<formItem:item id="medium-intermittent" type="GroupedFormItem" />				
+			<formItem:item id="medium-consistent" 	type="GroupedFormItem" />				
+			<formItem:item id="high-intermittent" 	type="GroupedFormItem" />				
+			<formItem:item id="high-consistent" 	type="GroupedFormItem" />				
 		</response>
 		
 		<response id="equipmentType">						
-			<formItem:item id="nikeplus-sportsband" type="FormButton" />	
-			<formItem:item id="nikeplus-ipod" type="FormButton" />				
-			<formItem:item id="nikeplus-polar-wearlink" type="FormButton" />				
-			<formItem:item id="nikeplus-standalone-sensor" type="FormButton" />				
-			<formItem:item id="garmin-forerunner" type="FormButton" />				
+			<formItem:item id="nikeplus-sportsband" 		type="FormButton" />	
+			<formItem:item id="nikeplus-ipod" 				type="FormButton" />				
+			<formItem:item id="nikeplus-polar-wearlink" 	type="FormButton" />				
+			<formItem:item id="nikeplus-standalone-sensor" 	type="FormButton" />				
+			<formItem:item id="garmin-forerunner" 			type="FormButton" />				
 		</response>
 	</form>
 

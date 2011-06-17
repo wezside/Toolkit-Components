@@ -122,6 +122,8 @@ package com.wezside.component.survey.form
 		 */
 		private function createItems():void
 		{
+			if ( !_data.items ) return;
+			
 			var groupIterator:IIterator;
 			var itemData:IFormItemData;
 			var formItem:IFormItem;
@@ -129,8 +131,6 @@ package com.wezside.component.survey.form
 			var groupedIndex:int = -1;
 			var groupedData:Collection = new Collection();
 
-			// Loop through all the itemData objects
-			if ( !_data.items ) return;
 			groupIterator = _data.items.iterator();
 			while ( groupIterator.hasNext())
 			{
@@ -178,6 +178,7 @@ package com.wezside.component.survey.form
 			}
 			else
 			{						
+				if ( index > numChildren ) index = numChildren - 1;
 				index != -1 ? addChildAt( formItem as UIElement, index ) : addChild( formItem as UIElement );
 			}			
 		}
