@@ -2,6 +2,8 @@ package com.wezside.component.survey.form
 {
 	import com.wezside.component.UIElement;
 	import com.wezside.component.survey.data.IFormItemData;
+	import com.wezside.data.collection.Collection;
+	import com.wezside.data.collection.ICollection;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -19,10 +21,10 @@ package com.wezside.component.survey.form
 		public static const ITEM_GROUP:String 				= "GroupedFormItem";
 		
 		private var _valid:Boolean;
-		private var _data:IFormItemData;
 		private var _selected:Boolean;
 		private var _value:String;
 		private var _type:String;
+		private var _data:ICollection = new Collection();
 
 		override public function purge():void
 		{
@@ -30,9 +32,14 @@ package com.wezside.component.survey.form
 			_data = null;
 		}
 
+		public function setDataCollection( collection:ICollection ):void
+		{
+			_data = collection;
+		}		
+
 		public function get id():String
 		{
-			return _data ? _data.id : "";
+			return _data.length > 0 ? data.id : "";
 		}
 
 		public function get type():String
@@ -52,7 +59,7 @@ package com.wezside.component.survey.form
 
 		public function get data():IFormItemData
 		{
-			return _data;
+			return _data.length > 0 ? _data.getElementAt( 0 ) : null;
 		}
 
 		public function get valid():Boolean
@@ -72,12 +79,13 @@ package com.wezside.component.survey.form
 
 		public function set data( value:IFormItemData ):void
 		{
-			_data = value;
+			_data.addElement( value );
 		}
 
 		public function set valid( value:Boolean ):void
 		{
 			_valid = value;
 		}
+
 	}
 }

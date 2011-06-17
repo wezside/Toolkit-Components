@@ -2,13 +2,13 @@ package com.wezside.component.survey.form
 {
 	import com.wezside.component.IUIElement;
 	import com.wezside.component.survey.data.IFormItemData;
+	import com.wezside.data.collection.ICollection;
 
 	/**
-	 * @author DaSmith
+	 * @author Wesley.Swanepoel
 	 */
 	public interface IFormItem extends IUIElement
 	{
-
 		function get id():String;
 		function get type():String;
 
@@ -28,5 +28,6 @@ package com.wezside.component.survey.form
 		function set valid( value:Boolean ):void;
 
 		function activate():void;		function deactivate():void;
+		function setDataCollection( collection:ICollection ):void
 	}
 }

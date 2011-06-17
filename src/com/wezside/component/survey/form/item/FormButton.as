@@ -1,5 +1,6 @@
 package com.wezside.component.survey.form.item
 {
+	import com.wezside.data.collection.ICollection;
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
@@ -99,6 +100,11 @@ package com.wezside.component.survey.form.item
 				default:
 			}
 		}
+		
+		public function setDataCollection( collection:ICollection ):void
+		{
+			// Not applicable
+		}		
 
 		public function get data():IFormItemData
 		{
@@ -180,6 +186,8 @@ package com.wezside.component.survey.form.item
 				cssID = cssDataItem ? cssDataItem.cssID : "";
 			}
 			return cssID ? cssID : "";
-		}			
+		}
+
+
 	}
 }
