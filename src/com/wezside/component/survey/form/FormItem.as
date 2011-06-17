@@ -41,10 +41,6 @@ package com.wezside.component.survey.form
 			_data = null;
 		}
 		
-		public function showValid( value:Boolean ):void
-		{
-		}
-		
 		public function get id():String
 		{
 			return _data ? _data.id : "";
@@ -93,16 +89,6 @@ package com.wezside.component.survey.form
 		public function set valid( value:Boolean ):void
 		{
 			_valid = value;
-		}
-		
-		public function get parentGroup():IFormGroup
-		{
-			return _parentGroup;
-		}
-		
-		public function set parentGroup( value:IFormGroup ):void
-		{
-			_parentGroup = value;
 		}
 	}
 }
