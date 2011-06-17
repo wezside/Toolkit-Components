@@ -111,7 +111,7 @@ package test.com.wezside.component.survey.form
 			var items:ICollection = data.getFormData( "EntryForm-1" ).getFormGroupData( "workoutType" ).items.clone();
 			var formGroupData:IFormGroupData = strict( IFormGroupData );
 			
-			// Expectations			
+			// Expectations
 			mock( formGroupData ).getter( "formItemNS" ).returns( new Namespace( "formItem", "com.wezside.component.survey.form.item" ));
 			mock( formGroupData ).getter( "ignoreList" ).returns( new Collection());
 			mock( formGroupData ).setter( "items" ).arg( items );
@@ -133,7 +133,7 @@ package test.com.wezside.component.survey.form
 			verify( formGroupData );
 			
 			// Assert
-			assertEquals( 4, group.iterator( UIElement.ITERATOR_CHILDREN ).length() );			
+			assertEquals( 4, group.iterator( UIElement.ITERATOR_CHILDREN ).length() );
 		}
 	}
 }
