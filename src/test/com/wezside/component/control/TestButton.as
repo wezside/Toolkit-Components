@@ -1,4 +1,4 @@
-package test.com.wezside.components.control
+package test.com.wezside.component.control
 {
 	import flexunit.framework.Assert;
 

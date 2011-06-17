@@ -1,8 +1,11 @@
-package com.wezside.component.survey.form
+package com.wezside.component.survey.validate
 {
 	import com.wezside.component.UIElement;
 	import com.wezside.component.survey.data.IFormData;
-	import com.wezside.component.survey.validate.IValidate;
+	import com.wezside.component.survey.form.FormItem;
+	import com.wezside.component.survey.form.IForm;
+	import com.wezside.component.survey.form.IFormGroup;
+	import com.wezside.component.survey.form.IFormItem;
 	import com.wezside.data.iterator.IIterator;
 	import com.wezside.utilities.manager.state.StateManager;
 
@@ -14,10 +17,13 @@ package com.wezside.component.survey.form
 	 */
 	public class FormValidator
 	{
+	
+			
 		private var _valid:Boolean;
 		private var _formData:IFormData;
-		private var _validateNS:Namespace = new Namespace( "", "com.wezside.component.survey.validate" );
 		private var _configState:StateManager;
+		private var _validateNS:Namespace = new Namespace( "", "com.wezside.component.survey.validate" );
+
 
 		public function validate( formItem:IFormItem, formGroup:IFormGroup, form:IForm ):Boolean
 		{
@@ -55,7 +61,8 @@ package com.wezside.component.survey.form
 		private function validateGroup( formItem:IFormItem, formGroup:IFormGroup, form:IForm ):Boolean
 		{
 			formGroup.data.valid = false;
-			var hasOnlyNonInteractiveItems:Boolean = true;
+
+			var radioGroupValid:Boolean = false;			
 			var it:IIterator = UIElement( formGroup ).iterator( UIElement.ITERATOR_CHILDREN );
 
 			// Update Radio button selected state in same group
@@ -69,7 +76,6 @@ package com.wezside.component.survey.form
 			while ( it.hasNext() )
 			{
 				var item:IFormItem = it.next() as IFormItem;
-
 				// Validate for Input Field
 				if ( 	item.type != FormItem.ITEM_TYPE_STATIC_TEXT && 
 						item.type != FormItem.ITEM_CALL_TO_ACTION && 
@@ -78,7 +84,6 @@ package com.wezside.component.survey.form
 						item.type != FormItem.ITEM_SLIDER && 
 						item.type != "FormButton" )
 				{
-					hasOnlyNonInteractiveItems = false;
 					if ( !item.valid )
 					{
 						formGroup.data.valid = false;
@@ -86,14 +91,24 @@ package com.wezside.component.survey.form
 					}
 					formGroup.data.valid = item.valid;
 				}
+				
 				// Validate for Radio + Checkboxes
 				if ( item.type == FormItem.ITEM_RADIO_BUTTON || item.type == "FormButton" )
-				{
-					hasOnlyNonInteractiveItems = false;
-					if ( item.valid ) formGroup.data.valid = true;
+				{ 
+					if ( item.valid )
+					{
+						radioGroupValid = true;
+						formGroup.data.valid = true;
+					}
+					else if ( formGroup.data.valid && !radioGroupValid )
+					{
+						// Only set the form group invalid if the radio group doesn't 
+						// contain a radio button which is valid
+						formGroup.data.valid = false;
+					}
 				}
 			}
-			if ( hasOnlyNonInteractiveItems ) formGroup.data.valid = true;
+
 			it.purge();
 			it = null;
 			return formGroup.data.valid;
@@ -105,14 +120,12 @@ package com.wezside.component.survey.form
 			{
 				case "FormInputField" :
 				case FormItem.ITEM_TEXT_INPUT :
-					formItem.data.valid = customValidateItem( formItem, _validateNS, "InputValidator", form, formGroup );
+					customValidateItem( formItem, _validateNS, "InputValidator", form, formGroup );
 					break;
 				case FormItem.ITEM_DO_NOT_KNOW :
-				// trace("FormItem.ITEM_DO_NOT_KNOW true");
-				// formItem.data.valid = formItem.selected;
 				case "FormButton" :
 				case FormItem.ITEM_RADIO_BUTTON :
-					formItem.data.valid = formItem.selected;
+					formItem.valid = formItem.selected;
 					break;
 				case FormItem.ITEM_CALL_TO_ACTION :
 				case FormItem.ITEM_TYPE_STATIC_TEXT :

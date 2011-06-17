@@ -1,4 +1,4 @@
-package test.com.wezside.components.gallery 
+package test.com.wezside.component.gallery 
 {
 	import com.wezside.component.gallery.Gallery;
 	import com.wezside.component.gallery.GalleryEvent;

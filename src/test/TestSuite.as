@@ -1,7 +1,8 @@
 package test
 {
-	import test.com.wezside.components.control.TestButton;
-	import test.com.wezside.components.gallery.TestGallery;
+	import test.com.wezside.component.survey.form.item.TestFormItem;
+	import test.com.wezside.component.control.TestButton;
+	import test.com.wezside.component.gallery.TestGallery;
 	/**
 	 * Project type: Flex 4
 	 *  -target-player={playerVersion}
@@ -13,7 +14,8 @@ package test
 	[RunWith("org.flexunit.runners.Suite")]
 	public class TestSuite
 	{
-		public var testButton:TestButton;
-		public var testGallery:TestGallery;		
+		public var testFormItem:TestFormItem;
+//		public var testButton:TestButton;
+//		public var testGallery:TestGallery;
 	}
 }
