@@ -125,6 +125,7 @@ package com.wezside.component.survey.form
 			var hasSliderData:Boolean = false;
 
 			// Loop through all the itemData objects
+			if ( !_data.items ) return;
 			groupIterator = _data.items.iterator();
 			while ( groupIterator.hasNext())
 			{
@@ -210,6 +211,7 @@ package com.wezside.component.survey.form
 
 		private function getFormClass( className:String ):Class
 		{
+			trace( _data.formItemNS + "::" + className );
 			return getDefinitionByName( _data.formItemNS + "::" + className ) as Class;
 		}
 	}

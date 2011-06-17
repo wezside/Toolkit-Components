@@ -1,5 +1,6 @@
 package test.com.wezside.component.survey.form
 {
+	import com.wezside.data.collection.Collection;
 	import mockolate.mock;
 	import mockolate.prepare;
 	import mockolate.strict;
@@ -107,15 +108,19 @@ package test.com.wezside.component.survey.form
 			// Set up Collaborators
 			FormButton;
 			
+			var items:ICollection = data.getFormData( "EntryForm-1" ).getFormGroupData( "workoutType" ).items.clone();
 			var formGroupData:IFormGroupData = strict( IFormGroupData );
-			mock( formGroupData ).setter( "items" ).once();
-			mock( formGroupData ).getter( "items" );
+			
+			// Expectations			
+			mock( formGroupData ).getter( "formItemNS" ).returns( new Namespace( "formItem", "com.wezside.component.survey.form.item" ));
+			mock( formGroupData ).getter( "ignoreList" ).returns( new Collection());
+			mock( formGroupData ).setter( "items" ).arg( items );
+			mock( formGroupData ).getter( "items" ).returns( items );
 			mock( formGroupData ).getter( "styleNameCollection" );
 			mock( formGroupData ).getter( "styleManager" );
 			mock( formGroupData ).getter( "id" );
 			
-			formGroupData.items = data.getFormData( "EntryForm-1" ).getFormGroupData( "workoutType" ).items;
-
+			formGroupData.items = items;
 	
 			// Set up SUT
 			var group:IFormGroup = new FormGroup();
@@ -124,9 +129,11 @@ package test.com.wezside.component.survey.form
 			group.setStyle();
 			group.arrange();
 			
-			assertEquals( 4, group.iterator( UIElement.ITERATOR_CHILDREN ).length() );
-			
+			// Verify behaviour of Collaborator
 			verify( formGroupData );
+			
+			// Assert
+			assertEquals( 4, group.iterator( UIElement.ITERATOR_CHILDREN ).length() );			
 		}
 	}
 }
