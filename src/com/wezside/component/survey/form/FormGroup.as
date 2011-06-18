@@ -151,10 +151,10 @@ package com.wezside.component.survey.form
 					default: 	buildFormItem( formItem, itemData.type, itemData );
 								break;								
 				}
+				trace( "---", itemData.type );
 			}
 			groupIterator.purge();
 			groupIterator = null;
-
 			if ( groupedData.length > 0 )
 			{
 				formItem = buildFormItem( formItem, itemData.type, itemData, groupedIndex );
