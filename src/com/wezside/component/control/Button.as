@@ -20,9 +20,9 @@
 package com.wezside.component.control 
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.Layout;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.RelativeLayout;
+	import com.wezside.component.decorator.layout.Layout;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.RelativeLayout;
 	import com.wezside.component.text.Label;
 
 	/**

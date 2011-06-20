@@ -1,9 +1,9 @@
 package sample
 {
-	import com.wezside.component.decorators.layout.HorizontalLayout;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.media.player.Player;
 	import com.wezside.component.media.player.PlayerAutoSizePolicy;
 	import com.wezside.component.media.player.display.PlayerDisplay;

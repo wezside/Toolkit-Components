@@ -3,18 +3,14 @@ package sample
 	import sample.style.LatinStyle;
 
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.text.Label;
 
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
-
-
-
 
 	/**
 	 * @author Wesley.Swanepoel

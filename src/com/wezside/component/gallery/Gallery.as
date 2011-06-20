@@ -25,8 +25,8 @@ package com.wezside.component.gallery
 {
 	import com.wezside.component.UIElement;
 	import com.wezside.component.UIElementEvent;
-	import com.wezside.component.decorators.layout.DistributeLayout;
-	import com.wezside.component.decorators.layout.GridReflectionLayout;
+	import com.wezside.component.decorator.layout.DistributeLayout;
+	import com.wezside.component.decorator.layout.GridReflectionLayout;
 	import com.wezside.component.gallery.item.BlankGalleryItem;
 	import com.wezside.component.gallery.item.CountdownGalleryItem;
 	import com.wezside.component.gallery.item.FLVGalleryItem;

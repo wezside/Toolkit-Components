@@ -6,11 +6,11 @@ package sample
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
-	import com.wezside.component.decorators.interactive.InteractiveSelectable;
-	import com.wezside.component.decorators.layout.HorizontalLayout;
-	import com.wezside.component.decorators.layout.Layout;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorator.interactive.InteractiveSelectable;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.Layout;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
 	import com.wezside.component.text.Label;
 
 	import flash.events.Event;
@@ -27,7 +27,6 @@ package sample
 		
 		private var button:Button;
 		private var label:Label;
-		private var autoSkinSizeButton:Button;
 
 		public function VisualTestButton()
 		{

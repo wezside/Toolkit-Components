@@ -4,7 +4,7 @@ package com.wezside.component.media.player.element.control
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
-	import com.wezside.component.decorators.interactive.InteractiveSelectable;
+	import com.wezside.component.decorator.interactive.InteractiveSelectable;
 	import com.wezside.component.media.player.Player;
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.event.PlayerControlEvent;

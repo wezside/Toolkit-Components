@@ -1,5 +1,6 @@
 package com.wezside.component.media.player.element
 {
+	import com.wezside.utilities.manager.state.StateManager;
 	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.UIElement;
 	import com.wezside.component.UIElementState;
@@ -258,6 +259,15 @@ package com.wezside.component.media.player.element
 		public function set defaultState( value:String ):void
 		{
 			_defaultState = value;
+		}
+
+		public function get stateManager():StateManager
+		{
+			return null;
+		}
+
+		public function set stateManager( value:StateManager ):void
+		{
 		}
 	}
 }

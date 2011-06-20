@@ -1,12 +1,12 @@
 package com.wezside.component.survey.form.item
 {
-	import com.wezside.data.collection.ICollection;
 	import com.wezside.component.UIElementState;
-	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
 	import com.wezside.component.survey.data.IFormItemData;
 	import com.wezside.component.survey.data.config.CSSDataItem;
 	import com.wezside.component.survey.form.IFormItem;
 	import com.wezside.component.text.Label;
+	import com.wezside.data.collection.ICollection;
 
 	/**
 	 * @author Wesley.Swanepoel
