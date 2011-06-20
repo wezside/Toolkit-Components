@@ -10,6 +10,11 @@ Latest release
 * Build 0.1.0248
 * Compiled with Flex 4 SDK build 14159 
 
+Change log since tag 0.1.0270
+=======
+
+* Survey component's FormGroup refactored to support ITEM_GROUP as a type of FormItem. ITEM_GROUP is a FormItem that requires multiple IFormItemData objects to function, like a Slider.
+
 Control
 -------
 
