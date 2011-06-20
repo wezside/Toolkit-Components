@@ -1,12 +1,13 @@
 package com.wezside.component.media.player.element.control
 {
 	import com.wezside.component.IUIDecorator;
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.media.player.Player;
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.event.PlayerControlEvent;
+
+	import flash.events.MouseEvent;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -30,7 +31,7 @@ package com.wezside.component.media.player.element.control
 			button.autoSize = "left";
 			button.text = data;
 			button.id = "play";
-			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			button.addEventListener( MouseEvent.CLICK, click );
 			button.build();
 			button.setStyle();
 			button.arrange();
@@ -75,13 +76,9 @@ package com.wezside.component.media.player.element.control
 			}
 		}
 
-		private function click( event:UIElementEvent ):void
+		private function click( event:MouseEvent ):void
 		{
-			trace( event.state.key );
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));
-			}
+			event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true ));
 		}
 	}
 }

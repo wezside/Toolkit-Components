@@ -1,6 +1,5 @@
 package com.wezside.component.survey.form.item
 {
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.decorator.interactive.InteractiveSelectable;
@@ -10,6 +9,7 @@ package com.wezside.component.survey.form.item
 	import com.wezside.component.survey.form.IFormGroup;
 	import com.wezside.component.survey.form.IFormItem;
 	import com.wezside.data.collection.ICollection;
+	import com.wezside.utilities.observer.IObserverDetail;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -27,7 +27,7 @@ package com.wezside.component.survey.form.item
 
 			text = _data.label;
 
-			addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
+			setObserveState( UIElementState.STATE_VISUAL_SELECTED, stateChange );
 		}
 
 		override public function setStyle():void
@@ -39,19 +39,13 @@ package com.wezside.component.survey.form.item
 
 		override public function purge():void
 		{
-			removeEventListener( UIElementEvent.STATE_CHANGE, stateChange );
-
 			super.purge();
-
 			_data = null;
 		}
 
-		private function stateChange( event:UIElementEvent ):void
+		private function stateChange( detail:IObserverDetail ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_SELECTED )
-			{
-				dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ) );
-			}
+			dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ));
 		}
 
 		override public function get id():String

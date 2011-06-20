@@ -1,5 +1,6 @@
 package com.wezside.component.media.player.element.control
 {
+	import flash.events.MouseEvent;
 	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
@@ -28,7 +29,7 @@ package com.wezside.component.media.player.element.control
 			facebookbutton.autoSkinSize = false;
 			facebookbutton.styleName = styleName;
 			facebookbutton.styleManager = styleManager;
-			facebookbutton.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			facebookbutton.addEventListener( MouseEvent.CLICK, click );
 			facebookbutton.build();
 			facebookbutton.setStyle();
 			facebookbutton.arrange();
@@ -61,12 +62,9 @@ package com.wezside.component.media.player.element.control
 			}
 		}		
 
-		private function click( event:UIElementEvent ):void
+		private function click( event:MouseEvent ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false ));
-			}
+			event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false ));
 		}	
 	}
 }

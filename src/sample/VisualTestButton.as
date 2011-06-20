@@ -1,5 +1,6 @@
 package sample 
 {
+	import flash.events.MouseEvent;
 	import sample.style.LatinStyle;
 
 	import com.wezside.component.UIElement;
@@ -60,7 +61,7 @@ package sample
 
 			button = new Button();
 			button.interactive = new InteractiveSelectable( button );
-			button.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
+			button.addEventListener( MouseEvent.CLICK, stateChange );
 			button.styleManager = styleManager;
 			button.styleName = "button";
 			button.text = "Lorem ipsum doler et";
@@ -132,14 +133,12 @@ package sample
 			iconAlignButton.setStyle();
 			iconAlignButton.arrange();
 			iconAlignButton.activate();
-			iconAlignButton.addEventListener( UIElementEvent.STATE_CHANGE, iconAlignButtonHandler );
+			iconAlignButton.addEventListener( MouseEvent.CLICK, iconAlignButtonHandler );
 			return iconAlignButton;
 		}
 
-		private function iconAlignButtonHandler( event:UIElementEvent ):void 
+		private function iconAlignButtonHandler( event:MouseEvent ):void 
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK ) 
-			{
 				switch ( event.currentTarget.text )
 				{
 					case "Top Right": button.iconPlacement = Layout.PLACEMENT_TOP_RIGHT; break;
@@ -154,8 +153,7 @@ package sample
 				}
 				label.text = "Icon alignment " + event.currentTarget.text;
 				button.arrange();
-				arrange();
-			}			
+				arrange();			
 		}
 
 		private function autoSkinSizeHandler( event:UIElementEvent ):void 
@@ -193,12 +191,8 @@ package sample
 			arrange();
 		}		
 
-		private function stateChange( event:UIElementEvent ):void 
+		private function stateChange( event:MouseEvent ):void 
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_SELECTED ) 
-			{
-//				trace( event.currentTarget.stateManager.compare( event.state.key ));
-			}
 		}
 	}
 }
