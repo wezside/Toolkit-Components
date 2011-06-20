@@ -2,7 +2,7 @@ package com.wezside.component.survey.form.item
 {
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
-	import com.wezside.component.decorators.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
 	import com.wezside.component.survey.form.FormEvent;
 	import com.wezside.component.text.Label;
 

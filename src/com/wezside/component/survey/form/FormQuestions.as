@@ -1,7 +1,7 @@
 package com.wezside.component.survey.form
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.FillLayout;
+	import com.wezside.component.decorator.layout.FillLayout;
 	import com.wezside.data.iterator.IIterator;
 
 	/**

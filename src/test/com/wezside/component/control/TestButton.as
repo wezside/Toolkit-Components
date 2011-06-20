@@ -5,9 +5,9 @@ package test.com.wezside.component.control
 	import sample.style.LatinStyle;
 
 	import com.wezside.component.control.Button;
-	import com.wezside.component.decorators.interactive.InteractiveSelectable;
-	import com.wezside.component.decorators.layout.Layout;
-	import com.wezside.component.decorators.layout.PaddedLayout;
+	import com.wezside.component.decorator.interactive.InteractiveSelectable;
+	import com.wezside.component.decorator.layout.Layout;
+	import com.wezside.component.decorator.layout.PaddedLayout;
 
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;

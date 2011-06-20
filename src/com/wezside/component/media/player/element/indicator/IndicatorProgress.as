@@ -2,8 +2,8 @@ package com.wezside.component.media.player.element.indicator
 {
 	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.event.PlayerControlEvent;
 	import com.wezside.component.media.player.media.IMedia;

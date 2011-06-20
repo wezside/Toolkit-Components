@@ -1,9 +1,9 @@
 package sample
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.text.Label;
 
 	import flash.display.StageAlign;

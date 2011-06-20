@@ -1,9 +1,9 @@
 package com.wezside.component.media.player
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.HorizontalLayout;
-	import com.wezside.component.decorators.layout.ILayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.ILayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
 	import com.wezside.component.media.player.display.IPlayerDisplay;
 	import com.wezside.component.media.player.element.IControlElement;
 	import com.wezside.component.media.player.element.IPlayerControl;

@@ -1,8 +1,8 @@
 package com.wezside.component.media.player.element
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.HorizontalLayout;
-	import com.wezside.component.decorators.layout.ILayout;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.ILayout;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;

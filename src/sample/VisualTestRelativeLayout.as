@@ -1,7 +1,8 @@
 package sample
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.RelativeLayout;
+	import com.wezside.component.decorator.layout.RelativeLayout;
+
 
 	/**
 	 * @author Wesley.Swanepoel

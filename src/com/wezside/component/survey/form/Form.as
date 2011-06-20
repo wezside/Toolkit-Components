@@ -1,11 +1,11 @@
 package com.wezside.component.survey.form
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.FillLayout;
-	import com.wezside.component.decorators.layout.HorizontalLayout;
-	import com.wezside.component.decorators.layout.ILayout;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
+	import com.wezside.component.decorator.layout.FillLayout;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
+	import com.wezside.component.decorator.layout.ILayout;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
 	import com.wezside.component.survey.data.IFormData;
 	import com.wezside.component.survey.data.IFormGroupData;
 	import com.wezside.component.survey.data.config.CSSDataItem;

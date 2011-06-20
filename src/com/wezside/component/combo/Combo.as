@@ -4,9 +4,9 @@ package com.wezside.component.combo
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
-	import com.wezside.component.decorators.layout.PaddedLayout;
-	import com.wezside.component.decorators.layout.VerticalLayout;
-	import com.wezside.component.decorators.scroll.ScrollVertical;
+	import com.wezside.component.decorator.layout.PaddedLayout;
+	import com.wezside.component.decorator.layout.VerticalLayout;
+	import com.wezside.component.decorator.scroll.ScrollVertical;
 	import com.wezside.data.collection.Collection;
 	import com.wezside.data.collection.ICollection;
 	import com.wezside.data.iterator.IIterator;

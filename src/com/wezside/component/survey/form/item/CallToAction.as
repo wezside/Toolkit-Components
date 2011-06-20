@@ -1,15 +1,15 @@
 package com.wezside.component.survey.form.item
 {
-	import com.wezside.data.collection.ICollection;
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
-	import com.wezside.component.decorators.interactive.InteractiveSelectable;
+	import com.wezside.component.decorator.interactive.InteractiveSelectable;
 	import com.wezside.component.survey.data.IFormItemData;
 	import com.wezside.component.survey.data.config.CSSDataItem;
 	import com.wezside.component.survey.form.FormEvent;
 	import com.wezside.component.survey.form.IFormGroup;
 	import com.wezside.component.survey.form.IFormItem;
+	import com.wezside.data.collection.ICollection;
 
 	/**
 	 * @author Wesley.Swanepoel

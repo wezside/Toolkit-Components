@@ -3,16 +3,17 @@ package com.wezside.component.media.player.element
 	import com.wezside.component.IUIDecorator;
 	import com.wezside.component.media.player.media.IMedia;
 	import com.wezside.utilities.manager.style.IStyleManager;
+	
 	/**
 	 * @author Wesley.Swanepoel
 	 */
 	public interface IControlElement extends IUIDecorator
 	{
 		
+		function get state():String;
+		function set state( value:String ):void;		
 		function get autoSize():Boolean;
 		function set autoSize( value:Boolean ):void;
-		function get state():String;
-		function set state( value:String ):void;
 		function get styleName():String;
 		function set styleName( value:String ):void;
 		function get styleManager():IStyleManager;

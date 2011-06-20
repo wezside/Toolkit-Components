@@ -5,7 +5,7 @@ package sample
 	import com.wezside.component.combo.Combo;
 	import com.wezside.component.combo.ComboEvent;
 	import com.wezside.component.combo.ComboItem;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.utilities.manager.style.IStyleManager;
 
 	import flash.display.Sprite;

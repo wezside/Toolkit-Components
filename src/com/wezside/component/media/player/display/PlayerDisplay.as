@@ -1,8 +1,8 @@
 package com.wezside.component.media.player.display
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.decorators.layout.ILayout;
-	import com.wezside.component.decorators.shape.ShapeRectangle;
+	import com.wezside.component.decorator.layout.ILayout;
+	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.media.player.PlayerDisplayEvent;
 	import com.wezside.component.media.player.media.IMedia;
 	import com.wezside.data.collection.DictionaryCollection;
