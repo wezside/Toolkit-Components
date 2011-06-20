@@ -168,6 +168,7 @@ package com.wezside.component.survey.form.item
 		{
 			dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ));
 			deactivate();
+			if ( data ) data.state = UIElementState.STATE_VISUAL_SELECTED;			
 		}
 		
 		protected function getStyleName( id:String ):String 
