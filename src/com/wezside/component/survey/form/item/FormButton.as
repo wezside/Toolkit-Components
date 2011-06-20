@@ -1,6 +1,5 @@
 package com.wezside.component.survey.form.item
 {
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.decorator.interactive.InteractiveSelectable;
@@ -12,6 +11,7 @@ package com.wezside.component.survey.form.item
 	import com.wezside.component.survey.form.IFormItem;
 	import com.wezside.component.text.Label;
 	import com.wezside.data.collection.ICollection;
+	import com.wezside.utilities.observer.IObserverDetail;
 
 	import flash.display.DisplayObject;
 	import flash.filters.GlowFilter;
@@ -56,7 +56,7 @@ package com.wezside.component.survey.form.item
 			if ( !styleManager ) styleManager = _data.styleManager;
 			styleName = getStyleName( _data.id );
 			text = _data.label;
-			addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
+			setObserveState( UIElementState.STATE_VISUAL_SELECTED, stateChange );
 		}
 	
 		override public function purge():void
@@ -164,17 +164,10 @@ package com.wezside.component.survey.form.item
 			data.id = value;
 		}
 
-		protected function stateChange( event:UIElementEvent ):void
+		protected function stateChange( detail:IObserverDetail ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_SELECTED )
-			{
-				if ( selected )
-				{
-					dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ) );
-					deactivate();
-				}
-				if ( data ) data.state = UIElementState.STATE_VISUAL_SELECTED;
-			}			
+			dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ));
+			deactivate();
 		}
 		
 		protected function getStyleName( id:String ):String 

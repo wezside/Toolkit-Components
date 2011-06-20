@@ -1,13 +1,13 @@
 package com.wezside.component.media.player.element
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.media.player.event.PlaylistEvent;
 	import com.wezside.component.media.player.resource.IMediaResource;
 	import com.wezside.component.text.Label;
 	import com.wezside.data.iterator.IIterator;
 
+	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 
 
@@ -123,19 +123,16 @@ package com.wezside.component.media.player.element
 			label.setStyle();
 			label.arrange();
 			active ? label.activate() : label.deactivate();
-			if ( active ) label.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );		
+			if ( active ) label.addEventListener( MouseEvent.CLICK, click );
 			return label;	
 		}
 
-		private function stateChange( event:UIElementEvent ):void
+		private function click( event:MouseEvent ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				if ( event.currentTarget.text == lyricLabel )
-					dispatchEvent( new PlaylistEvent( PlaylistEvent.LYRIC_CLICK, false, false, resource.lyrics ));
-				else				
-					dispatchEvent( new PlaylistEvent( PlaylistEvent.CLICK, false, false, _index ));
-			}
+			if ( event.currentTarget.text == lyricLabel )
+				dispatchEvent( new PlaylistEvent( PlaylistEvent.LYRIC_CLICK, false, false, resource.lyrics ));
+			else				
+				dispatchEvent( new PlaylistEvent( PlaylistEvent.CLICK, false, false, _index ));
 		}
 
 	}

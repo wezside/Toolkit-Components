@@ -1,8 +1,6 @@
 package com.wezside.component.combo 
 {
 	import com.wezside.component.UIElement;
-	import com.wezside.component.UIElementEvent;
-	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.decorator.layout.PaddedLayout;
 	import com.wezside.component.decorator.layout.VerticalLayout;
@@ -12,6 +10,7 @@ package com.wezside.component.combo
 	import com.wezside.data.iterator.IIterator;
 
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 
 
@@ -54,7 +53,7 @@ package com.wezside.component.combo
 			selectedButton.styleManager = styleManager;
 			selectedButton.styleName = _selectedStyleName;
 			selectedButton.autoSize = TextFieldAutoSize.LEFT;
-			selectedButton.addEventListener( UIElementEvent.STATE_CHANGE, stateChange );
+			selectedButton.addEventListener( MouseEvent.CLICK, click );
 			selectedButton.activate();
 			addChild( selectedButton );		
 						
@@ -94,7 +93,7 @@ package com.wezside.component.combo
 				buttonItem.setStyle();
 				buttonItem.arrange();
 				buttonItem.activate();
-				buttonItem.addEventListener( UIElementEvent.STATE_CHANGE, itemStateChange );				
+				buttonItem.addEventListener( MouseEvent.CLICK, itemStateChange );	
 				dropdown.addChild( buttonItem );
 			}
 			it.purge();
@@ -252,27 +251,21 @@ package com.wezside.component.combo
 			_dropdownPaddingLeft = value;
 		}
 
-		private function stateChange( event:UIElementEvent ):void 
+		private function click( event:MouseEvent ):void 
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				dropdown.visible = !dropdown.visible;
-			}
+			dropdown.visible = !dropdown.visible;
 		}		
 		
-		private function itemStateChange( event:UIElementEvent ):void 
+		private function itemStateChange( event:MouseEvent ):void 
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				var item:ComboItem = _dataProvider.getElementAt( int( event.currentTarget.id ));
-				updateSelected( item );
-				hide();
-				dispatchEvent( new ComboEvent( ComboEvent.ITEM_SELECTED, 
-											   false, 
-											   false, 
-											   item ));
+			var item:ComboItem = _dataProvider.getElementAt( int( event.currentTarget.id ));
+			updateSelected( item );
+			hide();
+			dispatchEvent( new ComboEvent( ComboEvent.ITEM_SELECTED, 
+										   false, 
+										   false, 
+										   item ));
 				
-			}
 		}		
 
 		private function updateSelected( item:ComboItem = null ):void 

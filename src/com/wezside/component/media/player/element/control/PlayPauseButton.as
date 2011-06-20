@@ -2,12 +2,13 @@
 package com.wezside.component.media.player.element.control
 {
 	import com.wezside.component.IUIDecorator;
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.media.player.Player;
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.event.PlayerControlEvent;
+
+	import flash.events.MouseEvent;
 
 	/**
 	 * @author Wesley.Swanepoel
@@ -31,7 +32,7 @@ package com.wezside.component.media.player.element.control
 			playButton.autoSize = "left";
 			playButton.text = data.play;
 			playButton.id = "play";
-			playButton.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			playButton.addEventListener( MouseEvent.CLICK, click );
 			playButton.build();
 			playButton.setStyle();
 			playButton.arrange();
@@ -43,7 +44,7 @@ package com.wezside.component.media.player.element.control
 			pauseButton.autoSize = "left";
 			pauseButton.text = data.pause;
 			pauseButton.id = "pause";
-			pauseButton.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			pauseButton.addEventListener( MouseEvent.CLICK, click );
 			pauseButton.build();
 			pauseButton.setStyle();
 			pauseButton.arrange();
@@ -110,12 +111,9 @@ package com.wezside.component.media.player.element.control
 			}
 		}		
 
-		private function click( event:UIElementEvent ):void
+		private function click( event:MouseEvent ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_CLICK )
-			{
-				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false ));
-			}
+			event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false ));
 		}	
 	}
 }

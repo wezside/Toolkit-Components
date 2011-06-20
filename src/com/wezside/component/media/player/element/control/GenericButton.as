@@ -2,7 +2,6 @@
 package com.wezside.component.media.player.element.control
 {
 	import com.wezside.component.IUIDecorator;
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.control.Button;
 	import com.wezside.component.decorator.interactive.InteractiveSelectable;
@@ -10,6 +9,7 @@ package com.wezside.component.media.player.element.control
 	import com.wezside.component.media.player.element.ControlElement;
 	import com.wezside.component.media.player.event.PlayerControlEvent;
 
+	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 
 	/**
@@ -43,7 +43,7 @@ package com.wezside.component.media.player.element.control
 			button.arrange();
 			button.activate();
 			button.state = defaultState;
-			button.addEventListener( UIElementEvent.STATE_CHANGE, click );
+			button.addEventListener( MouseEvent.CLICK, click );
 			addChild( button );
 			
 			width = button.width;
@@ -71,13 +71,10 @@ package com.wezside.component.media.player.element.control
 			}
 		}		
 		
-		private function click( event:UIElementEvent ):void
+		private function click( event:MouseEvent ):void
 		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_SELECTED )
-			{
-				selected = event.currentTarget.stateManager.compare( UIElementState.STATE_VISUAL_SELECTED );
-				event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, selected ));
-			}
+			selected = event.currentTarget.stateManager.compare( UIElementState.STATE_VISUAL_SELECTED );
+			event.currentTarget.dispatchEvent( new PlayerControlEvent( PlayerControlEvent.CLICK, true, false, selected ));
 		}
 	}
 }

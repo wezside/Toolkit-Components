@@ -192,7 +192,7 @@ package com.wezside.component.survey.form
 				while ( it.hasNext() )
 				{
 					var decoratorData:LayoutDecoratorData = it.next() as LayoutDecoratorData;
-					var clazz:Class = getDefinitionByName( "com.wezside.component.decorators.layout::" + decoratorData.id ) as Class;
+					var clazz:Class = getDefinitionByName( "com.wezside.component.decorator.layout::" + decoratorData.id ) as Class;
 
 					formGroup.layout = new clazz( formGroup.layout ) as ILayout;
 					formGroup.layout.bottom = decoratorData.bottom;

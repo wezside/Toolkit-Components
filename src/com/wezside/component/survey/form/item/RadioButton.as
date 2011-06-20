@@ -1,10 +1,10 @@
 package com.wezside.component.survey.form.item
 {
-	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
 	import com.wezside.component.decorator.layout.HorizontalLayout;
 	import com.wezside.component.survey.form.FormEvent;
 	import com.wezside.component.text.Label;
+	import com.wezside.utilities.observer.IObserverDetail;
 
 	import flash.filters.DropShadowFilter;
 
@@ -14,24 +14,6 @@ package com.wezside.component.survey.form.item
 	public class RadioButton extends FormButton
 	{
 		private var _suffix:Label;
-
-		override protected function stateChange( event:UIElementEvent ):void
-		{
-			if ( event.state.key == UIElementState.STATE_VISUAL_SELECTED )
-			{
-				if ( selected )
-				{
-					dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ) );
-					deactivate();
-				}
-				else
-				{
-					deactivate();
-					activate();
-				}
-				if ( data ) data.state = UIElementState.STATE_VISUAL_SELECTED;
-			}
-		}
 
 		override public function build():void
 		{
@@ -52,15 +34,29 @@ package com.wezside.component.survey.form.item
 				_suffix.arrange();
 				addChild( _suffix );
 			}
+			
+			setObserveState( UIElementState.STATE_VISUAL_UP, stateChangeUp );
 		}
+		
+		override protected function stateChange( detail:IObserverDetail ):void
+		{
+			dispatchEvent( new FormEvent( FormEvent.ITEM_STATE_CHANGE, true ) );
+			deactivate();
+			if ( data ) data.state = UIElementState.STATE_VISUAL_SELECTED;
+		}
+
 
 		override public function purge():void
 		{
 			if ( _suffix ) _suffix.purge();
-
 			super.purge();
-
 			_suffix = null;
-		}
+		}		
+
+		private function stateChangeUp( detail:IObserverDetail ):void
+		{
+			deactivate();
+			activate();
+		}		
 	}
 }
