@@ -23,19 +23,20 @@ package com.wezside.component.survey.validate
 		private var _formData:IFormData;
 		private var _configState:StateManager;
 		private var _validateNS:Namespace = new Namespace( "", "com.wezside.component.survey.validate" );
+		private var _debug:Boolean;
 
 
 		public function validate( formItem:IFormItem, formGroup:IFormGroup, form:IForm ):Boolean
 		{
 			_valid = validateItem( formItem, formGroup, form );
-//			 trace( "Item validation", _valid );
+			if ( debug ) trace( "Item validation", _valid );
 
 			_valid = validateGroup( formItem, formGroup, form );
-//			 trace( "Group validation", _valid );
+			if ( debug ) trace( "Group validation", _valid );
 			if ( !_valid ) return false;
 
 			_valid = validateForm( form );
-//			 trace( "Form validation", _valid );
+			if ( debug ) trace( "Form validation", _valid );
 			return _valid;
 		}
 
@@ -160,10 +161,10 @@ package com.wezside.component.survey.validate
 			_configState = null;
 			if ( _formData ) _formData.purge();
 			_formData = null;
-		}
+		} 
 
 		private function customValidateItem( formItem:IFormItem, ns:Namespace, className:String, form:IForm = null, group:IFormGroup = null, iterator:IIterator = null ):Boolean
-		{
+		{ 
 			var clazz:Class = getDefinitionByName( ns + "::" + className ) as Class;
 			var inputValidator:IValidate = new clazz() as IValidate;
 			inputValidator.iterator = iterator;
@@ -181,6 +182,16 @@ package com.wezside.component.survey.validate
 		public function set configState( value:StateManager ):void
 		{
 			_configState = value;
+		}
+		
+		public function get debug():Boolean
+		{
+			return _debug;
+		}
+		
+		public function set debug( value:Boolean ):void
+		{
+			_debug = value;
 		}
 	}
 }
