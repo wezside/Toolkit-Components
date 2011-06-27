@@ -109,7 +109,7 @@ package com.wezside.component.survey.validate
 					}
 				}
 			}
-
+			if ( debug ) trace( formGroup.data.id, formGroup.data.valid );
 			it.purge();
 			it = null;
 			return formGroup.data.valid;
@@ -133,6 +133,7 @@ package com.wezside.component.survey.validate
 				case FormItem.ITEM_SLIDER :
 					break;
 			}
+			if ( debug ) trace( "\t", formItem.data.id, formItem.data.valid );
 			return formItem.data.valid;
 		}
 
