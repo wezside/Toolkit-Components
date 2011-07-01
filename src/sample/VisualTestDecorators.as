@@ -3,9 +3,9 @@ package sample
 	import com.wezside.component.UIElement;
 	import com.wezside.component.UIElementEvent;
 	import com.wezside.component.UIElementState;
+	import com.wezside.component.decorator.layout.HorizontalLayout;
 	import com.wezside.component.decorator.layout.PaddedLayout;
-	import com.wezside.component.decorator.layout.VerticalLayout;
-	import com.wezside.component.decorator.scroll.ScrollVertical;
+	import com.wezside.component.decorator.scroll.ScrollHorizontal;
 	import com.wezside.component.decorator.shape.ShapeRectangle;
 	import com.wezside.component.text.Label;
 	import com.wezside.data.iterator.IIterator;
@@ -15,6 +15,7 @@ package sample
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.Timer;
@@ -52,20 +53,20 @@ package sample
 			layout.left = 5;
 			layout.right = 5;
 			layout.top = 5;
-			
-			layout = new VerticalLayout( this.layout );
-			layout.verticalGap = 5;
-			
-			scroll = new ScrollVertical( this );
-			scroll.scrollHeight = 200;
-			scroll.horizontalGap = 5;
-
-//			layout = new HorizontalLayout( this.layout );			
-//			layout.horizontalGap = 5;
 //			
-//			scroll = new ScrollHorizontal( this );
-//			scroll.scrollWidth = 300;
-//			scroll.verticalGap = 2;
+//			layout = new VerticalLayout( this.layout );
+//			layout.verticalGap = 5;
+//			
+//			scroll = new ScrollVertical( this );
+//			scroll.scrollHeight = 200;
+//			scroll.horizontalGap = 5;
+
+			layout = new HorizontalLayout( this.layout );			
+			layout.horizontalGap = 5;
+			
+			scroll = new ScrollHorizontal( this );
+			scroll.scrollWidth = 300;
+			scroll.verticalGap = 2;
 																	
 			background = new ShapeRectangle( this );
 			background.colours = [ 0, 0 ];
@@ -117,7 +118,7 @@ package sample
 
 		private function timerCompelte( event:TimerEvent ):void
 		{
-			scroll.reset();
+			scroll.to( 0.5 );
 
 			var timer:Timer = new Timer( 3000, 1  );
 			timer.addEventListener( TimerEvent.TIMER_COMPLETE, timerCompelte2 );
@@ -158,6 +159,7 @@ package sample
 			hbox.arrange( );
 			hbox.setStyle( );
 			hbox.activate( );
+			hbox.addEventListener( MouseEvent.CLICK, click );
 			addChild( hbox );
 
 			hbox = new UIElement( );
@@ -169,6 +171,7 @@ package sample
 			hbox.build( );
 			hbox.arrange( );
 			hbox.activate( );
+			hbox.addEventListener( MouseEvent.CLICK, click );
 			addChild( hbox );	
 
 			hbox = new UIElement( );
@@ -179,6 +182,7 @@ package sample
 			hbox.background.height = 50;
 			hbox.build( );
 			hbox.arrange( );					
+			hbox.addEventListener( MouseEvent.CLICK, click );
 			addChild( hbox );
 			
 			hbox = new UIElement( );
@@ -189,6 +193,7 @@ package sample
 			hbox.background.height = 50;
 			hbox.build( );
 			hbox.arrange( );
+			hbox.addEventListener( MouseEvent.CLICK, click );
 			addChild( hbox );			
 	
 			var sp:Sprite = new Sprite( );
@@ -196,6 +201,7 @@ package sample
 			sp.graphics.drawRect( 0, 0, 200, 50 );
 			sp.graphics.endFill( );
 			addChild( sp );
+
 	
 	/*		
 			sp = new Sprite( );
@@ -229,6 +235,10 @@ package sample
 			addChild( sp );
 		*/
 			super.build( );
+		}
+
+		private function click( event:MouseEvent ):void
+		{
 		}
 
 		private function stateChange(event:UIElementEvent):void 
