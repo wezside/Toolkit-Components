@@ -4,6 +4,7 @@
 bin/
 bin-debug/
 bin-release/
+swc/
 *.jpg
 *.gif
 *.psd
