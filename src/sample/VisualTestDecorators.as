@@ -60,6 +60,7 @@ package sample
 			scroll = new ScrollVertical( this );
 			scroll.scrollHeight = 200;
 			scroll.horizontalGap = 5;
+			scroll.thumbHeight = 50;
 //
 //			layout = new HorizontalLayout( this.layout );			
 //			layout.horizontalGap = 5;
@@ -110,7 +111,6 @@ package sample
 //			arrange( );
 //			arrange( );
 
-
 			var timer:Timer = new Timer( 3000, 1  );
 			timer.addEventListener( TimerEvent.TIMER_COMPLETE, timerCompelte2 );
 			timer.start();
@@ -132,6 +132,7 @@ package sample
 
 		private function stageResize( event:Event ):void
 		{
+			/*
 			var it:IIterator = iterator( UIElement.ITERATOR_CHILDREN );
 			var object:DisplayObject;
 			while ( it.hasNext() )
@@ -143,7 +144,9 @@ package sample
 			it.purge();
 			it = null;
 			object = null;
+			*/
 			
+			scroll.scrollHeight = stage.stageHeight * 0.7;
 			arrange( );
 		}
 

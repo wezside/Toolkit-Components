@@ -159,7 +159,8 @@ package sample
 			var youtube:IMediaResource = new MediaResource();
 			youtube.title = "Youtube";
 			youtube.uri = "http://www.youtube.com/watch?v=hbLgszfXTAY";
-			youtube.autoPlay = false;
+			youtube.autoPlay = true;
+			youtube.bufferTime = 10000;
 			
 			var vimeo:IMediaResource = new MediaResource();
 			vimeo.title = "Vimeo";

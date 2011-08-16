@@ -52,7 +52,7 @@ package com.wezside.component.media.player.media
 			
 		override public function get totalTime():Number
 		{
-			return player ? player.getDuration() : super.totalTime;
+			return player ? player.getDuration():super.totalTime;
 		}
 		
 		override public function set width( value:Number ):void
