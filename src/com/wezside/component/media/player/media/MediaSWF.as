@@ -6,6 +6,9 @@ package com.wezside.component.media.player.media
 	 */
 	public class MediaSWF extends Media
 	{
-
+		public function MediaSWF() 
+		{
+			
+		}
 	}
 }

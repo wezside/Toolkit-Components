@@ -88,6 +88,26 @@ package sample
 			addChild( label );
 
 			addEventListener( Event.ENTER_FRAME, enterFrame );
+			
+			
+			var box:UIElement = new UIElement();
+			box.background = new ShapeRectangle( box );
+			box.background.width = 200;
+			box.background.height = 200;
+			box.background.colours = [ 0xcccccc, 0xcccccc ];
+			box.background.alphas = [ 1, 1 ];
+			box.background.borderColor = 0xff0000;
+			box.background.borderThickness = 2;
+			box.background.topLeftRadius = 20;
+			box.background.topRightRadius = 20;
+			box.background.cornerRadius = 20;
+			box.build();
+			box.setStyle();
+			box.arrange();
+			addChild( box );
+			
+			box.x = 200;
+			
 		}
 
 		private function enterFrame(event:Event):void 
