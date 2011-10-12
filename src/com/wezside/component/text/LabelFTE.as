@@ -1,5 +1,7 @@
 package com.wezside.component.text
 {
+	import com.wezside.data.iterator.IIterator;
+	import com.wezside.data.collection.Collection;
 	import com.wezside.component.UIElement;
 
 	import flash.text.engine.ElementFormat;
@@ -13,8 +15,9 @@ package com.wezside.component.text
 	 */
 	public class LabelFTE extends UIElement
 	{
-		private var block:TextBlock;
+
 		private var format:ElementFormat;
+		private var blockCollection : Collection;
 		
 		private var _lineHeight:Number;
 		private var _lineSpacing:Number = 2;
@@ -34,50 +37,62 @@ package com.wezside.component.text
 		override public function construct():void
 		{
 			super.construct();
+			blockCollection = new Collection();
 			_fontDescription = new FontDescription();
-			if ( styleName && styleManager ) format = styleManager.getElementFormat( styleName );
-			else format = new ElementFormat(  )           
+			format = new ElementFormat( _fontDescription );
 		}
 				
 		override public function build():void
 		{
-			super.build();									
-			var xPos:int = 50;
-			var yPos:int = 200;			
-			block.bidiLevel = 1;
+			super.build();
 			
-//			block.textJustifier = new SpaceJustifier( "ar", LineJustification.UNJUSTIFIED );
-            var textLine:TextLine = block.createTextLine( null, width ? width : 300 );
-  			while ( textLine )
-            {
-				
-                textLine.x = xPos + 300 - textLine.width;
-                textLine.y = yPos;
-                yPos += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
-                addChild( textLine );
-                textLine = block.createTextLine( textLine, width ? width : 300 );
-            }				
-			block.releaseLineCreationData();
+//			if ( styleName && styleManager ) format = styleManager.getElementFormat( styleName );
+			
+			var it:IIterator = blockCollection.iterator();
+			var block:TextBlock;
+			while ( it.hasNext() )
+			{
+				block = it.next() as TextBlock;
+				var xPos:int = 50;
+				var yPos:int = 200;			
+	            var textLine:TextLine = block.createTextLine( null, width ? width : 300 );
+	  			while ( textLine )
+	            {					
+	                textLine.x = xPos + 300 - textLine.width;
+	                textLine.y = yPos;
+	                yPos += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
+	                addChild( textLine );
+	                textLine = block.createTextLine( textLine, width ? width : 300 );
+	            }				
+				block.releaseLineCreationData(); 
+			}
+			it.purge();
+			it = null;
+			block = null;							
 		}
 			
 		override public function purge():void
 		{
 			super.purge();
-			if ( block )
+			var it:IIterator = blockCollection.iterator();
+			var block:TextBlock;
+			while ( it.hasNext() )
 			{
-				block.releaseLineCreationData();
-				block = null;
+				block = it.next() as TextBlock;
 			}
+			it.purge();
+			it = null;
+			block = null;			
 			if ( format ) format = null;
 		}
 		
-		public function addText( value:String ):void
+		public function addText( value:String, bidiLevel:int = 0 ):void
 		{		
-  		    block = new TextBlock(); 
-			block.bidiLevel = 3;
-			
+  		    var block:TextBlock = new TextBlock(); 
+			block.bidiLevel = bidiLevel;			
             var textElement:TextElement = new TextElement( value, format ); 
-            block.content = textElement; 
+            block.content = textElement;
+			blockCollection.addElement( block );
 		}
 		
 		public function get font():String
