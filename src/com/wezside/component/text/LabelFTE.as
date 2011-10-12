@@ -46,7 +46,7 @@ package com.wezside.component.text
 		{
 			super.build();
 			
-//			if ( styleName && styleManager ) format = styleManager.getElementFormat( styleName );
+			if ( styleName && styleManager ) format = styleManager.getElementFormat( styleName );
 			
 			var it:IIterator = blockCollection.iterator();
 			var block:TextBlock;
