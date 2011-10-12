@@ -1,8 +1,12 @@
 package com.wezside.component.text
 {
-	import com.wezside.data.iterator.IIterator;
-	import com.wezside.data.collection.Collection;
+	import flash.geom.ColorTransform;
+	import flash.text.engine.SpaceJustifier;
+	import flash.text.engine.TextJustifier;
 	import com.wezside.component.UIElement;
+	import com.wezside.component.UIElementState;
+	import com.wezside.data.collection.Collection;
+	import com.wezside.data.iterator.IIterator;
 
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
@@ -17,7 +21,8 @@ package com.wezside.component.text
 	{
 
 		private var format:ElementFormat;
-		private var blockCollection : Collection;
+		private var blockCollection:Collection;
+		private var yOffset:int = 0;
 		
 		private var _lineHeight:Number;
 		private var _lineSpacing:Number = 2;
@@ -32,44 +37,76 @@ package com.wezside.component.text
 		private var _border:Boolean;
 		private var _borderColor:uint;
 		private var _align:String;
+		private var _textWidth:int = 100;
+		private var _textHeight:int = 100;
 						
 						
 		override public function construct():void
 		{
 			super.construct();
 			blockCollection = new Collection();
+			_align = LabelFTEAlign.LEFT;
+			
 			_fontDescription = new FontDescription();
 			format = new ElementFormat( _fontDescription );
+			_fontDescription = _fontDescription.clone();
+			locale = "en";
 		}
 				
 		override public function build():void
 		{
 			super.build();
-			
-			if ( styleName && styleManager ) format = styleManager.getElementFormat( styleName );
+			y = 0;
+			if ( styleName && styleManager ) 
+				format = styleManager.getElementFormat( styleName );
+						
 			
 			var it:IIterator = blockCollection.iterator();
 			var block:TextBlock;
 			while ( it.hasNext() )
 			{
 				block = it.next() as TextBlock;
-				var xPos:int = 50;
-				var yPos:int = 200;			
-	            var textLine:TextLine = block.createTextLine( null, width ? width : 300 );
-	  			while ( textLine )
-	            {					
-	                textLine.x = xPos + 300 - textLine.width;
-	                textLine.y = yPos;
-	                yPos += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
-	                addChild( textLine );
-	                textLine = block.createTextLine( textLine, width ? width : 300 );
-	            }				
-				block.releaseLineCreationData(); 
+				
+	            var textLine:TextLine = block.createTextLine( null, _textWidth );
+				if ( _align == LabelFTEAlign.RIGHT || block.bidiLevel % 2 != 0 )
+				{
+		  			while ( textLine )
+		            {					
+		                textLine.x = _textWidth - textLine.width;
+		                textLine.y = yOffset;
+		                yOffset += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
+		                addChild( textLine );
+		                textLine = block.createTextLine( textLine, width ? width : _textWidth );
+		            }				
+				}
+				else if ( align == LabelFTEAlign.CENTER )
+				{				
+		  			while ( textLine )
+		            {					
+		                textLine.x = ( _textWidth - textLine.width ) * 0.5;
+		                textLine.y = yOffset;
+		                yOffset += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
+		                addChild( textLine );
+		                textLine = block.createTextLine( textLine, width ? width : _textWidth );
+		            }				
+				}
+				else 
+				{				
+		  			while ( textLine )
+		            {					
+		                textLine.x = 0;
+		                textLine.y = yOffset;
+		                yOffset += ( _lineHeight ? _lineHeight : textLine.height ) + _lineSpacing;
+		                addChild( textLine );
+		                textLine = block.createTextLine( textLine, width ? width : _textWidth );
+		            }				
+				}				
 			}
 			it.purge();
 			it = null;
-			block = null;							
+			block = null;				
 		}
+	
 			
 		override public function purge():void
 		{
@@ -86,13 +123,93 @@ package com.wezside.component.text
 			if ( format ) format = null;
 		}
 		
-		public function addText( value:String, bidiLevel:int = 0 ):void
+		override public function set state( value:String ):void
+		{
+			super.state = value;
+			
+			var newColor:uint = 0;
+			
+			switch ( value )
+			{
+				case UIElementState.STATE_VISUAL_UP :
+					newColor = textColorUp;					
+					break;
+				case UIElementState.STATE_VISUAL_OVER :
+					newColor = textColorOver;
+					break;
+				case UIElementState.STATE_VISUAL_DOWN :
+					newColor = textColorDown;
+					break;
+				case UIElementState.STATE_VISUAL_SELECTED :
+					newColor = textColorSelected;
+					break;
+				case UIElementState.STATE_VISUAL_INVALID :
+					newColor = textColorInvalid;
+					break;
+				case UIElementState.STATE_VISUAL_DISABLED :
+					newColor = textColorDisabled;
+					break;
+			}
+			
+			var ct:ColorTransform = new ColorTransform();
+			ct.color = newColor;
+			
+			var it:IIterator = blockCollection.iterator();
+			var block:TextBlock;
+			while ( it.hasNext() )
+			{
+				block = it.next() as TextBlock;
+				
+				var counter:int = 0;
+				var textLine:TextLine = block.getTextLineAtCharIndex( 0 );
+				while ( textLine )
+	            {			
+					textLine.transform.colorTransform = ct;
+					counter++;					
+					try
+					{
+	                	textLine = block.getTextLineAtCharIndex( counter );
+					}
+					catch( error:Error ) { textLine = null; }
+	            }		
+			}
+			it.purge();
+			it = null;
+			block = null;
+		}		
+		
+		public function addText( value:String, bidiLevel:int = 0, format:ElementFormat = null, justifier:TextJustifier = null ):void
 		{		
   		    var block:TextBlock = new TextBlock(); 
 			block.bidiLevel = bidiLevel;			
-            var textElement:TextElement = new TextElement( value, format ); 
+			block.textJustifier = justifier ? justifier : new SpaceJustifier( locale );
+			
+            var textElement:TextElement = new TextElement( value, format ? format : this.format );
+			textElement.eventMirror = this;
+			 
             block.content = textElement;
 			blockCollection.addElement( block );
+			this.format = this.format.clone();
+		}
+		
+		public function get textWidth():int
+		{
+			return _textWidth;
+		}
+		
+		public function set textWidth( value:int ):void
+		{
+			_textWidth = value;
+		} 
+		
+		public function get textHeight():int
+		{
+			return _textHeight;
+		}
+		
+		public function set textHeight( value:int ):void
+		{
+			_textHeight = value;
 		}
 		
 		public function get font():String
@@ -125,6 +242,16 @@ package com.wezside.component.text
 			fontDescription.fontLookup = value;
 		}
 		
+		public function get fontWeight():String
+		{
+			return fontDescription.fontWeight;
+		}
+		
+		public function set fontWeight( value:String ):void
+		{
+			fontDescription.fontWeight = value;
+		}
+		
 		public function get renderingMode():String
 		{
 			return fontDescription.renderingMode;
@@ -152,7 +279,7 @@ package com.wezside.component.text
 		
 		public function set fontDescription( value:FontDescription ):void
 		{
-			_fontDescription = value;
+			_fontDescription = value.clone();
 		}
 		
 		public function get fontSize():Number
@@ -162,7 +289,7 @@ package com.wezside.component.text
 		
 		public function set fontSize( value:Number ):void
 		{
-			fontSize = value;
+			format.fontSize = value;
 		}
 		
 		public function get textColor():uint
