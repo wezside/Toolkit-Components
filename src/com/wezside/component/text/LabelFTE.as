@@ -185,8 +185,6 @@ package com.wezside.component.text
 			block.textJustifier = justifier ? justifier : new SpaceJustifier( locale );
 			
             var textElement:TextElement = new TextElement( value, format ? format : this.format );
-			textElement.eventMirror = this;
-			 
             block.content = textElement;
 			blockCollection.addElement( block );
 			this.format = this.format.clone();

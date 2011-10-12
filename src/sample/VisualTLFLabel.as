@@ -72,6 +72,7 @@ package sample
 			tlf.textWidth = 400;
 			
 			tlf.textColorOver = 0xff0000;
+			tlf.textColorDown = 0x666666;
 			tlf.locale = "en";
 			tlf.addText( "Praesent eu nunc non risus cursus pellentesque dapibus eget elit." );
 			tlf.locale = "el";
